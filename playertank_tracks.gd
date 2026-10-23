@@ -1,3 +1,4 @@
+class_name playertank_tracks
 extends VehicleBody3D
 
 # The model faces -X, so its left track is on local +Z.
@@ -9,15 +10,23 @@ extends VehicleBody3D
 @export var turn_response := 2.0
 @export var idle_brake := 1.5
 @export var turning_grip := 0.5
+@export var righting_strength := 0.1
 
 var wheels: Array[VehicleWheel3D] = []
 var wheel_sides: Array[float] = []
 var wheel_grip: Array[float] = []
 var track_half_width := 0.0
 var previous_speed := 0.0
+var throttle: float = 0.0
+var flip_text_offset: Vector3
 
 @onready var engine_sound: AudioStreamPlayer = $EngineSound
 @onready var impact_sound: AudioStreamPlayer = $ImpactSound
+@onready var flip_text: Label3D = $"../followcam/fliptext"
+
+
+@onready var left_track_particles: CPUParticles3D = $left_track_particles
+@onready var right_track_particles: CPUParticles3D = $right_track_particles
 
 func _ready() -> void:
 	for child in get_children():
@@ -28,9 +37,10 @@ func _ready() -> void:
 			track_half_width = maxf(track_half_width, absf(child.position.z))
 			child.use_as_steering = false
 			child.steering = 0.0
+	flip_text_offset=flip_text.position
 
 func _physics_process(delta: float) -> void:
-	var throttle := Input.get_axis(&"reverse", &"accelerate")
+	throttle = Input.get_axis(&"reverse", &"accelerate")
 	var turn := Input.get_axis(&"turn_right", &"turn_left")
 	var forward := -global_basis.x.normalized()
 	var up := global_basis.y.normalized()
@@ -82,3 +92,22 @@ func _physics_process(delta: float) -> void:
 		for joypad in Input.get_connected_joypads():
 			Input.start_joy_vibration(joypad, 0.0, 0.5, 0.1)
 	previous_speed = speed
+	left_track_particles.emitting=speed>1.0 or turn<-0.1
+	right_track_particles.emitting=speed>1.0 or turn>0.1
+	
+	
+	# constant righting force
+	
+	var up_vector = global_transform.basis.y
+	var target_up = Vector3.UP
+	
+	# Cross product finds the axis and amount of rotation needed to get back to upright
+	var tilt_axis = up_vector.cross(target_up)
+	
+	# Apply torque proportional to the tilt
+	apply_torque(tilt_axis * righting_strength)
+	
+	
+	flip_text.visible=global_transform.basis.y.y < -0.6
+	print(str(-PI/2>rotation.x)+": "+str(rotation.x>PI/2)+": "+str(rotation.x)+": "+str(rotation.z))
+	

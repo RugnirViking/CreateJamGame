@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://onak2a4unfnh" path="res://playertank_tracks.gd" id="1_6h0fd"]
 [ext_resource type="Script" uid="uid://cp2pmclftdnqa" path="res://followcam.gd" id="2_oa3n8"]
+[ext_resource type="Texture2D" uid="uid://cp0exnnt1nkis" path="res://particle_smoke.png" id="2_qmgpy"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_t850l"]
 size = Vector3(1.0556641, 0.3141327, 0.7043457)
@@ -159,6 +160,28 @@ top_radius = 0.1
 bottom_radius = 0.1
 height = 0.09112549
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_pjbp5"]
+transparency = 1
+shading_mode = 0
+vertex_color_use_as_albedo = true
+albedo_color = Color(0.72156864, 0.38039216, 0.5372549, 1)
+albedo_texture = ExtResource("2_qmgpy")
+billboard_mode = 3
+particles_anim_h_frames = 1
+particles_anim_v_frames = 1
+particles_anim_loop = false
+
+[sub_resource type="QuadMesh" id="QuadMesh_6fjuc"]
+material = SubResource("StandardMaterial3D_pjbp5")
+size = Vector2(0.1, 0.1)
+
+[sub_resource type="Curve" id="Curve_3bti5"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="Gradient" id="Gradient_t850l"]
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
+
 [node name="playertank" type="Node3D" unique_id=212230902]
 
 [node name="vehicle" type="VehicleBody3D" parent="." unique_id=1596378704]
@@ -268,9 +291,39 @@ mesh = SubResource("CylinderMesh_6h0fd")
 
 [node name="ImpactSound" type="AudioStreamPlayer" parent="vehicle" unique_id=291738550]
 
+[node name="left_track_particles" type="CPUParticles3D" parent="vehicle" unique_id=44376467]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5260124, -0.12756117, 0.281124)
+amount = 125
+lifetime = 1.25
+mesh = SubResource("QuadMesh_6fjuc")
+direction = Vector3(0.5, 1, 0)
+gravity = Vector3(0, 0, 0)
+initial_velocity_min = 1.0
+initial_velocity_max = 1.0
+angle_max = 360.0
+scale_amount_curve = SubResource("Curve_3bti5")
+color_ramp = SubResource("Gradient_t850l")
+
+[node name="right_track_particles" type="CPUParticles3D" parent="vehicle" unique_id=1676624567]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5260124, -0.12756117, -0.29950434)
+amount = 125
+lifetime = 1.25
+mesh = SubResource("QuadMesh_6fjuc")
+direction = Vector3(0.5, 1, 0)
+gravity = Vector3(0, 0, 0)
+initial_velocity_min = 1.0
+initial_velocity_max = 1.0
+angle_max = 360.0
+scale_amount_curve = SubResource("Curve_3bti5")
+color_ramp = SubResource("Gradient_t850l")
+
 [node name="followcam" type="Node3D" parent="." unique_id=559551088]
 script = ExtResource("2_oa3n8")
 
 [node name="3dpersoncam" type="Camera3D" parent="followcam" unique_id=1647198482]
 transform = Transform3D(-4.180272e-08, -0.29227328, 0.9563349, -1.2775669e-08, 0.9563349, 0.29227328, -1, 0, -4.371139e-08, 1.1696591, 0.679645, 0)
 current = true
+
+[node name="fliptext" type="Label3D" parent="followcam" unique_id=1570156733]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0, 0.4216445, 0)
+text = "PRESS R TO FLIP"
