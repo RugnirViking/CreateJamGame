@@ -1,8 +1,10 @@
 [gd_scene format=4 uid="uid://cwvq81d0h4wq7"]
 
 [ext_resource type="Script" uid="uid://onak2a4unfnh" path="res://playertank_tracks.gd" id="1_6h0fd"]
+[ext_resource type="AudioStream" uid="uid://dc8bcnohrx320" path="res://Tank moving sound 2.wav" id="2_00idx"]
 [ext_resource type="Script" uid="uid://cp2pmclftdnqa" path="res://followcam.gd" id="2_oa3n8"]
 [ext_resource type="Texture2D" uid="uid://cp0exnnt1nkis" path="res://particle_smoke.png" id="2_qmgpy"]
+[ext_resource type="AudioStream" uid="uid://jgbt1vjqxkmf" path="res://Tank firring sound.wav" id="3_wnfuo"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_t850l"]
 size = Vector3(1.0556641, 0.3141327, 0.7043457)
@@ -167,16 +169,16 @@ vertex_color_use_as_albedo = true
 albedo_color = Color(0.72156864, 0.38039216, 0.5372549, 1)
 albedo_texture = ExtResource("2_qmgpy")
 billboard_mode = 3
+billboard_keep_scale = true
 particles_anim_h_frames = 1
 particles_anim_v_frames = 1
 particles_anim_loop = false
 
 [sub_resource type="QuadMesh" id="QuadMesh_6fjuc"]
 material = SubResource("StandardMaterial3D_pjbp5")
-size = Vector2(0.1, 0.1)
 
 [sub_resource type="Curve" id="Curve_3bti5"]
-_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+_data = [Vector2(0, 0.1), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
 point_count = 2
 
 [sub_resource type="Gradient" id="Gradient_t850l"]
@@ -288,8 +290,12 @@ visible = false
 mesh = SubResource("CylinderMesh_6h0fd")
 
 [node name="EngineSound" type="AudioStreamPlayer" parent="vehicle" unique_id=1673059771]
+stream = ExtResource("2_00idx")
+volume_db = 24.0
+autoplay = true
 
 [node name="ImpactSound" type="AudioStreamPlayer" parent="vehicle" unique_id=291738550]
+stream = ExtResource("3_wnfuo")
 
 [node name="left_track_particles" type="CPUParticles3D" parent="vehicle" unique_id=44376467]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5260124, -0.12756117, 0.281124)

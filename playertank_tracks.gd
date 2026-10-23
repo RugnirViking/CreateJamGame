@@ -19,6 +19,7 @@ var track_half_width := 0.0
 var previous_speed := 0.0
 var throttle: float = 0.0
 var flip_text_offset: Vector3
+var flip_tank_flag: bool
 
 @onready var engine_sound: AudioStreamPlayer = $EngineSound
 @onready var impact_sound: AudioStreamPlayer = $ImpactSound
@@ -38,6 +39,23 @@ func _ready() -> void:
 			child.use_as_steering = false
 			child.steering = 0.0
 	flip_text_offset=flip_text.position
+
+func _integrate_forces(state):
+	if flip_tank_flag:
+		var t = state.transform
+		t.origin += Vector3.UP * 1.0
+		# Keep the tank's heading while removing pitch and roll.
+		var heading_x: Vector3 = t.basis.x
+		heading_x.y = 0.0
+		if heading_x.length_squared() < 0.0001:
+			heading_x = Vector3.UP.cross(t.basis.z)
+		heading_x = heading_x.normalized()
+		t.basis = Basis(heading_x, Vector3.UP, heading_x.cross(Vector3.UP))
+		state.transform = t
+		state.linear_velocity = Vector3.ZERO
+		state.angular_velocity = Vector3.ZERO
+		flip_tank_flag = false
+		print("Tank moved to: ", t.origin)
 
 func _physics_process(delta: float) -> void:
 	throttle = Input.get_axis(&"reverse", &"accelerate")
@@ -84,16 +102,17 @@ func _physics_process(delta: float) -> void:
 
 	var speed := linear_velocity.length()
 	var effort := maxf(speed / maxf(max_forward_speed, 0.1), absf(turn) * 0.5)
-	var desired_pitch := 0.8 + effort
+	var desired_pitch := 0.3 + effort
 	engine_sound.pitch_scale = lerpf(engine_sound.pitch_scale, desired_pitch, 1.0 - exp(-5.0 * delta))
+	
 	if impact_sound.stream != null and absf(speed - previous_speed) > 1.0:
 		impact_sound.play()
 		Input.vibrate_handheld(100)
 		for joypad in Input.get_connected_joypads():
 			Input.start_joy_vibration(joypad, 0.0, 0.5, 0.1)
 	previous_speed = speed
-	left_track_particles.emitting=speed>1.0 or turn<-0.1
-	right_track_particles.emitting=speed>1.0 or turn>0.1
+	left_track_particles.emitting=(speed>1.0 or turn<-0.1) && left_grounded
+	right_track_particles.emitting=(speed>1.0 or turn>0.1) && right_grounded
 	
 	
 	# constant righting force
@@ -108,6 +127,10 @@ func _physics_process(delta: float) -> void:
 	apply_torque(tilt_axis * righting_strength)
 	
 	
-	flip_text.visible=global_transform.basis.y.y < -0.6
-	print(str(-PI/2>rotation.x)+": "+str(rotation.x>PI/2)+": "+str(rotation.x)+": "+str(rotation.z))
+	flip_text.visible=global_transform.basis.y.y < 0.2 && speed < 5
 	
+	
+func _unhandled_input(event: InputEvent) -> void:
+	if event.is_action_pressed("flip_tank") and global_transform.basis.y.y < 0.2 and previous_speed < 5:
+		flip_tank_flag = true
+		sleeping = false
