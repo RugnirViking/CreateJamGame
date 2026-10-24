@@ -2,3 +2,6 @@
 .godot/
 /android/
 *.tmp
+
+# Generated game exports
+/builds/

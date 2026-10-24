@@ -1,11 +1,10 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://cqdk21cneq5da"]
 
-[ext_resource type="Script" path="res://scripts/scatter_patch.gd" id="1_script"]
-[ext_resource type="PackedScene" path="res://scenes/scatter/cactus_visual.tscn" id="2_visual"]
+[ext_resource type="Script" uid="uid://m3m0wpijbsaf" path="res://scripts/scatter_patch.gd" id="1_script"]
+[ext_resource type="PackedScene" uid="uid://c6hkp3uynttqn" path="res://scenes/scatter/cactus_visual.tscn" id="2_visual"]
 
-[node name="CrushableScatter" type="Node3D"]
+[node name="CrushableScatter" type="Node3D" unique_id=2004992288]
 script = ExtResource("1_script")
 scatter_type = 1
-render_chunk_size = 64.0
 source_scenes = Array[PackedScene]([ExtResource("2_visual")])
 instance_count = 90

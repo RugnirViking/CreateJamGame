@@ -113,7 +113,7 @@ func _physics_process(delta: float) -> void:
 
 	var speed := linear_velocity.length()
 	var effort := maxf(speed / maxf(max_forward_speed, 0.1), absf(turn) * 0.5)
-	var desired_pitch := 0.1 + effort
+	var desired_pitch := 0.4 + effort
 	engine_sound.pitch_scale = lerpf(engine_sound.pitch_scale, desired_pitch, 1.0 - exp(-5.0 * delta))
 	
 	if impact_sound.stream != null and absf(speed - previous_speed) > 1.0:
@@ -158,6 +158,8 @@ func _physics_process(delta: float) -> void:
 	heightmap.set_instance_shader_parameter("radius",clampf(targetness/max_targetness,0,1)*10);
 	speed_label.text=str(speed*3.6).pad_decimals(2)+" KM/H"
 	vignetteShader.set_instance_shader_parameter("alpha", 1-clampf(targetness/max_targetness,0,1))
+	
+	
 	
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("flip_tank") and global_transform.basis.y.y < 0.2 and previous_speed < 5:

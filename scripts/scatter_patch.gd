@@ -92,6 +92,8 @@ func _get(property: StringName) -> Variant:
 
 
 func _ready() -> void:
+	if not Engine.is_editor_hint():
+		add_to_group(&"scatter_patches")
 	set_notify_transform(true)
 	set_physics_process(false)
 	set_process(false)
@@ -535,6 +537,23 @@ func _build_collider(index: int) -> void:
 func _on_body_entered(body: Node3D, index: int) -> void:
 	if not Engine.is_editor_hint() and body.is_in_group(&"scatter_crushers"):
 		flatten_instance(index)
+
+
+func flatten_in_radius(impact_position: Vector3, radius: float) -> void:
+	if scatter_type != ScatterType.CRUSHABLE or radius <= 0.0:
+		return
+	# Query the placement grid, including props without active nearby colliders.
+	var first := _collision_cell(impact_position - Vector3.ONE * radius)
+	var last := _collision_cell(impact_position + Vector3.ONE * radius)
+	var visited: Dictionary = {}
+	for y in range(first.y, last.y + 1):
+		for x in range(first.x, last.x + 1):
+			for index: int in _collision_cells.get(Vector2i(x, y), []):
+				if visited.has(index):
+					continue
+				visited[index] = true
+				if not _flattened[index] and _within_collision_distance(index, impact_position, radius):
+					flatten_instance(index)
 
 
 func flatten_instance(index: int) -> void:

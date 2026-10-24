@@ -13,6 +13,12 @@ var rebuild_button: Callable:
 
 func _ready() -> void:
 	rebuild()
+	# Create the shared renderer without requiring a manually maintained scene child.
+	if not has_node("TargetMarkers"):
+		var renderer := Node.new()
+		renderer.name = "TargetMarkers"
+		renderer.set_script(preload("res://scripts/terrain_target_renderer.gd"))
+		add_child(renderer)
 
 func rebuild() -> void:
 	if not is_inside_tree() or imageCompressed == null:
