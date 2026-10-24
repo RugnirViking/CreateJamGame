@@ -12,8 +12,11 @@ Cambridge dictionary "zero in on something/someone":
 
 Assets:
 https://www.1001fonts.com/ussr-stencil-font.html Free USSR stencil font
+
 Sand Shaders from https://www.youtube.com/@mohsenzare2511
+
 Skybox from https://github.com/rpgwhitelock/AllSkyFree_Godot
+
 air dust mote particles from my previous jetski game
 
 AI has been used for:
