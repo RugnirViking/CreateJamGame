@@ -159,6 +159,8 @@ func _physics_process(delta: float) -> void:
 	speed_label.text=str(speed*3.6).pad_decimals(2)+" KM/H"
 	vignetteShader.set_instance_shader_parameter("alpha", 1-clampf(targetness/max_targetness,0,1))
 	
+	
+	
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("flip_tank") and global_transform.basis.y.y < 0.2 and previous_speed < 5:
 		flip_tank_flag = true

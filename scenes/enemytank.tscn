@@ -1,6 +1,7 @@
 [gd_scene format=4 uid="uid://bymwbiyo2qpg0"]
 
 [ext_resource type="Material" uid="uid://ditpn0d4s05p" path="res://enemytank.tres" id="1_ftj4n"]
+[ext_resource type="Script" uid="uid://mojgh72tsmjp" path="res://scenes/enemytank.gd" id="1_n8s86"]
 [ext_resource type="AudioStream" uid="uid://dc8bcnohrx320" path="res://sound/Tank moving sound 2.wav" id="2_00idx"]
 [ext_resource type="Texture2D" uid="uid://cp0exnnt1nkis" path="res://art/textures/particle_smoke.png" id="2_qmgpy"]
 
@@ -185,6 +186,7 @@ colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
 [node name="enemytank" type="VehicleBody3D" unique_id=1403049494 groups=["scatter_crushers"]]
 collision_layer = 2
 collision_mask = 3
+script = ExtResource("1_n8s86")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1136541964]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.027832031, 0.013587952, 0.005004883)

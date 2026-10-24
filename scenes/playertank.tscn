@@ -7,11 +7,14 @@
 [ext_resource type="Texture2D" uid="uid://cp0exnnt1nkis" path="res://art/textures/particle_smoke.png" id="2_qmgpy"]
 [ext_resource type="AudioStream" uid="uid://jgbt1vjqxkmf" path="res://sound/Tank firring sound.wav" id="3_wnfuo"]
 [ext_resource type="Texture2D" uid="uid://blto2t8kspgfa" path="res://art/textures/crosshair-nobg.png" id="6_crosshair"]
+[ext_resource type="Texture2D" uid="uid://n3en5wrpf8lg" path="res://art/textures/chevron.png" id="6_koyaf"]
+[ext_resource type="Shader" uid="uid://cwsj38tvm4swb" path="res://scenes/chevron_indicator.gdshader" id="7_chevron"]
 [ext_resource type="Script" uid="uid://qwvmhgo6wbtn" path="res://scripts/camera_dust.gd" id="7_dust"]
 [ext_resource type="Shader" uid="uid://bqxx214nn8g8c" path="res://scenes/vignette.gdshader" id="8_7ixg4"]
 [ext_resource type="Script" uid="uid://cmu3ilgo4ki4o" path="res://scripts/sniper_hud.gd" id="8_sniper_hud"]
 [ext_resource type="FontFile" uid="uid://6mb71bm5wpol" path="res://ussr-stencil/USSR STENCIL/USSR STENCIL WEBFONT.ttf" id="9_0t7bx"]
 [ext_resource type="Script" uid="uid://jhtj12868vnl" path="res://scripts/ground_tracks.gd" id="9_ground_tracks"]
+[ext_resource type="Script" uid="uid://rcupwc8rcwgj" path="res://scripts/chevron_target.gd" id="10_chevron_target"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_t850l"]
 size = Vector3(1.0556641, 0.3141327, 0.7043457)
@@ -191,12 +194,24 @@ point_count = 2
 [sub_resource type="Gradient" id="Gradient_t850l"]
 colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
 
+[sub_resource type="QuadMesh" id="QuadMesh_t850l"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_chevron"]
+resource_name = "Scrolling Chevrons"
+render_priority = 0
+shader = ExtResource("7_chevron")
+shader_parameter/chevron_texture = ExtResource("6_koyaf")
+shader_parameter/tint = Color(1.353256, 1.353256, 0, 1)
+shader_parameter/repeat_count = 3.0
+shader_parameter/scroll_speed = 1.999999955296
+
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_t850l"]
 shader = ExtResource("8_7ixg4")
 shader_parameter/inner_radius = 0.0
 shader_parameter/outer_radius = 1.0
 
 [node name="playertank" type="Node3D" unique_id=212230902]
+script = ExtResource("10_chevron_target")
 
 [node name="vehicle" type="VehicleBody3D" parent="." unique_id=1596378704 groups=["player", "scatter_crushers"]]
 collision_layer = 2
@@ -362,6 +377,14 @@ current = true
 [node name="fliptext" type="Label3D" parent="followcam" unique_id=1570156733]
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0, 0.4216445, 0)
 text = "PRESS R TO FLIP"
+
+[node name="chevronpivot" type="Node3D" parent="followcam" unique_id=137679506]
+transform = Transform3D(-4.371139e-08, 1, 4.371139e-08, 0, -4.371139e-08, 1, 1, 4.371139e-08, 1.9106855e-15, 0.043816328, 0, 0)
+
+[node name="chevronIndicator" type="MeshInstance3D" parent="followcam/chevronpivot" unique_id=1089633580]
+transform = Transform3D(1, 0, 0, 0, 1, 8.351872e-23, 0, 8.351872e-23, 1, 3.979255e-08, -0.9103477, 0.20893563)
+mesh = SubResource("QuadMesh_t850l")
+surface_material_override/0 = SubResource("ShaderMaterial_chevron")
 
 [node name="AimHUD" type="CanvasLayer" parent="." unique_id=1437939724]
 
