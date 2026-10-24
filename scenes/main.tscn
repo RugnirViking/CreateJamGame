@@ -68,19 +68,24 @@ size = Vector3(2.3385327, 0.18310547, 7.646083)
 [node name="main" type="StaticBody3D" unique_id=1687244639]
 
 [node name="heightmap" type="MeshInstance3D" parent="." unique_id=832386953]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.008872986, -0.03840828, 0.117069244)
 mesh = SubResource("ArrayMesh_jbj1t")
 surface_material_override/0 = SubResource("ShaderMaterial_720hj")
 script = ExtResource("1_h2yge")
 imageCompressed = ExtResource("2_1bvp3")
+metadata/_edit_lock_ = true
 
 [node name="heightmapCollision" type="CollisionShape3D" parent="." unique_id=1838825603]
 shape = SubResource("HeightMapShape3D_muem4")
+metadata/_edit_lock_ = true
 
 [node name="tank2" parent="." unique_id=77544278 instance=ExtResource("2_h2yge")]
 transform = Transform3D(-0.051523484, 0, 0.08570491, 0, 0.1, 0, -0.08570491, 0, -0.051523484, -1.6757212, 5.8302965, 15.315941)
+metadata/_edit_lock_ = true
 
 [node name="playertank" parent="." unique_id=389439605 instance=ExtResource("2_0xm2m")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.474169, 16.456272, 1.5212698)
+metadata/_edit_lock_ = true
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=1573311269]
 transform = Transform3D(0.93259054, -0.3296269, 0.14704104, 0, 0.40738788, 0.9132552, -0.3609362, -0.8516932, 0.37992606, 0, 2.0636456, 0)
@@ -88,6 +93,7 @@ shadow_enabled = true
 directional_shadow_mode = 1
 directional_shadow_split_1 = 0.25
 directional_shadow_max_distance = 70.0
+metadata/_edit_lock_ = true
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1226939677]
 environment = SubResource("Environment_t850l")
@@ -95,6 +101,7 @@ environment = SubResource("Environment_t850l")
 [node name="CoolRamp" type="StaticBody3D" parent="." unique_id=2138850136]
 transform = Transform3D(-4.371139e-08, 0.25881904, -0.9659258, 0, 0.9659258, 0.25881904, 1, 1.131334e-08, -4.222196e-08, -12.892, -3, 0)
 physics_material_override = SubResource("PhysicsMaterial_t850l")
+metadata/_edit_lock_ = true
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="CoolRamp" unique_id=1896989294]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 12.352, 2.519)
@@ -108,6 +115,7 @@ mesh = SubResource("BoxMesh_t850l")
 area_size = Vector2(80, 80)
 center_clearance = 6.0
 ground_body_path = NodePath("..")
+metadata/_edit_lock_ = true
 
 [node name="CrushableScatter" parent="." unique_id=861976503 instance=ExtResource("7_crushable_scatter")]
 source_scenes = Array[PackedScene]([ExtResource("8_choun"), ExtResource("9_ya4ey"), ExtResource("10_eb6dy")])
@@ -116,9 +124,11 @@ area_size = Vector2(200, 200)
 scatter_seed = 21757
 center_clearance = 6.0
 ground_body_path = NodePath("..")
+metadata/_edit_lock_ = true
 
 [node name="enemytank" parent="." unique_id=1386973779 instance=ExtResource("13_trceg")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -23.35527, 8.80115, 4.07987)
+metadata/_edit_lock_ = true
 
 [node name="Town1" type="Node3D" parent="." unique_id=846332711]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -21.51178, 0, 4.5554347)
@@ -127,46 +137,70 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -21.51178, 0, 4.5554347)
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.14000893, 8.624101, -4.0047526)
 
 [node name="Desertbuilding2" parent="Town1" unique_id=405373706 instance=ExtResource("11_ya4ey")]
-transform = Transform3D(1.3113416e-07, 0, -1, 0, 1, 0, 1, 0, 1.3113416e-07, 3.5324516, 8.257984, -0.6176305)
+transform = Transform3D(0.03659381, -0.16061938, -0.98633784, -0.1435521, 0.9759178, -0.16424839, 0.988966, 0.1476013, 0.012655304, 3.5324516, 8.511626, -0.6176305)
 
 [node name="Desertbuilding4" parent="Town1" unique_id=139048913 instance=ExtResource("11_ya4ey")]
-transform = Transform3D(1.3113416e-07, 0, -1, 0, 1, 0, 1, 0, 1.3113416e-07, 3.5324516, 6.6615486, 9.558762)
+transform = Transform3D(0.030386338, -0.22235063, -0.97449315, -0.1319468, 0.965519, -0.22441731, 0.99079096, 0.13540047, 1.2992653e-07, 3.5324516, 6.895275, 10.2687435)
+
+[node name="Desertbuilding5" parent="Town1" unique_id=476823522 instance=ExtResource("11_ya4ey")]
+transform = Transform3D(0.22258237, -0.103708126, -0.9693821, -0.021157665, 0.9935781, -0.11115477, 0.9746843, 0.045250945, 0.21895862, -5.0095406, 5.589412, 10.2687435)
+
+[node name="Desertbuilding7" parent="Town1" unique_id=1637395528 instance=ExtResource("11_ya4ey")]
+transform = Transform3D(0.9391982, 0.057864808, 0.33846462, -0.021157665, 0.993578, -0.111154765, -0.342723, 0.0972352, 0.9343907, -8.921812, 5.9452624, 5.71398)
 
 [node name="Desertbuilding3" parent="Town1" unique_id=277719124 instance=ExtResource("12_eb6dy")]
-transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 2.375164, 7.2653885, 3.7445579)
+transform = Transform3D(-4.487857e-08, -0.18352175, -0.98301566, -0.13703889, 0.9737415, -0.18179032, 0.9905656, 0.13471137, -0.025149658, 2.375164, 7.59352, 3.7445579)
+
+[node name="Desertbuilding6" parent="Town1" unique_id=230487582 instance=ExtResource("12_eb6dy")]
+transform = Transform3D(0.86237836, -0.11646658, -0.49268618, 0.046404276, 0.9872665, -0.15215677, 0.50413364, 0.10835385, 0.85680157, -8.423664, 6.6664515, -0.477293)
 
 [node name="Town2" type="Node3D" parent="." unique_id=501895949]
 transform = Transform3D(0.6919968, 0, 0.7219006, 0, 1, 0, -0.7219006, 0, 0.6919968, -57.184177, 0, 36.336277)
 
 [node name="Desertbuilding1" parent="Town2" unique_id=239431203 instance=ExtResource("11_ya4ey")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.14000702, 7.2542934, -4.004751)
+transform = Transform3D(0.9999688, 0.0046197176, -0.0064201057, -0.005559605, 0.98788404, -0.15509474, 0.005625516, 0.15512562, 0.9878789, -0.600914, 7.3037643, -4.478504)
 
 [node name="Desertbuilding2" parent="Town2" unique_id=1570517342 instance=ExtResource("11_ya4ey")]
-transform = Transform3D(1.7881393e-07, 0, -1, 0, 1, 0, 1, 0, 1.7881393e-07, 3.5324554, 6.5581207, -0.61763)
+transform = Transform3D(-0.0099411905, -0.051760428, -0.99861026, -0.18602577, 0.98132163, -0.04901241, 0.98249483, 0.18527998, -0.019384146, 3.5324707, 6.999138, -0.6176243)
 
 [node name="Desertbuilding4" parent="Town2" unique_id=895891400 instance=ExtResource("11_ya4ey")]
-transform = Transform3D(1.7881393e-07, 0, -1, 0, 1, 0, 1, 0, 1.7881393e-07, 3.5324554, 4.829806, 9.558762)
+transform = Transform3D(1.7881393e-07, 0, -1, 0, 1, 0, 1, 0, 1.7881393e-07, 1.4105606, 4.829806, 11.592762)
+
+[node name="Desertbuilding6" parent="Town2" unique_id=678314781 instance=ExtResource("11_ya4ey")]
+transform = Transform3D(-0.059705973, 0, 0.99821615, 0, 1, 0, -0.99821615, 0, -0.059705973, -11.018097, 4.364278, 7.9885483)
+
+[node name="Desertbuilding9" parent="Town2" unique_id=2070214937 instance=ExtResource("11_ya4ey")]
+transform = Transform3D(0.4971074, 0.07664043, 0.8642984, 0.09642862, 0.9850416, -0.14280894, -0.86231506, 0.15433438, 0.4822814, -13.805183, 5.457606, 2.6853447)
+
+[node name="Desertbuilding7" parent="Town2" unique_id=593838951 instance=ExtResource("11_ya4ey")]
+transform = Transform3D(-0.7038515, -0.12185995, 0.699817, 0.027991109, 0.9796523, 0.19874057, -0.70979583, 0.1594724, -0.6861187, -8.7319565, 3.9647565, 14.210735)
+
+[node name="Desertbuilding8" parent="Town2" unique_id=1406254648 instance=ExtResource("11_ya4ey")]
+transform = Transform3D(-0.9800878, -0.05337816, 0.19125795, -0.021522764, 0.9860735, 0.1649116, -0.1973969, 0.15751132, -0.96758735, -3.493805, 4.42491, 16.289867)
 
 [node name="Desertbuilding5" parent="Town2" unique_id=1791959642 instance=ExtResource("12_eb6dy")]
-transform = Transform3D(-1, 0, 1.7881393e-07, 0, 1, 0, -1.7881393e-07, 0, -1, -4.406906, 5.2489223, 1.8616982)
+transform = Transform3D(0.49991906, -0.120660245, 0.8576264, 0.1734958, 0.984127, 0.03732543, -0.84851706, 0.13013482, 0.5129179, -5.9346695, 5.7019334, 3.3261871)
 
 [node name="Desertbuilding3" parent="Town2" unique_id=1605337800 instance=ExtResource("12_eb6dy")]
-transform = Transform3D(-5.9604645e-08, 0, -1, 0, 1, 0, 1, 0, -5.9604645e-08, 2.3751755, 5.271654, 3.7445602)
+transform = Transform3D(0.0057718754, -0.109422006, -0.9939786, -0.10488935, 0.98844576, -0.109422, 0.99446714, 0.10488934, -0.0057720244, 1.6606369, 5.360014, 4.4295025)
 
 [node name="Town3" type="Node3D" parent="." unique_id=739269811]
 transform = Transform3D(0.09525049, 0, 0.9954533, 0, 1, 0, -0.9954533, 0, 0.09525049, 2.4328804, 2.336975, 36.336277)
 
 [node name="Desertbuilding1" parent="Town3" unique_id=561426788 instance=ExtResource("11_ya4ey")]
-transform = Transform3D(1, 0, 7.450581e-09, 0, 1, 0, -7.450581e-09, 0, 1, -0.14000702, 6.090513, -4.004751)
+transform = Transform3D(0.99991137, 0.013294162, -0.00092803687, -0.013294161, 0.99021214, -0.13893595, -0.000928089, 0.13893595, 0.99030113, -0.14000702, 6.2298374, -4.004751)
+
+[node name="Desertbuilding6" parent="Town3" unique_id=2040203232 instance=ExtResource("11_ya4ey")]
+transform = Transform3D(0.9956696, -0.04620603, 0.08066816, 0.0549023, 0.99250835, -0.109146655, -0.07502055, 0.1131029, 0.99074733, -7.680168, 6.146081, -3.283267)
 
 [node name="Desertbuilding2" parent="Town3" unique_id=341354651 instance=ExtResource("11_ya4ey")]
-transform = Transform3D(1.8626451e-07, 0, -1, 0, 1, 0, 1, 0, 1.8626451e-07, 3.5324554, 5.0753546, -0.61763)
+transform = Transform3D(-0.0012387857, 0.015347753, -0.9998817, -0.1603978, 0.986933, 0.015347719, 0.98705184, 0.16039781, 0.0012391657, 3.5324554, 5.236561, -0.61763)
 
 [node name="Desertbuilding4" parent="Town3" unique_id=408314673 instance=ExtResource("11_ya4ey")]
-transform = Transform3D(1.8626451e-07, 0, -1, 0, 1, 0, 1, 0, 1.8626451e-07, 3.5324593, 4.1094604, 9.558762)
+transform = Transform3D(-0.00104101, 0.0140770255, -0.9999006, -0.14711757, 0.98901886, 0.014076997, 0.98911864, 0.14711757, 0.0010414198, 3.575653, 4.2704067, 10.010029)
 
 [node name="Desertbuilding5" parent="Town3" unique_id=1652432048 instance=ExtResource("12_eb6dy")]
-transform = Transform3D(-1.0000001, 0, 1.7136335e-07, 0, 1, 0, -1.7136335e-07, 0, -1.0000001, -4.406906, 4.581937, 1.8616982)
+transform = Transform3D(-0.99990994, 0.013433491, 0.0009478852, 0.013433518, 0.9900048, 0.1403921, 0.00094756484, 0.14039204, -0.990096, -4.373909, 4.839849, 2.2065544)
 
 [node name="Desertbuilding3" parent="Town3" unique_id=1279921055 instance=ExtResource("12_eb6dy")]
-transform = Transform3D(-5.2154064e-08, 0, -1.0000001, 0, 1, 0, 1.0000001, 0, -5.2154064e-08, 2.3751793, 4.6881523, 3.7445602)
+transform = Transform3D(0.0020385012, -0.02401785, -0.99971, -0.1463682, 0.9889376, -0.02405752, 0.9892289, 0.14637478, -0.0014995635, 2.3752136, 4.8155193, 3.7445602)
