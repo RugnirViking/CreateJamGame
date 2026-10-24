@@ -4,6 +4,7 @@ extends Node3D
 @export var velocity: float = 30.0
 @export var lifetime: float = 10.0
 @export_flags_3d_physics var collision_mask: int = 3
+@export_range(0.0, 20.0, 0.1, "or_greater", "suffix:m") var scatter_flatten_radius: float = 2.0
 
 var shooter: PhysicsBody3D
 var _age: float = 0.0
@@ -31,6 +32,10 @@ func _physics_process(delta: float) -> void:
 	var hit := get_world_3d().direct_space_state.intersect_ray(query)
 	if not hit.is_empty():
 		global_position = hit["position"]
+		var collider := hit["collider"] as Node
+		if is_instance_valid(collider) and collider.has_method("receive_shell_hit"):
+			collider.receive_shell_hit()
+		get_tree().call_group(&"scatter_patches", "flatten_in_radius", global_position, scatter_flatten_radius)
 		_release_trail()
 		_start_burst(explod, hit["position"])
 		_start_burst(explosion_flash, hit["position"])

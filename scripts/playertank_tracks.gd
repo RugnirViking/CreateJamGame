@@ -113,7 +113,7 @@ func _physics_process(delta: float) -> void:
 
 	var speed := linear_velocity.length()
 	var effort := maxf(speed / maxf(max_forward_speed, 0.1), absf(turn) * 0.5)
-	var desired_pitch := 0.1 + effort
+	var desired_pitch := 0.4 + effort
 	engine_sound.pitch_scale = lerpf(engine_sound.pitch_scale, desired_pitch, 1.0 - exp(-5.0 * delta))
 	
 	if impact_sound.stream != null and absf(speed - previous_speed) > 1.0:

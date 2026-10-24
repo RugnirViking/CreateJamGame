@@ -1,0 +1,85 @@
+[gd_scene format=3 uid="uid://pa4xfyftbl7v"]
+
+[ext_resource type="Script" uid="uid://c4eulxx2y7seq" path="res://scenes/mainmenu.gd" id="1_3vvtq"]
+[ext_resource type="FontFile" uid="uid://6mb71bm5wpol" path="res://ussr-stencil/USSR STENCIL/USSR STENCIL WEBFONT.ttf" id="1_5mbse"]
+[ext_resource type="Texture2D" uid="uid://blto2t8kspgfa" path="res://art/textures/crosshair-nobg.png" id="2_s5g8n"]
+[ext_resource type="AudioStream" uid="uid://jgbt1vjqxkmf" path="res://sound/Tank firring sound.wav" id="4_7yvfd"]
+[ext_resource type="AudioStream" uid="uid://cob0aig7he5i" path="res://sound/Zero In Title Theme.mp3" id="5_s5g8n"]
+[ext_resource type="PackedScene" uid="uid://bymwbiyo2qpg0" path="res://scenes/enemytank.tscn" id="6_7yvfd"]
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_7suuv"]
+
+[node name="Control" type="Control" unique_id=46688502]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_3vvtq")
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=1302616031]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
+metadata/_edit_lock_ = true
+
+[node name="CrosshairNobg" type="TextureRect" parent="." unique_id=1404409961]
+material = SubResource("CanvasItemMaterial_7suuv")
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -84.99997
+offset_top = -68.0
+offset_right = 415.0
+offset_bottom = 432.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.26700002, 0.26700002)
+texture = ExtResource("2_s5g8n")
+
+[node name="Title" type="Label" parent="." unique_id=1750600796]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -46.0
+offset_top = -11.5
+offset_right = 46.0
+offset_bottom = 11.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = ExtResource("1_5mbse")
+theme_override_font_sizes/font_size = 48
+text = "ZEROED IN"
+horizontal_alignment = 1
+visible_characters = 9
+visible_characters_behavior = 1
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=134395082]
+stream = ExtResource("4_7yvfd")
+
+[node name="titlemusic" type="AudioStreamPlayer" parent="." unique_id=1093359431]
+stream = ExtResource("5_s5g8n")
+
+[node name="enemytank" parent="." unique_id=1403049494 instance=ExtResource("6_7yvfd")]
+
+[node name="Camera3D" type="Camera3D" parent="." unique_id=218446311]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 2.2085571)
+
+[node name="TextureRect" type="TextureRect" parent="." unique_id=1304511976]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2

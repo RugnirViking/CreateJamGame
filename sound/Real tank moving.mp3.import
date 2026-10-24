@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://cdqwxjh302gd4"
+path="res://.godot/imported/Real tank moving.mp3-ef05d365faa98709542f0c1935bb869c.mp3str"
+
+[deps]
+
+source_file="res://sound/Real tank moving.mp3"
+dest_files=["res://.godot/imported/Real tank moving.mp3-ef05d365faa98709542f0c1935bb869c.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

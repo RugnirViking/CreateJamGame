@@ -3,17 +3,27 @@
 [ext_resource type="PackedScene" uid="uid://ch47qjldnxcln" path="res://art/models/deserthouse2.glb" id="1_b2ruj"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_t850l"]
-size = Vector3(2.0571632, 2.1383972, 4.040268)
+size = Vector3(2.228777, 3.3575974, 4.040268)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_b2ruj"]
+size = Vector3(2.0431604, 2.9648876, 4.1354904)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_pw7eb"]
+size = Vector3(2.0431604, 1.3535211, 2.3440847)
 
 [node name="Desertbuilding1" type="StaticBody3D" unique_id=2091816584]
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=781339157]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.12905264, 1.0547028, -0.998476)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.043245792, -0.27497482, -0.998476)
 shape = SubResource("BoxShape3D_t850l")
 
 [node name="CollisionShape3D2" type="CollisionShape3D" parent="." unique_id=1811481751]
-transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 1.4261192, 1.0547028, -1.922503)
-shape = SubResource("BoxShape3D_t850l")
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 1.4737304, -0.082037926, -1.9889355)
+shape = SubResource("BoxShape3D_b2ruj")
+
+[node name="CollisionShape3D3" type="CollisionShape3D" parent="." unique_id=1448823732]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0.10472953, 1.9982761, -1.9889355)
+shape = SubResource("BoxShape3D_pw7eb")
 
 [node name="deserthouse2" parent="." unique_id=1639031510 instance=ExtResource("1_b2ruj")]
 transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, -5.5342536, -0.005175829, -0.04906392)

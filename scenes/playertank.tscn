@@ -1,11 +1,11 @@
 [gd_scene format=4 uid="uid://cwvq81d0h4wq7"]
 
 [ext_resource type="Script" uid="uid://onak2a4unfnh" path="res://scripts/playertank_tracks.gd" id="1_6h0fd"]
-[ext_resource type="AudioStream" uid="uid://dc8bcnohrx320" path="res://sound/Tank moving sound 2.wav" id="2_00idx"]
 [ext_resource type="PackedScene" uid="uid://cb6bp7vmo4456" path="res://scenes/shell.tscn" id="2_87frt"]
 [ext_resource type="Script" uid="uid://cp2pmclftdnqa" path="res://scripts/followcam.gd" id="2_oa3n8"]
 [ext_resource type="Texture2D" uid="uid://cp0exnnt1nkis" path="res://art/textures/particle_smoke.png" id="2_qmgpy"]
 [ext_resource type="AudioStream" uid="uid://jgbt1vjqxkmf" path="res://sound/Tank firring sound.wav" id="3_wnfuo"]
+[ext_resource type="AudioStream" uid="uid://cdot0o0dag4ax" path="res://sound/Real tank moving.wav" id="4_npxgl"]
 [ext_resource type="Texture2D" uid="uid://blto2t8kspgfa" path="res://art/textures/crosshair-nobg.png" id="6_crosshair"]
 [ext_resource type="Texture2D" uid="uid://n3en5wrpf8lg" path="res://art/textures/chevron.png" id="6_koyaf"]
 [ext_resource type="Shader" uid="uid://cwsj38tvm4swb" path="res://scenes/chevron_indicator.gdshader" id="7_chevron"]
@@ -329,7 +329,7 @@ visible = false
 mesh = SubResource("CylinderMesh_6h0fd")
 
 [node name="EngineSound" type="AudioStreamPlayer" parent="vehicle" unique_id=1673059771]
-stream = ExtResource("2_00idx")
+stream = ExtResource("4_npxgl")
 autoplay = true
 
 [node name="ImpactSound" type="AudioStreamPlayer" parent="vehicle" unique_id=291738550]
