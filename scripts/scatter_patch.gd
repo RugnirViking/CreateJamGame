@@ -3,6 +3,9 @@ extends Node3D
 
 enum ScatterType { SOLID, CRUSHABLE }
 
+const LOD_MESH_LIBRARY = preload("res://art/models/scatter_lod_meshes.res")
+const COLLISION_CELL_SIZE := 16.0
+
 @export var scatter_type := ScatterType.SOLID
 @export var source_scenes: Array[PackedScene] = []
 # Accept previously saved single-source overrides without exposing another field.
@@ -21,6 +24,22 @@ enum ScatterType { SOLID, CRUSHABLE }
 @export_node_path("StaticBody3D") var ground_body_path: NodePath
 @export var generate_on_start := true
 @export_range(0.0, 2.0, 0.05) var flatten_duration := 0.2
+
+@export_group("Distance LOD")
+@export var lod_enabled := true
+@export_range(8.0, 128.0, 1.0, "suffix:m") var render_chunk_size := 64.0
+@export_range(0.0, 200.0, 1.0, "suffix:m") var full_detail_distance := 30.0
+@export_range(0.01, 2.0, 0.01) var mesh_lod_bias := 0.35
+@export_range(0.0, 1000.0, 5.0, "or_greater", "suffix:m") var draw_distance := 240.0
+@export_range(0.0, 200.0, 1.0, "or_greater", "suffix:m") var shadow_distance := 45.0
+
+@export_group("Nearby Collision")
+@export var collision_distance_enabled := true
+@export_range(1.0, 100.0, 0.5, "or_greater", "suffix:m") var collision_distance := 12.0
+@export_range(0.0, 20.0, 0.5, "suffix:m") var collision_hysteresis := 3.0
+@export_range(0.02, 1.0, 0.01, "suffix:s") var collision_update_interval := 0.1
+# Leave empty to follow the node in the player group.
+@export_node_path("Node3D") var collision_target_path: NodePath
 
 @export_group("Density Noise")
 @export var density_enabled := true
@@ -43,6 +62,9 @@ var _variants: Array[Dictionary] = []
 var _source_choices: Array[int] = []
 var _instance_variants: Array[int] = []
 var _instance_slots: Array[int] = []
+var _instance_batches: Array[int] = []
+var _visual_batches: Array[Dictionary] = []
+var _visual_timer := 0.0
 var _renderers: Array[MultiMeshInstance3D] = []
 var _placements: Array[Transform3D] = []
 var _colliders: Array[CollisionObject3D] = []
@@ -50,6 +72,11 @@ var _flattened: Array[bool] = []
 var _flatten_tweens: Array[Tween] = []
 var _density_image: Image
 var _density_preview: ImageTexture
+var _collision_cells: Dictionary = {}
+var _collision_bounds: Array[AABB] = []
+var _active_colliders: Dictionary = {}
+var _collision_target: Node3D
+var _collision_timer := 0.0
 
 
 func _get_property_list() -> Array[Dictionary]:
@@ -67,6 +94,7 @@ func _get(property: StringName) -> Variant:
 func _ready() -> void:
 	set_notify_transform(true)
 	set_physics_process(false)
+	set_process(false)
 	if generate_on_start:
 		rebuild()
 
@@ -96,15 +124,29 @@ func rebuild() -> void:
 	set_physics_process(true)
 
 
-func _physics_process(_delta: float) -> void:
+func _physics_process(delta: float) -> void:
 	if _pending_build:
 		_pending_build = false
 		_generate()
-	set_physics_process(false)
+	elif not Engine.is_editor_hint() and collision_distance_enabled:
+		_collision_timer -= delta
+		if _collision_timer <= 0.0:
+			_update_nearby_colliders()
+			_collision_timer = collision_update_interval
+	set_physics_process(not Engine.is_editor_hint() and collision_distance_enabled and generated_count > 0)
+
+
+func _process(delta: float) -> void:
+	_visual_timer -= delta
+	if _visual_timer <= 0.0:
+		_update_visual_lod()
+		_visual_timer = 0.1
 
 
 func clear_scatter() -> void:
 	_pending_build = false
+	set_physics_process(false)
+	set_process(false)
 	for tween in _flatten_tweens:
 		if tween != null and tween.is_valid():
 			tween.kill()
@@ -117,9 +159,17 @@ func clear_scatter() -> void:
 	_source_choices.clear()
 	_instance_variants.clear()
 	_instance_slots.clear()
+	_instance_batches.clear()
+	_visual_batches.clear()
+	_visual_timer = 0.0
 	_renderers.clear()
 	_placements.clear()
 	_colliders.clear()
+	_collision_cells.clear()
+	_collision_bounds.clear()
+	_active_colliders.clear()
+	_collision_target = null
+	_collision_timer = 0.0
 	_flattened.clear()
 	generated_count = 0
 
@@ -129,7 +179,7 @@ func _collect_meshes(node: Node, parent_transform: Transform3D, parts: Array[Dic
 	if node is Node3D:
 		local *= node.transform
 	if node is MeshInstance3D and node.mesh != null and node.visible:
-		parts.append({"mesh": node.mesh, "transform": local, "material": node.material_override})
+		parts.append({"mesh": node.mesh, "transform": local, "material": node.material_override, "cast_shadow": node.cast_shadow})
 	for child in node.get_children():
 		_collect_meshes(child, local, parts)
 
@@ -161,6 +211,9 @@ func _prepare_variants() -> void:
 			var visual_transform: Transform3D = part["transform"]
 			visual_transform.origin.y -= bounds.position.y
 			part["transform"] = visual_transform
+		var baked_meshes: Dictionary = LOD_MESH_LIBRARY.get_meta(&"meshes", {})
+		for part_index in parts.size():
+			parts[part_index]["lod_mesh"] = baked_meshes.get(source.resource_path + "#" + str(part_index), parts[part_index]["mesh"])
 		bounds.position.y = 0.0
 		cached_sources[source_id] = _variants.size()
 		_source_choices.append(_variants.size())
@@ -300,26 +353,152 @@ func _generate() -> void:
 	_generated.top_level = true
 	add_child(_generated, false, Node.INTERNAL_MODE_BACK)
 	_generated.global_transform = Transform3D.IDENTITY
-	for variant in _variants:
-		var indices: Array = variant["indices"]
-		if indices.is_empty():
-			continue
-		for part in variant["parts"]:
-			var renderer := MultiMeshInstance3D.new()
-			renderer.name = "ScatterMesh%d" % _renderers.size()
-			renderer.multimesh = MultiMesh.new()
-			renderer.multimesh.transform_format = MultiMesh.TRANSFORM_3D
-			renderer.multimesh.mesh = part["mesh"]
-			renderer.multimesh.instance_count = indices.size()
-			renderer.material_override = part["material"]
-			_generated.add_child(renderer)
-			_renderers.append(renderer)
-			variant["renderers"].append(renderer)
+	_build_visual_batches()
 	_flattened.resize(generated_count)
 	_flatten_tweens.resize(generated_count)
+	_colliders.resize(generated_count)
 	for index in generated_count:
 		_set_flatten_amount(0.0, index)
-		_build_collider(index)
+		_index_collision(index)
+	set_process(lod_enabled)
+	_update_visual_lod()
+	# Editor previews only need the MultiMesh visuals, not thousands of physics nodes.
+	if Engine.is_editor_hint():
+		return
+	if collision_distance_enabled:
+		_update_nearby_colliders()
+		_collision_timer = collision_update_interval
+	else:
+		for index in generated_count:
+			_build_collider(index)
+
+
+func _build_visual_batches() -> void:
+	_instance_batches.resize(generated_count)
+	for variant in _variants:
+		var cells: Dictionary = {}
+		for index: int in variant["indices"]:
+			var point := _placements[index].origin
+			var cell := Vector2i(floori(point.x / maxf(1.0, render_chunk_size)), floori(point.z / maxf(1.0, render_chunk_size))) if lod_enabled else Vector2i.ZERO
+			if not cells.has(cell):
+				cells[cell] = []
+			cells[cell].append(index)
+		for indices: Array in cells.values():
+			var bounds: AABB = _placements[indices[0]] * variant["bounds"]
+			for index: int in indices:
+				bounds = bounds.merge(_placements[index] * variant["bounds"])
+			var origin := bounds.get_center() if lod_enabled else Vector3.ZERO
+			var batch := {"bounds": bounds, "origin": origin, "indices": indices, "parts": variant["parts"], "renderers": []}
+			for slot in indices.size():
+				_instance_batches[indices[slot]] = _visual_batches.size()
+				_instance_slots[indices[slot]] = slot
+			_visual_batches.append(batch)
+			for part in variant["parts"]:
+				var renderer := MultiMeshInstance3D.new()
+				renderer.name = "ScatterMesh%d" % _renderers.size()
+				renderer.position = origin
+				renderer.multimesh = MultiMesh.new()
+				renderer.multimesh.transform_format = MultiMesh.TRANSFORM_3D
+				renderer.multimesh.mesh = part["lod_mesh"] if lod_enabled else part["mesh"]
+				renderer.multimesh.instance_count = indices.size()
+				# Includes the small horizontal expansion when a prop is flattened.
+				var model_bounds: AABB = variant["bounds"]
+				var padding := maxf(model_bounds.size.x, model_bounds.size.z) * maxf(scale_range.x, scale_range.y) * 0.3
+				renderer.multimesh.custom_aabb = AABB(bounds.position - origin, bounds.size).grow(padding)
+				renderer.material_override = part["material"]
+				renderer.cast_shadow = part["cast_shadow"]
+				renderer.lod_bias = mesh_lod_bias if lod_enabled else 1.0
+				_generated.add_child(renderer)
+				_renderers.append(renderer)
+				variant["renderers"].append(renderer)
+				batch["renderers"].append(renderer)
+
+
+func _update_visual_lod() -> void:
+	if not lod_enabled:
+		return
+	var camera := get_viewport().get_camera_3d()
+	if camera == null:
+		return
+	# Native mesh LOD is screen-size based and follows camera FOV automatically.
+	# Extend the final visibility cutoff as well when entering sniper zoom.
+	var zoom_scale := maxf(1.0, tan(deg_to_rad(70.0) * 0.5) / tan(deg_to_rad(maxf(camera.fov, 1.0)) * 0.5))
+	for batch in _visual_batches:
+		var bounds: AABB = batch["bounds"]
+		var distance := camera.global_position.distance_to(camera.global_position.clamp(bounds.position, bounds.end))
+		var near := distance <= full_detail_distance * zoom_scale
+		var shadows_in_range := distance <= shadow_distance and shadow_distance > 0.0
+		for part_index in batch["renderers"].size():
+			var renderer: MultiMeshInstance3D = batch["renderers"][part_index]
+			var part: Dictionary = batch["parts"][part_index]
+			var shadow_mode: int = part["cast_shadow"] if shadows_in_range else GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+			var mesh: Mesh = part["mesh"] if near else part["lod_mesh"]
+			if renderer.multimesh.mesh != mesh:
+				renderer.multimesh.mesh = mesh
+			renderer.lod_bias = 1.0 if near else mesh_lod_bias
+			renderer.visibility_range_end = draw_distance * zoom_scale if draw_distance > 0.0 else 0.0
+			if renderer.cast_shadow != shadow_mode:
+				renderer.cast_shadow = shadow_mode
+
+
+func _collision_cell(point: Vector3) -> Vector2i:
+	return Vector2i(floori(point.x / COLLISION_CELL_SIZE), floori(point.z / COLLISION_CELL_SIZE))
+
+
+func _index_collision(index: int) -> void:
+	var bounds: AABB = _variants[_instance_variants[index]]["bounds"]
+	var placement := _placements[index]
+	# Match the collider's minimum box size, including large or offset models.
+	var scale_factor := placement.basis.get_scale().x
+	var size := (bounds.size * scale_factor).max(Vector3.ONE * 0.05)
+	var center := bounds.get_center() * scale_factor
+	var world_bounds := Transform3D(placement.basis.orthonormalized(), placement.origin) * AABB(center - size * 0.5, size)
+	_collision_bounds.append(world_bounds)
+	var first := _collision_cell(world_bounds.position)
+	var last := _collision_cell(world_bounds.end)
+	for y in range(first.y, last.y + 1):
+		for x in range(first.x, last.x + 1):
+			var cell := Vector2i(x, y)
+			if not _collision_cells.has(cell):
+				_collision_cells[cell] = []
+			_collision_cells[cell].append(index)
+
+
+func _within_collision_distance(index: int, point: Vector3, distance: float) -> bool:
+	var bounds := _collision_bounds[index]
+	var closest := point.clamp(bounds.position, bounds.end)
+	return point.distance_squared_to(closest) <= distance * distance
+
+
+func _update_nearby_colliders() -> void:
+	if not is_instance_valid(_collision_target) or not _collision_target.is_inside_tree():
+		_collision_target = get_node_or_null(collision_target_path) as Node3D if not collision_target_path.is_empty() else get_tree().get_first_node_in_group(&"player") as Node3D
+	if not is_instance_valid(_collision_target) or not _collision_target.is_inside_tree():
+		for index: int in _active_colliders.keys():
+			_release_collider(index)
+		return
+	var point := _collision_target.global_position
+	# Keep existing boxes slightly farther away to avoid churn at the boundary.
+	for index: int in _active_colliders.keys():
+		if _flattened[index] or not _within_collision_distance(index, point, collision_distance + collision_hysteresis):
+			_release_collider(index)
+	var first := _collision_cell(point - Vector3.ONE * collision_distance)
+	var last := _collision_cell(point + Vector3.ONE * collision_distance)
+	var visited: Dictionary = {}
+	for y in range(first.y, last.y + 1):
+		for x in range(first.x, last.x + 1):
+			for index: int in _collision_cells.get(Vector2i(x, y), []):
+				if visited.has(index):
+					continue
+				visited[index] = true
+				if not _flattened[index] and not _active_colliders.has(index) and _within_collision_distance(index, point, collision_distance):
+					_build_collider(index)
+
+
+func _release_collider(index: int) -> void:
+	_colliders[index].queue_free()
+	_colliders[index] = null
+	_active_colliders.erase(index)
 
 
 func _build_collider(index: int) -> void:
@@ -349,7 +528,8 @@ func _build_collider(index: int) -> void:
 	body.add_child(collision)
 	_generated.add_child(body)
 	body.transform = Transform3D(placement.basis.orthonormalized(), placement.origin)
-	_colliders.append(body)
+	_colliders[index] = body
+	_active_colliders[index] = true
 
 
 func _on_body_entered(body: Node3D, index: int) -> void:
@@ -361,8 +541,9 @@ func flatten_instance(index: int) -> void:
 	if scatter_type != ScatterType.CRUSHABLE or index < 0 or index >= generated_count or _flattened[index]:
 		return
 	_flattened[index] = true
-	_colliders[index].set_deferred("monitoring", false)
-	_colliders[index].get_node("BoxCollider").set_deferred("disabled", true)
+	if is_instance_valid(_colliders[index]):
+		_colliders[index].set_deferred("monitoring", false)
+		_colliders[index].get_node("BoxCollider").set_deferred("disabled", true)
 	if flatten_duration <= 0.0:
 		_set_flatten_amount(1.0, index)
 	else:
@@ -374,7 +555,8 @@ func flatten_instance(index: int) -> void:
 func _set_flatten_amount(amount: float, index: int) -> void:
 	var squash := Transform3D(Basis.from_scale(Vector3.ONE.lerp(Vector3(1.25, 0.08, 1.25), amount)), Vector3.ZERO)
 	var variant: Dictionary = _variants[_instance_variants[index]]
-	var renderers: Array = variant["renderers"]
+	var batch: Dictionary = _visual_batches[_instance_batches[index]]
+	var renderers: Array = batch["renderers"]
 	for part_index in renderers.size():
 		renderers[part_index].multimesh.set_instance_transform(
-			_instance_slots[index], _placements[index] * squash * variant["parts"][part_index]["transform"])
+			_instance_slots[index], (_placements[index] * squash * variant["parts"][part_index]["transform"]).translated(-batch["origin"]))

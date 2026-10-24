@@ -5,4 +5,9 @@
 [node name="CactusVisual" type="Node3D" unique_id=1789097797]
 
 [node name="cactus2" parent="." unique_id=1315797579 instance=ExtResource("1_jeh8d")]
-transform = Transform3D(0.08, 0, 0, 0, 0.08, 0, 0, 0, 0.08, -0.08028042, 0, -0.14695239)
+transform = Transform3D(0.08, 0, 0, 0, 0.08, 0, 0, 0, 0.08, 0.007366121, -0.010647163, -0.0008351989)
+
+[node name="Cube_002" parent="cactus2" index="0"]
+cast_shadow = 0
+
+[editable path="cactus2"]

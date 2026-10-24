@@ -190,7 +190,7 @@ colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
 
 [node name="playertank" type="Node3D" unique_id=212230902]
 
-[node name="vehicle" type="VehicleBody3D" parent="." unique_id=1596378704 groups=["scatter_crushers"]]
+[node name="vehicle" type="VehicleBody3D" parent="." unique_id=1596378704 groups=["player", "scatter_crushers"]]
 collision_layer = 2
 script = ExtResource("1_6h0fd")
 engine_force_value = 150.0
@@ -314,6 +314,7 @@ stream = ExtResource("3_wnfuo")
 
 [node name="left_track_particles" type="CPUParticles3D" parent="vehicle" unique_id=44376467]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5260124, -0.12756117, 0.281124)
+emitting = false
 amount = 125
 lifetime = 1.25
 mesh = SubResource("QuadMesh_6fjuc")
@@ -327,6 +328,7 @@ color_ramp = SubResource("Gradient_t850l")
 
 [node name="right_track_particles" type="CPUParticles3D" parent="vehicle" unique_id=1676624567]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5260124, -0.12756117, -0.29950434)
+emitting = false
 amount = 125
 lifetime = 1.25
 mesh = SubResource("QuadMesh_6fjuc")
