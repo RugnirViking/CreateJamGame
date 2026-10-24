@@ -14,7 +14,12 @@ extends VehicleBody3D
 @export var targeting_acc := 2;
 @export var max_targetness := 8.0;
 @export var shell_scene: PackedScene
+@export_range(1, 100) var hits_to_destroy: int = 10
+@export var low_health_color := Color(0.95, 0.18, 0.08)
 
+@export var is_cat: bool
+
+var shell_hits: int = 0;
 var targetness: float = max_targetness;
 var wheels: Array[VehicleWheel3D] = []
 var wheel_sides: Array[float] = []
@@ -24,7 +29,12 @@ var previous_speed := 0.0
 var throttle: float = 0.0
 var flip_text_offset: Vector3
 var flip_tank_flag: bool
+var destroyed: bool
+var _health_bar_fill: StyleBoxFlat
+var _full_health_color: Color
 
+@onready var tank1: Node3D = $tank1
+@onready var cattank: Node3D = $cattank
 @onready var engine_sound: AudioStreamPlayer = $EngineSound
 @onready var impact_sound: AudioStreamPlayer = $ImpactSound
 @onready var gunshot_sound: AudioStreamPlayer = $GunshotSound
@@ -35,12 +45,19 @@ var flip_tank_flag: bool
 @onready var timer_label: Label = $"../AimHUD/HBoxContainer/TimerLabel"
 @onready var vignetteShader: ColorRect = $"../AimHUD/VignetteShader"
 @onready var heightmap: MeshInstance3D = $"../../heightmap"
+@onready var health_bar: ProgressBar = $"../AimHUD/HealthBar"
+@onready var health_label: Label = $"../AimHUD/HealthBar/HealthLabel"
 
 
 @onready var left_track_particles: CPUParticles3D = $left_track_particles
 @onready var right_track_particles: CPUParticles3D = $right_track_particles
 
 func _ready() -> void:
+	# Keep the editor's fill styling, with a private color for this player's HP.
+	_health_bar_fill = health_bar.get_theme_stylebox("fill").duplicate() as StyleBoxFlat
+	_full_health_color = _health_bar_fill.bg_color
+	health_bar.add_theme_stylebox_override("fill", _health_bar_fill)
+	_update_health_bar()
 	for child in get_children():
 		if child is VehicleWheel3D:
 			wheels.append(child)
@@ -50,6 +67,14 @@ func _ready() -> void:
 			child.use_as_steering = false
 			child.steering = 0.0
 	flip_text_offset=flip_text.position
+	
+	if is_cat:
+		tank1.visible=false;
+		cattank.visible=true;
+		muzzle = $cattank/TurretRotation/GunElevation/Muzzle
+	else:
+		tank1.visible=true;
+		cattank.visible=false;
 
 func _integrate_forces(state):
 	if flip_tank_flag:
@@ -69,6 +94,8 @@ func _integrate_forces(state):
 		print("Tank moved to: ", t.origin)
 
 func _physics_process(delta: float) -> void:
+	if destroyed:
+		return
 	throttle = Input.get_axis(&"reverse", &"accelerate")
 	var turn := Input.get_axis(&"turn_right", &"turn_left")
 	var forward := -global_basis.x.normalized()
@@ -162,6 +189,8 @@ func _physics_process(delta: float) -> void:
 	
 	
 func _unhandled_input(event: InputEvent) -> void:
+	if destroyed:
+		return
 	if event.is_action_pressed("flip_tank") and global_transform.basis.y.y < 0.2 and previous_speed < 5:
 		flip_tank_flag = true
 		sleeping = false
@@ -178,3 +207,33 @@ func _spawn_shell() -> void:
 	get_tree().current_scene.add_child(shell)
 	# Match the barrel's position, aim, and model scale without following the tank.
 	shell.global_transform = muzzle.global_transform
+	
+
+func receive_shell_hit() -> void:
+	if destroyed:
+		return
+	shell_hits += 1
+	_update_health_bar()
+	if shell_hits < hits_to_destroy:
+		return
+	destroyed = true
+	tank1.hide()
+	cattank.hide()
+	$EngineSound.stop()
+	$left_track_particles.emitting = false
+	$right_track_particles.emitting = false
+	engine_force = 0.0
+	brake = 100.0
+	throttle = 0.0
+	for wheel in wheels:
+		wheel.engine_force = 0.0
+		wheel.brake = 100.0
+	
+
+func _update_health_bar() -> void:
+	var maximum := maxi(hits_to_destroy, 1)
+	var current := clampi(maximum - shell_hits, 0, maximum)
+	health_bar.max_value = maximum
+	health_bar.value = current
+	_health_bar_fill.bg_color = _full_health_color.lerp(low_health_color, 1.0 - float(current) / maximum)
+	health_label.text = "HP %d / %d" % [current, maximum]

@@ -49,6 +49,11 @@ var _sniper_mount_offset := Vector3.ZERO
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	if tank.is_cat:
+		turret = $"../vehicle/cattank/TurretRotation"
+		# The cat has no barrel mesh: pitch only the firing direction at its mount.
+		gun_elevation = $"../vehicle/cattank/TurretRotation/GunElevation"
+		muzzle = tank.muzzle
 	global_position = tank.global_position;
 	tank_rotation = tank.rotation
 	sniper_camera.top_level = true
