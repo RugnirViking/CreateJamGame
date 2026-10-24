@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://cin03dgejggg7"
+path="res://.godot/imported/Tank moving sound.mp3-62eb7a34c407e8ab59d3abf924110475.mp3str"
+
+[deps]
+
+source_file="res://sound/Tank moving sound.mp3"
+dest_files=["res://.godot/imported/Tank moving sound.mp3-62eb7a34c407e8ab59d3abf924110475.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0.0
+bpm=120.0
+beat_count=25
+bar_beats=4

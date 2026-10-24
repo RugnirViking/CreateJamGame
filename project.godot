@@ -11,9 +11,9 @@ config_version=5
 [application]
 
 config/name="CreateJamGame"
-run/main_scene="uid://clnmt76xaja8v"
+run/main_scene="res://scenes/main.tscn"
 config/features=PackedStringArray("4.7", "GL Compatibility")
-config/icon="res://icon.svg"
+config/icon="res://art/textures/icon.svg"
 
 [display]
 
@@ -62,9 +62,15 @@ flip_tank={
 ]
 }
 
+[layer_names]
+
+3d_physics/layer_1="Ground and solid obstacles"
+3d_physics/layer_2="Vehicles"
+
 [physics]
 
 3d/physics_engine="Jolt Physics"
+jolt_physics_3d/limits/max_bodies=40960
 
 [rendering]
 

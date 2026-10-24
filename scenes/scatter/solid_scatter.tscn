@@ -1,0 +1,9 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/scatter_patch.gd" id="1_script"]
+[ext_resource type="PackedScene" path="res://scenes/scatter/rock_visual.tscn" id="2_visual"]
+
+[node name="SolidScatter" type="Node3D"]
+script = ExtResource("1_script")
+source_scenes = Array[PackedScene]([ExtResource("2_visual")])
+instance_count = 18

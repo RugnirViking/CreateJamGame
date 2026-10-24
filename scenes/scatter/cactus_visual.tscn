@@ -1,0 +1,8 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://art/models/cactus.glb" id="1_cactus"]
+
+[node name="CactusVisual" type="Node3D"]
+
+[node name="Cactus" parent="." instance=ExtResource("1_cactus")]
+scale = Vector3(0.08, 0.08, 0.08)

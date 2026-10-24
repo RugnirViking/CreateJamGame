@@ -7,7 +7,7 @@ var min_upright := 1.0
 var max_speed := 0.0
 
 func _initialize() -> void:
-	var world: Node3D = load("res://main.tscn").instantiate()
+	var world: Node3D = load("res://scenes/main.tscn").instantiate()
 	root.add_child(world)
 	tank = world.get_node("playertank/vehicle")
 

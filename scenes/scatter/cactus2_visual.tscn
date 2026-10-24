@@ -1,0 +1,8 @@
+[gd_scene format=3 uid="uid://c5y55qjwfdifk"]
+
+[ext_resource type="PackedScene" uid="uid://cc4eeui3cts52" path="res://art/models/cactus2.glb" id="1_jeh8d"]
+
+[node name="CactusVisual" type="Node3D" unique_id=1789097797]
+
+[node name="cactus2" parent="." unique_id=1315797579 instance=ExtResource("1_jeh8d")]
+transform = Transform3D(0.08, 0, 0, 0, 0.08, 0, 0, 0, 0.08, -0.08028042, 0, -0.14695239)

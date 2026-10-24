@@ -1,0 +1,8 @@
+[gd_scene format=3 uid="uid://bawemwb2fonhg"]
+
+[ext_resource type="PackedScene" uid="uid://c00l4u6nnugrh" path="res://art/models/desertgrass.glb" id="1_f8yei"]
+
+[node name="CactusVisual" type="Node3D" unique_id=581532589]
+
+[node name="desertgrass" parent="." unique_id=701801133 instance=ExtResource("1_f8yei")]
+transform = Transform3D(0.08, 0, 0, 0, 0.08, 0, 0, 0, 0.08, 0, 0, 0)

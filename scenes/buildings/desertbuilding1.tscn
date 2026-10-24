@@ -1,0 +1,15 @@
+[gd_scene format=3 uid="uid://w8aydmrvd0g0"]
+
+[ext_resource type="PackedScene" uid="uid://b81p6ju7r30qq" path="res://art/models/deserthouse1.glb" id="1_46xwq"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_t850l"]
+size = Vector3(2.1553345, 2.1383972, 3.8832703)
+
+[node name="Desertbuilding1" type="StaticBody3D" unique_id=2091816584]
+
+[node name="deserthouse1" parent="." unique_id=838389381 instance=ExtResource("1_46xwq")]
+transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, -2.3939724, 1.1920929e-07, -0.055369377)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=781339157]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.024993896, 1.0547028, -0.9199772)
+shape = SubResource("BoxShape3D_t850l")
