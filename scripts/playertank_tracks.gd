@@ -11,7 +11,11 @@ extends VehicleBody3D
 @export var idle_brake := 1.5
 @export var turning_grip := 0.5
 @export var righting_strength := 0.1
+@export var targeting_acc := 2;
+@export var max_targetness := 8.0;
+@export var shell_scene: PackedScene
 
+var targetness: float = max_targetness;
 var wheels: Array[VehicleWheel3D] = []
 var wheel_sides: Array[float] = []
 var wheel_grip: Array[float] = []
@@ -23,8 +27,14 @@ var flip_tank_flag: bool
 
 @onready var engine_sound: AudioStreamPlayer = $EngineSound
 @onready var impact_sound: AudioStreamPlayer = $ImpactSound
+@onready var gunshot_sound: AudioStreamPlayer = $GunshotSound
+@onready var muzzle: Marker3D = $tank1/TurretRotation/Cube_001/GunElevation/Muzzle
 @onready var flip_text: Label3D = $"../followcam/fliptext"
 @onready var sniper_flip_text: Label = $"../AimHUD/SniperHUD/FlipPrompt"
+@onready var speed_label: Label = $"../AimHUD/HBoxContainer/SpeedLabel"
+@onready var timer_label: Label = $"../AimHUD/HBoxContainer/TimerLabel"
+@onready var vignetteShader: ColorRect = $"../AimHUD/VignetteShader"
+@onready var heightmap: MeshInstance3D = $"../../heightmap"
 
 
 @onready var left_track_particles: CPUParticles3D = $left_track_particles
@@ -103,7 +113,7 @@ func _physics_process(delta: float) -> void:
 
 	var speed := linear_velocity.length()
 	var effort := maxf(speed / maxf(max_forward_speed, 0.1), absf(turn) * 0.5)
-	var desired_pitch := 0.3 + effort
+	var desired_pitch := 0.1 + effort
 	engine_sound.pitch_scale = lerpf(engine_sound.pitch_scale, desired_pitch, 1.0 - exp(-5.0 * delta))
 	
 	if impact_sound.stream != null and absf(speed - previous_speed) > 1.0:
@@ -131,8 +141,38 @@ func _physics_process(delta: float) -> void:
 	flip_text.visible=global_transform.basis.y.y < 0.2 && speed < 5
 	sniper_flip_text.visible = flip_text.visible
 	
+	if speed<1:
+		targetness-=targeting_acc*delta;
+	elif speed>1 and speed<3:
+		targetness=targetness;
+	else:
+		targetness+=targeting_acc*delta;
+	
+	targetness=clampf(targetness,0,max_targetness);
+	
+	heightmap.set_instance_shader_parameter("player_x",global_position.x)
+	heightmap.set_instance_shader_parameter("player_y",global_position.z)
+	
+	heightmap.set_instance_shader_parameter("color_target",Color(0.6,0.2,0.2,0.8-clampf(targetness/max_targetness,0,0.8)));
+	
+	heightmap.set_instance_shader_parameter("radius",clampf(targetness/max_targetness,0,1)*10);
+	speed_label.text=str(speed*3.6).pad_decimals(2)+" KM/H"
+	vignetteShader.set_instance_shader_parameter("alpha", 1-clampf(targetness/max_targetness,0,1))
 	
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("flip_tank") and global_transform.basis.y.y < 0.2 and previous_speed < 5:
 		flip_tank_flag = true
 		sleeping = false
+	if event.is_action_pressed("shoot"):
+		_spawn_shell()
+		gunshot_sound.play();
+		
+
+func _spawn_shell() -> void:
+	if shell_scene == null:
+		return
+	var shell := shell_scene.instantiate() as Node3D
+	shell.set("shooter", self)
+	get_tree().current_scene.add_child(shell)
+	# Match the barrel's position, aim, and model scale without following the tank.
+	shell.global_transform = muzzle.global_transform

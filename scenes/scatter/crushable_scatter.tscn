@@ -6,5 +6,6 @@
 [node name="CrushableScatter" type="Node3D"]
 script = ExtResource("1_script")
 scatter_type = 1
+render_chunk_size = 64.0
 source_scenes = Array[PackedScene]([ExtResource("2_visual")])
 instance_count = 90

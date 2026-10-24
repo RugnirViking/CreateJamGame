@@ -2,12 +2,15 @@
 
 [ext_resource type="Script" uid="uid://onak2a4unfnh" path="res://scripts/playertank_tracks.gd" id="1_6h0fd"]
 [ext_resource type="AudioStream" uid="uid://dc8bcnohrx320" path="res://sound/Tank moving sound 2.wav" id="2_00idx"]
+[ext_resource type="PackedScene" uid="uid://cb6bp7vmo4456" path="res://scenes/shell.tscn" id="2_87frt"]
 [ext_resource type="Script" uid="uid://cp2pmclftdnqa" path="res://scripts/followcam.gd" id="2_oa3n8"]
 [ext_resource type="Texture2D" uid="uid://cp0exnnt1nkis" path="res://art/textures/particle_smoke.png" id="2_qmgpy"]
 [ext_resource type="AudioStream" uid="uid://jgbt1vjqxkmf" path="res://sound/Tank firring sound.wav" id="3_wnfuo"]
 [ext_resource type="Texture2D" uid="uid://blto2t8kspgfa" path="res://art/textures/crosshair-nobg.png" id="6_crosshair"]
 [ext_resource type="Script" uid="uid://qwvmhgo6wbtn" path="res://scripts/camera_dust.gd" id="7_dust"]
+[ext_resource type="Shader" uid="uid://bqxx214nn8g8c" path="res://scenes/vignette.gdshader" id="8_7ixg4"]
 [ext_resource type="Script" uid="uid://cmu3ilgo4ki4o" path="res://scripts/sniper_hud.gd" id="8_sniper_hud"]
+[ext_resource type="FontFile" uid="uid://6mb71bm5wpol" path="res://ussr-stencil/USSR STENCIL/USSR STENCIL WEBFONT.ttf" id="9_0t7bx"]
 [ext_resource type="Script" uid="uid://jhtj12868vnl" path="res://scripts/ground_tracks.gd" id="9_ground_tracks"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_t850l"]
@@ -188,15 +191,21 @@ point_count = 2
 [sub_resource type="Gradient" id="Gradient_t850l"]
 colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_t850l"]
+shader = ExtResource("8_7ixg4")
+shader_parameter/inner_radius = 0.0
+shader_parameter/outer_radius = 1.0
+
 [node name="playertank" type="Node3D" unique_id=212230902]
 
 [node name="vehicle" type="VehicleBody3D" parent="." unique_id=1596378704 groups=["player", "scatter_crushers"]]
 collision_layer = 2
 script = ExtResource("1_6h0fd")
 engine_force_value = 150.0
-max_forward_speed = 8.0
+max_forward_speed = 4.8
 max_reverse_speed = 4.8
 turning_grip = 1.0
+shell_scene = ExtResource("2_87frt")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="vehicle" unique_id=843582592]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.027832031, 0.013587952, 0.005004883)
@@ -306,11 +315,14 @@ mesh = SubResource("CylinderMesh_6h0fd")
 
 [node name="EngineSound" type="AudioStreamPlayer" parent="vehicle" unique_id=1673059771]
 stream = ExtResource("2_00idx")
-volume_db = 24.0
 autoplay = true
 
 [node name="ImpactSound" type="AudioStreamPlayer" parent="vehicle" unique_id=291738550]
 stream = ExtResource("3_wnfuo")
+
+[node name="GunshotSound" type="AudioStreamPlayer" parent="vehicle" unique_id=132453943]
+stream = ExtResource("3_wnfuo")
+volume_db = -8.0
 
 [node name="left_track_particles" type="CPUParticles3D" parent="vehicle" unique_id=44376467]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5260124, -0.12756117, 0.281124)
@@ -403,6 +415,42 @@ offset_top = -40.0
 grow_horizontal = 0
 grow_vertical = 0
 color = Color(0, 0, 0, 0.78039217)
+
+[node name="VignetteShader" type="ColorRect" parent="AimHUD" unique_id=398341898]
+material = SubResource("ShaderMaterial_t850l")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+mouse_filter = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="AimHUD" unique_id=942812447]
+custom_minimum_size = Vector2(400, 0)
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -20.0
+offset_right = 20.0
+offset_bottom = 40.0
+grow_horizontal = 2
+alignment = 1
+
+[node name="SpeedLabel" type="Label" parent="AimHUD/HBoxContainer" unique_id=1513759615]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_fonts/font = ExtResource("9_0t7bx")
+text = "100 KM/H"
+horizontal_alignment = 1
+
+[node name="TimerLabel" type="Label" parent="AimHUD/HBoxContainer" unique_id=964286111]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_fonts/font = ExtResource("9_0t7bx")
+text = "4:23"
+horizontal_alignment = 1
 
 [node name="CameraDust" type="MultiMeshInstance3D" parent="." unique_id=2087921857]
 script = ExtResource("7_dust")
