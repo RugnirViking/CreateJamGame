@@ -11,7 +11,7 @@ extends VehicleBody3D
 @export var idle_brake := 1.5
 @export var turning_grip := 0.5
 @export var righting_strength := 0.1
-@export var targeting_acc := 2;
+@export var zeroing_acc := 2;
 @export var max_targetness := 8.0;
 @export var shell_scene: PackedScene
 @export_range(1, 100) var hits_to_destroy: int = 10
@@ -30,14 +30,18 @@ var throttle: float = 0.0
 var flip_text_offset: Vector3
 var flip_tank_flag: bool
 var destroyed: bool
+var time_remaining: float = 180.0
 var _health_bar_fill: StyleBoxFlat
 var _full_health_color: Color
 
 @onready var tank1: Node3D = $tank1
+@onready var tank1_destroyed: Node3D = $tankTank1Destroyed
 @onready var cattank: Node3D = $cattank
+@onready var cattank_destroyed: Node3D = $cattankDestroyed
 @onready var engine_sound: AudioStreamPlayer = $EngineSound
 @onready var impact_sound: AudioStreamPlayer = $ImpactSound
 @onready var gunshot_sound: AudioStreamPlayer = $GunshotSound
+@onready var catshot_sound: AudioStreamPlayer = $CatshotSound
 @onready var muzzle: Marker3D = $tank1/TurretRotation/Cube_001/GunElevation/Muzzle
 @onready var flip_text: Label3D = $"../followcam/fliptext"
 @onready var sniper_flip_text: Label = $"../AimHUD/SniperHUD/FlipPrompt"
@@ -47,12 +51,16 @@ var _full_health_color: Color
 @onready var heightmap: MeshInstance3D = $"../../heightmap"
 @onready var health_bar: ProgressBar = $"../AimHUD/HealthBar"
 @onready var health_label: Label = $"../AimHUD/HealthBar/HealthLabel"
+@onready var game_over: Control = $"../AimHUD/GameOver"
+@onready var you_win: Control = $"../AimHUD/YouWin"
 
 
 @onready var left_track_particles: CPUParticles3D = $left_track_particles
 @onready var right_track_particles: CPUParticles3D = $right_track_particles
 
 func _ready() -> void:
+	_update_timer_label()
+	_connect_capture_targets.call_deferred()
 	# Keep the editor's fill styling, with a private color for this player's HP.
 	_health_bar_fill = health_bar.get_theme_stylebox("fill").duplicate() as StyleBoxFlat
 	_full_health_color = _health_bar_fill.bg_color
@@ -76,6 +84,26 @@ func _ready() -> void:
 		tank1.visible=true;
 		cattank.visible=false;
 
+func _connect_capture_targets() -> void:
+	for marker in get_tree().get_nodes_in_group(&"terrain_target_markers"):
+		marker.captured.connect(_check_targets_captured)
+	_check_targets_captured()
+
+
+func _check_targets_captured() -> void:
+	if destroyed or you_win.visible:
+		return
+	var targets := get_tree().get_nodes_in_group(&"terrain_target_markers")
+	if targets.is_empty():
+		return
+	for marker in targets:
+		if marker.state != terrain_target_marker.State.CAPTURED:
+			return
+	you_win.modulate.a = 0.0
+	you_win.show()
+	create_tween().set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT).tween_property(you_win, "modulate:a", 1.0, 1.5)
+
+
 func _integrate_forces(state):
 	if flip_tank_flag:
 		var t = state.transform
@@ -96,6 +124,12 @@ func _integrate_forces(state):
 func _physics_process(delta: float) -> void:
 	if destroyed:
 		return
+	if not you_win.visible:
+		time_remaining = maxf(time_remaining - delta, 0.0)
+		_update_timer_label()
+		if time_remaining <= 0.0:
+			_trigger_game_over(false)
+			return
 	throttle = Input.get_axis(&"reverse", &"accelerate")
 	var turn := Input.get_axis(&"turn_right", &"turn_left")
 	var forward := -global_basis.x.normalized()
@@ -169,11 +203,11 @@ func _physics_process(delta: float) -> void:
 	sniper_flip_text.visible = flip_text.visible
 	
 	if speed<1:
-		targetness-=targeting_acc*delta;
+		targetness-=zeroing_acc*delta;
 	elif speed>1 and speed<3:
 		targetness=targetness;
 	else:
-		targetness+=targeting_acc*delta;
+		targetness+=zeroing_acc*delta;
 	
 	targetness=clampf(targetness,0,max_targetness);
 	
@@ -189,14 +223,27 @@ func _physics_process(delta: float) -> void:
 	
 	
 func _unhandled_input(event: InputEvent) -> void:
+	if you_win.visible and event.is_action_pressed("next_level"):
+		# Reserve the action until another level is available.
+		get_viewport().set_input_as_handled()
+		return
 	if destroyed:
+		if event.is_action_pressed("return_action"):
+			get_viewport().set_input_as_handled()
+			Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+			get_tree().set_meta("skip_menu_intro", true)
+			get_tree().change_scene_to_file("res://scenes/mainmenu.tscn")
 		return
 	if event.is_action_pressed("flip_tank") and global_transform.basis.y.y < 0.2 and previous_speed < 5:
 		flip_tank_flag = true
 		sleeping = false
 	if event.is_action_pressed("shoot"):
 		_spawn_shell()
-		gunshot_sound.play();
+		if is_cat:
+			catshot_sound.play();
+		else:
+			gunshot_sound.play();
+			
 		
 
 func _spawn_shell() -> void:
@@ -210,15 +257,33 @@ func _spawn_shell() -> void:
 	
 
 func receive_shell_hit() -> void:
-	if destroyed:
+	if destroyed or you_win.visible:
 		return
 	shell_hits += 1
 	_update_health_bar()
 	if shell_hits < hits_to_destroy:
 		return
+	_trigger_game_over(true)
+
+
+func _trigger_game_over(show_wreck: bool) -> void:
+	if destroyed or you_win.visible:
+		return
 	destroyed = true
-	tank1.hide()
-	cattank.hide()
+	flip_tank_flag = false
+	flip_text.hide()
+	sniper_flip_text.hide()
+	game_over.modulate.a = 0.0
+	game_over.show()
+	create_tween().set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT).tween_property(game_over, "modulate:a", 1.0, 1.5)
+	if show_wreck:
+		tank1.hide()
+		cattank.hide()
+		if is_cat:
+			cattank_destroyed.visible=true;
+		else:
+			tank1_destroyed.visible=true;
+	
 	$EngineSound.stop()
 	$left_track_particles.emitting = false
 	$right_track_particles.emitting = false
@@ -229,6 +294,11 @@ func receive_shell_hit() -> void:
 		wheel.engine_force = 0.0
 		wheel.brake = 100.0
 	
+
+func _update_timer_label() -> void:
+	var seconds := ceili(time_remaining)
+	timer_label.text = "%02d:%02d" % [floori(seconds / 60.0), seconds % 60]
+
 
 func _update_health_bar() -> void:
 	var maximum := maxi(hits_to_destroy, 1)

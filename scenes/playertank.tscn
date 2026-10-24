@@ -9,13 +9,18 @@
 [ext_resource type="AudioStream" uid="uid://celyqmrs1imah" path="res://sound/Tank crashes into stuff.wav" id="5_t38om"]
 [ext_resource type="Texture2D" uid="uid://blto2t8kspgfa" path="res://art/textures/crosshair-nobg.png" id="6_crosshair"]
 [ext_resource type="Texture2D" uid="uid://n3en5wrpf8lg" path="res://art/textures/chevron.png" id="6_koyaf"]
+[ext_resource type="AudioStream" uid="uid://dgkwyh2x5ja5j" path="res://sound/miav 3.wav" id="7_13e8j"]
 [ext_resource type="Shader" uid="uid://cwsj38tvm4swb" path="res://scenes/chevron_indicator.gdshader" id="7_chevron"]
 [ext_resource type="Script" uid="uid://qwvmhgo6wbtn" path="res://scripts/camera_dust.gd" id="7_dust"]
 [ext_resource type="Shader" uid="uid://bqxx214nn8g8c" path="res://scenes/vignette.gdshader" id="8_7ixg4"]
+[ext_resource type="PackedScene" uid="uid://v0ay54vrbhbk" path="res://art/models/cattankDestroyed.glb" id="8_70jf4"]
 [ext_resource type="Script" uid="uid://cmu3ilgo4ki4o" path="res://scripts/sniper_hud.gd" id="8_sniper_hud"]
 [ext_resource type="FontFile" uid="uid://6mb71bm5wpol" path="res://ussr-stencil/USSR STENCIL/USSR STENCIL WEBFONT.ttf" id="9_0t7bx"]
 [ext_resource type="Script" uid="uid://jhtj12868vnl" path="res://scripts/ground_tracks.gd" id="9_ground_tracks"]
+[ext_resource type="PackedScene" uid="uid://cglyowfr4sqta" path="res://art/models/tankTank1Destroyed.glb" id="9_rvplu"]
 [ext_resource type="Script" uid="uid://rcupwc8rcwgj" path="res://scripts/chevron_target.gd" id="10_chevron_target"]
+[ext_resource type="Material" uid="uid://dygrgkkpymdoj" path="res://scenes/explosionFire.tres" id="10_hv4oi"]
+[ext_resource type="Material" uid="uid://cqmxglr4im0yw" path="res://scenes/explosionSmoke.tres" id="11_13e8j"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_t850l"]
 size = Vector3(1.0556641, 0.3141327, 0.7043457)
@@ -390,6 +395,28 @@ _surfaces = [{
 blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_1eynh")
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_2pqfb"]
+billboard_mode = 1
+
+[sub_resource type="QuadMesh" id="QuadMesh_13e8j"]
+material = SubResource("StandardMaterial3D_2pqfb")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_2cxao"]
+transparency = 1
+albedo_texture = ExtResource("2_qmgpy")
+billboard_mode = 1
+
+[sub_resource type="QuadMesh" id="QuadMesh_hv4oi"]
+material = SubResource("StandardMaterial3D_2cxao")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_vecop"]
+transparency = 1
+albedo_texture = ExtResource("2_qmgpy")
+billboard_mode = 1
+
+[sub_resource type="QuadMesh" id="QuadMesh_rvplu"]
+material = SubResource("StandardMaterial3D_vecop")
+
 [sub_resource type="QuadMesh" id="QuadMesh_t850l"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_chevron"]
@@ -422,20 +449,14 @@ script = ExtResource("10_chevron_target")
 
 [node name="vehicle" type="VehicleBody3D" parent="." unique_id=1596378704 groups=["player", "scatter_crushers"]]
 collision_layer = 2
+collision_mask = 3
 script = ExtResource("1_6h0fd")
 engine_force_value = 150.0
 max_forward_speed = 4.8
 max_reverse_speed = 4.8
-max_turn_speed = null
-drive_response = null
-turn_response = null
-idle_brake = null
 turning_grip = 1.0
 righting_strength = 100.0
-targeting_acc = null
-max_targetness = null
 shell_scene = ExtResource("2_87frt")
-is_cat = true
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="vehicle" unique_id=843582592]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.027832031, 0.013587952, 0.005004883)
@@ -443,7 +464,6 @@ shape = SubResource("BoxShape3D_t850l")
 
 [node name="tank1" type="Node3D" parent="vehicle" unique_id=664192761]
 transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, 0, 0)
-visible = false
 
 [node name="Cube" type="MeshInstance3D" parent="vehicle/tank1" unique_id=101131189]
 layers = 2
@@ -546,6 +566,7 @@ mesh = SubResource("CylinderMesh_6h0fd")
 
 [node name="EngineSound" type="AudioStreamPlayer" parent="vehicle" unique_id=1673059771]
 stream = ExtResource("4_npxgl")
+volume_db = -8.0
 autoplay = true
 
 [node name="ImpactSound" type="AudioStreamPlayer" parent="vehicle" unique_id=291738550]
@@ -554,6 +575,9 @@ stream = ExtResource("5_t38om")
 [node name="GunshotSound" type="AudioStreamPlayer" parent="vehicle" unique_id=132453943]
 stream = ExtResource("3_wnfuo")
 volume_db = -8.0
+
+[node name="CatshotSound" type="AudioStreamPlayer" parent="vehicle" unique_id=45011388]
+stream = ExtResource("7_13e8j")
 
 [node name="left_track_particles" type="CPUParticles3D" parent="vehicle" unique_id=44376467]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5260124, -0.12756117, 0.281124)
@@ -583,8 +607,13 @@ angle_max = 360.0
 scale_amount_curve = SubResource("Curve_3bti5")
 color_ramp = SubResource("Gradient_t850l")
 
+[node name="cattankDestroyed" parent="vehicle" unique_id=322229951 instance=ExtResource("8_70jf4")]
+transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0.40947193, 0.06350039, -0.025735855)
+visible = false
+
 [node name="cattank" type="Node3D" parent="vehicle" unique_id=617186634]
 transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0.40947193, 0.025512025, -2.059842)
+visible = false
 
 [node name="Plane" type="MeshInstance3D" parent="vehicle/cattank" unique_id=1428842528]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.0544834, -1.8723335, 20.378544)
@@ -610,6 +639,23 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.743006, 1.09053, 0.032376)
 [node name="Muzzle" type="Marker3D" parent="vehicle/cattank/TurretRotation/GunElevation" unique_id=334382516]
 transform = Transform3D(0.20195848, 0, 0, 0, 0.20195848, 0, 0, 0, 0.20195848, 0, 0, 0)
 
+[node name="tankTank1Destroyed" parent="vehicle" unique_id=2006835107 instance=ExtResource("9_rvplu")]
+transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 2.4626615, 0, 0)
+visible = false
+
+[node name="dedSmoke" type="GPUParticles3D" parent="vehicle" unique_id=1908968812]
+draw_pass_1 = SubResource("QuadMesh_13e8j")
+
+[node name="explodeFire" type="GPUParticles3D" parent="vehicle" unique_id=520653175]
+explosiveness = 1.0
+process_material = ExtResource("10_hv4oi")
+draw_pass_1 = SubResource("QuadMesh_hv4oi")
+
+[node name="explodeSmoke" type="GPUParticles3D" parent="vehicle" unique_id=770451381]
+explosiveness = 1.0
+process_material = ExtResource("11_13e8j")
+draw_pass_1 = SubResource("QuadMesh_rvplu")
+
 [node name="followcam" type="Node3D" parent="." unique_id=559551088]
 script = ExtResource("2_oa3n8")
 
@@ -631,6 +677,17 @@ surface_material_override/0 = SubResource("ShaderMaterial_chevron")
 
 [node name="AimHUD" type="CanvasLayer" parent="." unique_id=1437939724]
 
+[node name="VignetteShader" type="ColorRect" parent="AimHUD" unique_id=398341898]
+material = SubResource("ShaderMaterial_t850l")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+mouse_filter = 1
+
 [node name="Crosshair" type="TextureRect" parent="AimHUD" unique_id=2038387707]
 offset_right = 40.0
 offset_bottom = 40.0
@@ -640,7 +697,6 @@ expand_mode = 1
 stretch_mode = 5
 
 [node name="SniperHUD" type="Control" parent="AimHUD" unique_id=9085141]
-visible = false
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -682,17 +738,6 @@ grow_horizontal = 0
 grow_vertical = 0
 color = Color(0, 0, 0, 0.78039217)
 
-[node name="VignetteShader" type="ColorRect" parent="AimHUD" unique_id=398341898]
-material = SubResource("ShaderMaterial_t850l")
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-mouse_filter = 1
-
 [node name="HBoxContainer" type="HBoxContainer" parent="AimHUD" unique_id=942812447]
 custom_minimum_size = Vector2(400, 0)
 anchors_preset = 5
@@ -715,7 +760,7 @@ horizontal_alignment = 1
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_fonts/font = ExtResource("9_0t7bx")
-text = "4:23"
+text = "03:00"
 horizontal_alignment = 1
 
 [node name="HealthBar" type="ProgressBar" parent="AimHUD" unique_id=1623458019]
@@ -750,6 +795,70 @@ theme_override_fonts/font = ExtResource("9_0t7bx")
 text = "HP 10 / 10"
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="GameOver" type="CenterContainer" parent="AimHUD" unique_id=418654199]
+visible = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Text" type="VBoxContainer" parent="AimHUD/GameOver" unique_id=583710073]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 20
+
+[node name="Title" type="Label" parent="AimHUD/GameOver/Text" unique_id=797680303]
+layout_mode = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 8
+theme_override_fonts/font = ExtResource("9_0t7bx")
+theme_override_font_sizes/font_size = 64
+text = "GAME OVER"
+horizontal_alignment = 1
+
+[node name="MenuPrompt" type="Label" parent="AimHUD/GameOver/Text" unique_id=1534036596]
+layout_mode = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 5
+theme_override_fonts/font = ExtResource("9_0t7bx")
+theme_override_font_sizes/font_size = 24
+text = "PRESS ESC TO RETURN TO MENU"
+horizontal_alignment = 1
+
+[node name="YouWin" type="CenterContainer" parent="AimHUD" unique_id=155603827]
+visible = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Text" type="VBoxContainer" parent="AimHUD/YouWin" unique_id=1801088600]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 20
+
+[node name="Title" type="Label" parent="AimHUD/YouWin/Text" unique_id=1052648483]
+layout_mode = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 8
+theme_override_fonts/font = ExtResource("9_0t7bx")
+theme_override_font_sizes/font_size = 64
+text = "CONGRATS"
+horizontal_alignment = 1
+
+[node name="MenuPrompt" type="Label" parent="AimHUD/YouWin/Text" unique_id=1536304574]
+layout_mode = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 5
+theme_override_fonts/font = ExtResource("9_0t7bx")
+theme_override_font_sizes/font_size = 24
+text = "PRESS ENTER TO MOVE TO NEXT LEVEL"
+horizontal_alignment = 1
 
 [node name="CameraDust" type="MultiMeshInstance3D" parent="." unique_id=2087921857]
 script = ExtResource("7_dust")

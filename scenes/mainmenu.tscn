@@ -9,6 +9,12 @@
 
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_7suuv"]
 
+[sub_resource type="Theme" id="Theme_controls"]
+default_font = ExtResource("1_5mbse")
+default_font_size = 24
+Window/font_sizes/title_font_size = 24
+Window/fonts/title_font = ExtResource("1_5mbse")
+
 [node name="Control" type="Control" unique_id=46688502]
 layout_mode = 3
 anchors_preset = 15
@@ -83,3 +89,52 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
+
+[node name="MenuButtons" type="VBoxContainer" parent="." unique_id=1342451359]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -140.0
+offset_top = 10.0
+offset_right = 140.0
+offset_bottom = 210.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 16
+
+[node name="Play" type="Button" parent="MenuButtons" unique_id=216578506]
+custom_minimum_size = Vector2(280, 56)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("1_5mbse")
+theme_override_font_sizes/font_size = 28
+text = "PLAY"
+
+[node name="Controls" type="Button" parent="MenuButtons" unique_id=1185641239]
+custom_minimum_size = Vector2(280, 56)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("1_5mbse")
+theme_override_font_sizes/font_size = 28
+text = "CONTROLS"
+
+[node name="Quit" type="Button" parent="MenuButtons" unique_id=405689995]
+custom_minimum_size = Vector2(280, 56)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("1_5mbse")
+theme_override_font_sizes/font_size = 28
+text = "QUIT"
+
+[node name="ControlsDialog" type="AcceptDialog" parent="." unique_id=8368931]
+oversampling_override = 1.0
+title = "Controls"
+size = Vector2i(283, 245)
+theme = SubResource("Theme_controls")
+dialog_text = "W / UP: ACCELERATE
+S / DOWN: REVERSE
+A / D OR LEFT / RIGHT: TURN
+MOUSE WHEEL: ZOOM
+LEFT CLICK / SPACE: FIRE
+R: FLIP TANK"

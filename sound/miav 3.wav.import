@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://dgkwyh2x5ja5j"
+path="res://.godot/imported/miav 3.wav-d08414ca97b513f7307c152f11e6e374.sample"
+
+[deps]
+
+source_file="res://sound/miav 3.wav"
+dest_files=["res://.godot/imported/miav 3.wav-d08414ca97b513f7307c152f11e6e374.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=2

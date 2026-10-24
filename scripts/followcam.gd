@@ -60,7 +60,11 @@ func _ready() -> void:
 	_sniper_mount_offset = tank.to_local(gun_elevation.global_position)
 	
 func _unhandled_input(event: InputEvent) -> void:
-	if sniper_mode and event.is_action_pressed("ui_cancel"):
+	if tank.you_win.visible and event.is_action_pressed("next_level"):
+		return
+	if tank.destroyed:
+		return
+	if sniper_mode and event.is_action_pressed("return_action"):
 		zoom_amount = MIN_ZOOM + 0.1
 		_set_sniper_mode(false)
 		get_viewport().set_input_as_handled()
@@ -96,7 +100,7 @@ func _process(delta: float) -> void:
 	rotation.y = rotate_toward(yRot, targetYRot, rot_speed * delta * (1+speed_rot_speed_mult*tank.linear_velocity.length()))
 	if sniper_mode:
 		_sync_sniper_camera(delta)
-		sniper_hud.update_aim(turret.rotation.y, -gun_elevation.rotation.z)
+	sniper_hud.update_aim(turret.rotation.y, -gun_elevation.rotation.z)
 	_update_crosshair()
 
 
@@ -160,7 +164,6 @@ func _set_sniper_mode(enabled: bool) -> void:
 	sniper_mode = enabled
 	has_aim_point = false
 	crosshair.visible = false
-	sniper_hud.visible = enabled
 	if enabled:
 		sniper_yaw = turret.rotation.y
 		sniper_pitch = -gun_elevation.rotation.z

@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://dqv66cgw3w8r0"
+path="res://.godot/imported/Boss_intense level music (better).wav-2fc61d0ec92269723621b01f384ca8f6.sample"
+
+[deps]
+
+source_file="res://sound/Boss_intense level music (better).wav"
+dest_files=["res://.godot/imported/Boss_intense level music (better).wav-2fc61d0ec92269723621b01f384ca8f6.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=2
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=2
