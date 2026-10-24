@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://celyqmrs1imah"
+path="res://.godot/imported/Tank crashes into stuff.wav-a8ecdcd3c1334a085c178de45223b461.sample"
+
+[deps]
+
+source_file="res://sound/Tank crashes into stuff.wav"
+dest_files=["res://.godot/imported/Tank crashes into stuff.wav-a8ecdcd3c1334a085c178de45223b461.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=2
