@@ -15,6 +15,13 @@ default_font_size = 24
 Window/font_sizes/title_font_size = 24
 Window/fonts/title_font = ExtResource("1_5mbse")
 
+[sub_resource type="BoxShape3D" id="BoxShape3D_t850l"]
+size = Vector3(2.4389648, 0.18664551, 1)
+
+[sub_resource type="Environment" id="Environment_menu"]
+background_mode = 1
+background_color = Color(0, 0, 0, 1)
+
 [node name="Control" type="Control" unique_id=46688502]
 layout_mode = 3
 anchors_preset = 15
@@ -25,6 +32,7 @@ grow_vertical = 2
 script = ExtResource("1_3vvtq")
 
 [node name="ColorRect" type="ColorRect" parent="." unique_id=1302616031]
+visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -73,16 +81,24 @@ visible_characters_behavior = 1
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=134395082]
 stream = ExtResource("4_7yvfd")
+volume_db = -16.0
 
 [node name="titlemusic" type="AudioStreamPlayer" parent="." unique_id=1093359431]
 stream = ExtResource("5_s5g8n")
 
 [node name="enemytank" parent="." unique_id=1403049494 instance=ExtResource("6_7yvfd")]
+gravity_scale = 0.0
+freeze = true
+script = null
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_menu")
 
 [node name="Camera3D" type="Camera3D" parent="." unique_id=218446311]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 2.2085571)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.3880311, 0.7763748, 2.2085571)
 
 [node name="TextureRect" type="TextureRect" parent="." unique_id=1304511976]
+visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -130,7 +146,7 @@ text = "QUIT"
 [node name="ControlsDialog" type="AcceptDialog" parent="." unique_id=8368931]
 oversampling_override = 1.0
 title = "Controls"
-size = Vector2i(283, 245)
+size = Vector2i(319, 245)
 theme = SubResource("Theme_controls")
 dialog_text = "W / UP: ACCELERATE
 S / DOWN: REVERSE
@@ -138,3 +154,13 @@ A / D OR LEFT / RIGHT: TURN
 MOUSE WHEEL: ZOOM
 LEFT CLICK / SPACE: FIRE
 R: FLIP TANK"
+
+[node name="StaticBody3D" type="StaticBody3D" parent="." unique_id=1236168585]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.2186411, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D" unique_id=145773535]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.13598633, -0.40667725, 0)
+shape = SubResource("BoxShape3D_t850l")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=1206411298]
+transform = Transform3D(0.9194981, -0.36409423, 0.14818463, 0.10251535, 0.58603024, 0.80377805, -0.37949154, -0.72388124, 0.57617897, 0, 0.86048996, 0.8033887)

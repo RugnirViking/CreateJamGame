@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://deesqmnqkgtoh"
+path="res://.godot/imported/Explosion theme 2death.wav-f954914798e321502e64ec36d44d73fc.sample"
+
+[deps]
+
+source_file="res://sound/Explosion theme 2death.wav"
+dest_files=["res://.godot/imported/Explosion theme 2death.wav-f954914798e321502e64ec36d44d73fc.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=2

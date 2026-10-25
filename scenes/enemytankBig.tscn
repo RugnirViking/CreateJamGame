@@ -221,6 +221,9 @@ mesh = SubResource("ArrayMesh_6aqrd")
 [node name="Muzzle" type="Marker3D" parent="tank2/TurretRotation/Cube_004/GunElevation" unique_id=1698719832]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.45, -0.05841112, -0.028749466)
 
+[node name="kitty_danger" parent="tank2/TurretRotation/Cube_004" unique_id=1065617764 instance=ExtResource("5_uh8nq")]
+transform = Transform3D(0.38461542, 0, -1.3449662e-07, 0, 0.38461542, 0, 1.3449662e-07, 0, 0.38461542, 1.0679212, 0.42516947, -7.9713755)
+
 [node name="tank3" type="Node3D" parent="." unique_id=524015647]
 transform = Transform3D(0.1, 0, 1.7484556e-08, 0, 0.1, 0, -1.7484556e-08, 0, 0.1, -1.4484134, 0.12093113, -0.30173585)
 
@@ -379,6 +382,3 @@ color_ramp = SubResource("Gradient_t850l")
 [node name="tankTOG2Destroyed" parent="." unique_id=984919651 instance=ExtResource("4_1uwhp")]
 transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0.0054988656, 0.00043934584, -1.186399)
 visible = false
-
-[node name="kitty_danger" parent="." unique_id=1065617764 instance=ExtResource("5_uh8nq")]
-transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0.24820209, 0.6226276, -2.069871)

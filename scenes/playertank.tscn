@@ -12,15 +12,20 @@
 [ext_resource type="AudioStream" uid="uid://dgkwyh2x5ja5j" path="res://sound/miav 3.wav" id="7_13e8j"]
 [ext_resource type="Shader" uid="uid://cwsj38tvm4swb" path="res://scenes/chevron_indicator.gdshader" id="7_chevron"]
 [ext_resource type="Script" uid="uid://qwvmhgo6wbtn" path="res://scripts/camera_dust.gd" id="7_dust"]
+[ext_resource type="AudioStream" uid="uid://igpte5rgpumx" path="res://sound/upsitryagain.wav" id="8_2pqfb"]
 [ext_resource type="Shader" uid="uid://bqxx214nn8g8c" path="res://scenes/vignette.gdshader" id="8_7ixg4"]
 [ext_resource type="PackedScene" uid="uid://v0ay54vrbhbk" path="res://art/models/cattankDestroyed.glb" id="8_70jf4"]
 [ext_resource type="Script" uid="uid://cmu3ilgo4ki4o" path="res://scripts/sniper_hud.gd" id="8_sniper_hud"]
 [ext_resource type="FontFile" uid="uid://6mb71bm5wpol" path="res://ussr-stencil/USSR STENCIL/USSR STENCIL WEBFONT.ttf" id="9_0t7bx"]
 [ext_resource type="Script" uid="uid://jhtj12868vnl" path="res://scripts/ground_tracks.gd" id="9_ground_tracks"]
+[ext_resource type="AudioStream" uid="uid://dcltjsue2pqbs" path="res://sound/Victory fanfare new.wav" id="9_qdobr"]
 [ext_resource type="PackedScene" uid="uid://cglyowfr4sqta" path="res://art/models/tankTank1Destroyed.glb" id="9_rvplu"]
 [ext_resource type="Script" uid="uid://rcupwc8rcwgj" path="res://scripts/chevron_target.gd" id="10_chevron_target"]
 [ext_resource type="Material" uid="uid://dygrgkkpymdoj" path="res://scenes/explosionFire.tres" id="10_hv4oi"]
+[ext_resource type="AudioStream" uid="uid://deesqmnqkgtoh" path="res://sound/Explosion theme 2death.wav" id="10_ubxf6"]
 [ext_resource type="Material" uid="uid://cqmxglr4im0yw" path="res://scenes/explosionSmoke.tres" id="11_13e8j"]
+[ext_resource type="Material" uid="uid://7fj4l01nfry8" path="res://scenes/wreckSmoke.tres" id="12_wreck_smoke"]
+[ext_resource type="Texture2D" uid="uid://bsifhp734jx1o" path="res://art/textures/shell.png" id="21_xkkre"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_t850l"]
 size = Vector3(1.0556641, 0.3141327, 0.7043457)
@@ -396,26 +401,50 @@ blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_1eynh")
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_2pqfb"]
-billboard_mode = 1
+transparency = 1
+shading_mode = 0
+vertex_color_use_as_albedo = true
+albedo_texture = ExtResource("2_qmgpy")
+billboard_mode = 3
+billboard_keep_scale = true
+particles_anim_h_frames = 1
+particles_anim_v_frames = 1
+particles_anim_loop = false
 
 [sub_resource type="QuadMesh" id="QuadMesh_13e8j"]
 material = SubResource("StandardMaterial3D_2pqfb")
+size = Vector2(0.8, 0.8)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_2cxao"]
 transparency = 1
+blend_mode = 1
+shading_mode = 0
+vertex_color_use_as_albedo = true
 albedo_texture = ExtResource("2_qmgpy")
-billboard_mode = 1
+billboard_mode = 3
+billboard_keep_scale = true
+particles_anim_h_frames = 1
+particles_anim_v_frames = 1
+particles_anim_loop = false
 
 [sub_resource type="QuadMesh" id="QuadMesh_hv4oi"]
 material = SubResource("StandardMaterial3D_2cxao")
+size = Vector2(0.35, 0.35)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_vecop"]
 transparency = 1
+shading_mode = 0
+vertex_color_use_as_albedo = true
 albedo_texture = ExtResource("2_qmgpy")
-billboard_mode = 1
+billboard_mode = 3
+billboard_keep_scale = true
+particles_anim_h_frames = 1
+particles_anim_v_frames = 1
+particles_anim_loop = false
 
 [sub_resource type="QuadMesh" id="QuadMesh_rvplu"]
 material = SubResource("StandardMaterial3D_vecop")
+size = Vector2(0.4, 0.4)
 
 [sub_resource type="QuadMesh" id="QuadMesh_t850l"]
 
@@ -579,6 +608,16 @@ volume_db = -8.0
 [node name="CatshotSound" type="AudioStreamPlayer" parent="vehicle" unique_id=45011388]
 stream = ExtResource("7_13e8j")
 
+[node name="ohnotryagain" type="AudioStreamPlayer" parent="vehicle" unique_id=1663791973]
+stream = ExtResource("8_2pqfb")
+
+[node name="winfanfare" type="AudioStreamPlayer" parent="vehicle" unique_id=1125610613]
+stream = ExtResource("9_qdobr")
+
+[node name="deathexplosion" type="AudioStreamPlayer" parent="vehicle" unique_id=1460202815]
+stream = ExtResource("10_ubxf6")
+volume_db = 12.0
+
 [node name="left_track_particles" type="CPUParticles3D" parent="vehicle" unique_id=44376467]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5260124, -0.12756117, 0.281124)
 emitting = false
@@ -644,15 +683,33 @@ transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 2.4626615, 0, 0)
 visible = false
 
 [node name="dedSmoke" type="GPUParticles3D" parent="vehicle" unique_id=1908968812]
+visible = false
+emitting = false
+amount = 28
+lifetime = 6.0
+visibility_aabb = AABB(-3, -2, -3, 6, 7, 6)
+process_material = ExtResource("12_wreck_smoke")
 draw_pass_1 = SubResource("QuadMesh_13e8j")
 
 [node name="explodeFire" type="GPUParticles3D" parent="vehicle" unique_id=520653175]
+visible = false
+emitting = false
+amount = 12
+lifetime = 0.24
+one_shot = true
 explosiveness = 1.0
+visibility_aabb = AABB(-3, -3, -3, 6, 6, 6)
 process_material = ExtResource("10_hv4oi")
 draw_pass_1 = SubResource("QuadMesh_hv4oi")
 
 [node name="explodeSmoke" type="GPUParticles3D" parent="vehicle" unique_id=770451381]
+visible = false
+emitting = false
+amount = 20
+lifetime = 3.5
+one_shot = true
 explosiveness = 1.0
+visibility_aabb = AABB(-4, -3, -4, 8, 8, 8)
 process_material = ExtResource("11_13e8j")
 draw_pass_1 = SubResource("QuadMesh_rvplu")
 
@@ -678,6 +735,7 @@ surface_material_override/0 = SubResource("ShaderMaterial_chevron")
 [node name="AimHUD" type="CanvasLayer" parent="." unique_id=1437939724]
 
 [node name="VignetteShader" type="ColorRect" parent="AimHUD" unique_id=398341898]
+visible = false
 material = SubResource("ShaderMaterial_t850l")
 anchors_preset = 15
 anchor_right = 1.0
@@ -705,6 +763,25 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 script = ExtResource("8_sniper_hud")
+
+[node name="Shell" type="TextureProgressBar" parent="AimHUD/SniperHUD" unique_id=2126959825]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -237.0
+offset_top = -146.0
+offset_right = -84.0
+offset_bottom = -100.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.36, 0.36)
+texture_under = ExtResource("21_xkkre")
+texture_progress = ExtResource("21_xkkre")
+tint_under = Color(0.15, 0.28, 0.18, 0.95)
+tint_progress = Color(0.75, 0.94, 0.79, 0.95)
 
 [node name="FlipPrompt" type="Label" parent="AimHUD/SniperHUD" unique_id=440936880]
 visible = false
@@ -763,6 +840,20 @@ theme_override_fonts/font = ExtResource("9_0t7bx")
 text = "03:00"
 horizontal_alignment = 1
 
+[node name="ZeroingWarning" type="Label" parent="AimHUD" unique_id=1284928611]
+visible = false
+anchors_preset = 10
+anchor_right = 1.0
+offset_top = 72.0
+offset_bottom = 108.0
+grow_horizontal = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 5
+theme_override_fonts/font = ExtResource("9_0t7bx")
+theme_override_font_sizes/font_size = 24
+text = "KEEP MOVING - ENEMY ZEROING IN"
+horizontal_alignment = 1
+
 [node name="HealthBar" type="ProgressBar" parent="AimHUD" unique_id=1623458019]
 anchors_preset = 3
 anchor_left = 1.0
@@ -817,6 +908,15 @@ theme_override_constants/outline_size = 8
 theme_override_fonts/font = ExtResource("9_0t7bx")
 theme_override_font_sizes/font_size = 64
 text = "GAME OVER"
+horizontal_alignment = 1
+
+[node name="DeathReason" type="Label" parent="AimHUD/GameOver/Text" unique_id=1923058269]
+layout_mode = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 4
+theme_override_fonts/font = ExtResource("9_0t7bx")
+theme_override_font_sizes/font_size = 18
+text = "0HP"
 horizontal_alignment = 1
 
 [node name="MenuPrompt" type="Label" parent="AimHUD/GameOver/Text" unique_id=1534036596]

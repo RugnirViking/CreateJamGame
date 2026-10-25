@@ -11,6 +11,8 @@ var _target_direction := Vector2.ZERO
 
 
 func _ready() -> void:
+	$Shell.tint_progress = line_color
+	$Shell.tint_under = Color(0.15, 0.28, 0.18, 0.95)
 	_panel.bg_color = minimap.color # Color(0.025, 0.045, 0.035, 0.78)
 	_panel.set_corner_radius_all(4)
 

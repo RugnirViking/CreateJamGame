@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://n8we2xc6e27g" path="res://scenes/shell.gd" id="1_6fq18"]
 [ext_resource type="PackedScene" uid="uid://b43ghlt3m8tu6" path="res://art/models/shell.glb" id="1_bo4bk"]
 [ext_resource type="Texture2D" uid="uid://cp0exnnt1nkis" path="res://art/textures/particle_smoke.png" id="2_sb42f"]
+[ext_resource type="Texture2D" uid="uid://cmaq3gd8basfo" path="res://art/textures/particle_smoke_small.png" id="3_qr86p"]
 [ext_resource type="Material" uid="uid://cqmxglr4im0yw" path="res://scenes/explosionSmoke.tres" id="4_k7uw7"]
 [ext_resource type="Material" uid="uid://dygrgkkpymdoj" path="res://scenes/explosionFire.tres" id="5_qr86p"]
 
@@ -32,10 +33,10 @@ collision_mode = 1
 collision_friction = 0.0
 collision_bounce = 0.0
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ic0tf"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_fdvxk"]
 transparency = 1
 vertex_color_use_as_albedo = true
-albedo_texture = ExtResource("2_sb42f")
+albedo_texture = ExtResource("3_qr86p")
 billboard_mode = 3
 billboard_keep_scale = true
 particles_anim_h_frames = 1
@@ -43,7 +44,7 @@ particles_anim_v_frames = 1
 particles_anim_loop = false
 
 [sub_resource type="QuadMesh" id="QuadMesh_pjbp5"]
-material = SubResource("StandardMaterial3D_ic0tf")
+material = SubResource("StandardMaterial3D_fdvxk")
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_vvj04"]
 transparency = 1
