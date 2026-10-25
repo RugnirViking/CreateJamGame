@@ -1,7 +1,7 @@
 extends Control
 
 # The cactus's existing googly eyes face +Z, toward these portrait cameras.
-const CACTUS := preload("res://art/models/cactus.glb")
+const CACTUS := preload("res://art/models/cactusCowboy.glb")
 const CAT := preload("res://art/models/cat_of_ages.glb")
 const SWAY_SPEED := 3.2
 const SWAY_ANGLE := 0.18

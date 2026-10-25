@@ -562,9 +562,13 @@ script = ExtResource("2_iyuft")
 engine_force_value = 150.0
 max_forward_speed = 4.8
 max_reverse_speed = 4.8
+max_turn_speed = 2.0
+turn_response = 2.5
+idle_brake = 2.5
 turning_grip = 1.0
 righting_strength = 100.0
 shell_scene = ExtResource("3_l6a71")
+reload_duration = 0.7
 metadata/is_cat_tank = true
 metadata/tank_model = "cattank"
 
@@ -764,8 +768,8 @@ suspension_max_force = 1500.0
 
 [node name="followcam" type="Node3D" parent="." unique_id=559551088]
 script = ExtResource("15_68v41")
-turret_traverse_speed = 30.0
-gun_elevation_speed = 15.0
+turret_traverse_speed = 75.0
+gun_elevation_speed = 45.0
 
 [node name="3dpersoncam" type="Camera3D" parent="followcam" unique_id=1647198482]
 transform = Transform3D(-4.180272e-08, -0.29227328, 0.9563349, -1.2775669e-08, 0.9563349, 0.29227328, -1, 0, -4.371139e-08, 1.1696591, 0.679645, 0)
@@ -981,6 +985,7 @@ horizontal_alignment = 1
 
 [node name="YouWin" type="Control" parent="AimHUD" unique_id=155603827]
 visible = false
+layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -990,6 +995,7 @@ mouse_filter = 2
 
 [node name="Text" type="VBoxContainer" parent="AimHUD/YouWin" unique_id=1801088600]
 layout_mode = 1
+anchors_preset = -1
 anchor_left = 0.5
 anchor_top = 0.08
 anchor_right = 0.5

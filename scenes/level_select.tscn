@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://cmeghsrkiaame"]
 
 [ext_resource type="Script" uid="uid://bpjkuyr1aqh0u" path="res://scripts/level_select.gd" id="1_script"]
+[ext_resource type="AudioStream" path="res://sound/tank choose sound effect.wav" id="3_selection_sound"]
 [ext_resource type="FontFile" uid="uid://6mb71bm5wpol" path="res://ussr-stencil/USSR STENCIL/USSR STENCIL WEBFONT.ttf" id="2_stencil"]
 
 [sub_resource type="StyleBoxFlat" id="Style_hover"]
@@ -136,6 +137,11 @@ size = 6.0
 [node name="Sun" type="DirectionalLight3D" parent="Interface/Tank0/Preview/Viewport/World" unique_id=730507897]
 transform = Transform3D(0.81915206, 0.43938506, -0.36868784, 0, 0.64278764, 0.76604444, 0.57357645, -0.62750685, 0.5265408, 0, 0, 0)
 light_energy = 1.1
+
+[node name="SelectionSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("3_selection_sound")
+volume_db = -8.0
+bus = &"UI"
 
 [node name="Select" type="Button" parent="Interface/Tank0" unique_id=314260095]
 layout_mode = 0

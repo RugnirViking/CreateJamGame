@@ -71,7 +71,7 @@ func _ready() -> void:
 		world.add_child(holder)
 		_previews.append(holder)
 		var button := interface.get_node("Tank%d/Select" % i) as Button
-		button.pressed.connect(_select.bind(i))
+		button.pressed.connect(_select_from_input.bind(i))
 		button.tooltip_text = Levels.LEVELS[i].name
 		var stamp := TextureRect.new()
 		stamp.name = "CompletedStamp"
@@ -128,7 +128,7 @@ func _process(delta: float) -> void:
 
 
 func _navigate(direction: int) -> void:
-	_select(wrapi(selected_index + direction, 0, Levels.LEVELS.size()))
+	_select_from_input(wrapi(selected_index + direction, 0, Levels.LEVELS.size()))
 
 
 func _select(index: int) -> void:

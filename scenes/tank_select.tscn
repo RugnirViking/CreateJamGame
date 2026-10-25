@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://iyqugdchlvqo"]
 
 [ext_resource type="Script" uid="uid://1r7j6pyqxwfa" path="res://scripts/tank_select.gd" id="1_script"]
+[ext_resource type="AudioStream" path="res://sound/tank choose sound effect.wav" id="3_selection_sound"]
 [ext_resource type="FontFile" uid="uid://6mb71bm5wpol" path="res://ussr-stencil/USSR STENCIL/USSR STENCIL WEBFONT.ttf" id="2_stencil"]
 
 [sub_resource type="StyleBoxFlat" id="Style_hover"]
@@ -539,3 +540,8 @@ theme_override_styles/pressed = SubResource("Style_deploy")
 theme_override_styles/hover = SubResource("Style_deploy")
 theme_override_styles/disabled = SubResource("Style_deploy")
 text = "DEPLOY"
+
+[node name="SelectionSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("3_selection_sound")
+volume_db = -8.0
+bus = &"UI"

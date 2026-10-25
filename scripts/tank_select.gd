@@ -4,6 +4,7 @@ const DESIGN_SIZE := Vector2(1280, 720)
 
 @onready var interface: Control = $Interface
 @onready var tank_name: Label = $Interface/TankName
+@onready var selection_sound: AudioStreamPlayer = $SelectionSound
 
 @export var pulse_min_scale := 1.5
 @export var pulse_max_scale := 3.0
@@ -53,7 +54,7 @@ func _ready() -> void:
 		data.erase("preview")
 		_stats.append(data)
 		var button := interface.get_node("Tank%d/Select" % i) as Button
-		button.pressed.connect(_select.bind(i))
+		button.pressed.connect(_select_from_input.bind(i))
 		button.tooltip_text = TankCatalog.TANKS[i].name
 	$Interface/Deploy.pressed.connect(_deploy)
 	_select(selected_index)
@@ -118,7 +119,15 @@ func _input(event: InputEvent) -> void:
 
 
 func _navigate(direction: int) -> void:
-	_select(wrapi(selected_index + direction, 0, TankCatalog.TANKS.size()))
+	_select_from_input(wrapi(selected_index + direction, 0, TankCatalog.TANKS.size()))
+
+
+func _select_from_input(index: int) -> void:
+	if _deploying:
+		return
+	_select(index)
+	# Restart on each selection so fast clicks still have an immediate attack.
+	selection_sound.play()
 
 
 func _select(index: int) -> void:
