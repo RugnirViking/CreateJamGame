@@ -7,7 +7,6 @@ extends Control
 @onready var titleLabel : Label = $Title
 @onready var crosshair : TextureRect = $CrosshairNobg
 @onready var boom_sound: AudioStreamPlayer = $AudioStreamPlayer
-@onready var title_theme: AudioStreamPlayer = $titlemusic
 @onready var menu_buttons: VBoxContainer = $MenuButtons
 @onready var controls_dialog: AcceptDialog = $ControlsDialog
 @onready var menu_camera: Camera3D = $Camera3D
@@ -61,7 +60,7 @@ func _ready() -> void:
 			button.modulate.a = 1.0
 			button.disabled = false
 		$MenuButtons/Play.grab_focus()
-		title_theme.play()
+		MenuMusic.play_if_stopped()
 		return
 	# Let each boom finish while later letters play their own sound.
 	boom_sound.max_polyphony = titleLabel.get_total_character_count() + 1
@@ -78,7 +77,7 @@ func _ready() -> void:
 	await get_tree().create_timer(0.5).timeout
 	crosshair.visible = true
 	boom_sound.play()
-	title_theme.play()
+	MenuMusic.play_if_stopped()
 	await _show_menu()
 
 

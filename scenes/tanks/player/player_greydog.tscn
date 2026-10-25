@@ -1,4 +1,4 @@
-[gd_scene format=4 uid="uid://b75cud28pvtwi"]
+[gd_scene format=4 uid="uid://b4m4rwhonevgi"]
 
 [ext_resource type="Script" uid="uid://rcupwc8rcwgj" path="res://scripts/chevron_target.gd" id="1_30eee"]
 [ext_resource type="Script" uid="uid://onak2a4unfnh" path="res://scripts/playertank_tracks.gd" id="2_612cf"]
@@ -11,6 +11,7 @@
 [ext_resource type="AudioStream" uid="uid://dcltjsue2pqbs" path="res://sound/Victory fanfare new.wav" id="9_v4u24"]
 [ext_resource type="AudioStream" uid="uid://deesqmnqkgtoh" path="res://sound/Explosion theme 2death.wav" id="10_f725q"]
 [ext_resource type="Texture2D" uid="uid://cp0exnnt1nkis" path="res://art/textures/particle_smoke.png" id="11_76b8s"]
+[ext_resource type="AudioStream" uid="uid://b6ephob84the2" path="res://sound/hornofdoom.mp3" id="11_xflpo"]
 [ext_resource type="Material" uid="uid://7fj4l01nfry8" path="res://scenes/wreckSmoke.tres" id="12_nb8dt"]
 [ext_resource type="Material" uid="uid://dygrgkkpymdoj" path="res://scenes/explosionFire.tres" id="13_efmfu"]
 [ext_resource type="Material" uid="uid://cqmxglr4im0yw" path="res://scenes/explosionSmoke.tres" id="14_uqxsd"]
@@ -659,6 +660,11 @@ stream = ExtResource("9_v4u24")
 [node name="deathexplosion" type="AudioStreamPlayer" parent="vehicle" unique_id=1460202815]
 stream = ExtResource("10_f725q")
 volume_db = 12.0
+
+[node name="hornofdoom" type="AudioStreamPlayer" parent="vehicle" unique_id=1477526076]
+stream = ExtResource("11_xflpo")
+volume_db = 12.0
+max_polyphony = 3
 
 [node name="left_track_particles" type="CPUParticles3D" parent="vehicle" unique_id=44376467]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.45122024, -0.18, 0.22703455)

@@ -7,6 +7,7 @@ func _initialize() -> void:
 
 
 func _run() -> void:
+	root.size = Vector2i(1280, 720)
 	set_meta("skip_menu_intro", true)
 	assert(change_scene_to_file("res://scenes/mainmenu.tscn") == OK)
 	for frame in range(3):
@@ -22,7 +23,7 @@ func _run() -> void:
 		var source := (load(TankCatalog.TANKS[index].path) as PackedScene).instantiate()
 		var vehicle := source.get_node("vehicle") as playertank_tracks
 		var aim := source.get_node("followcam")
-		screen._select(index, false)
+		screen._select(index)
 		var data: Dictionary = screen._stats[index]
 		assert(data.forward_speed == vehicle.max_forward_speed)
 		assert(data.reverse_speed == vehicle.max_reverse_speed)
@@ -35,12 +36,13 @@ func _run() -> void:
 		assert(data.reload_time == vehicle.reload_duration)
 		assert(screen.tank_name.text == TankCatalog.TANKS[index].name)
 		assert(screen.get_node("Interface/Stats/HP/Value").text == "%d HP" % vehicle.hits_to_destroy)
-		assert(screen._previews[index].position.is_equal_approx(Vector3(0, 0.37, 0)))
+		assert(screen.get_node("Interface/Tank%d/Select" % index).button_pressed)
+		assert(screen.get_node("Interface/Tank%d/Preview" % index).size == Vector2(224, 224))
 		source.free()
-	screen._select(0, false)
-	screen.get_node("Interface/Previous").pressed.emit()
+	screen._select(0)
+	screen._navigate(-1)
 	assert(screen.selected_index == 4, "Left navigation must wrap")
-	screen.get_node("Interface/Next").pressed.emit()
+	screen._navigate(1)
 	assert(screen.selected_index == 0, "Right navigation must wrap")
 	var key := InputEventKey.new()
 	key.pressed = true
@@ -54,12 +56,39 @@ func _run() -> void:
 	Input.parse_input_event(key)
 	await process_frame
 	assert(screen.selected_index == 0, "A must navigate left")
-	screen.dots.get_child(3).pressed.emit()
-	assert(screen.selected_index == 3, "Number buttons must select directly")
-	for frame in range(30):
-		await process_frame
-	assert(screen._previews[3].position.is_equal_approx(Vector3(0, 0.37, 0)))
-	print("PASS carousel navigation, wraparound, scene-derived stats, and animated focus")
+	var tile := screen.get_node("Interface/Tank3/Select") as Button
+	var motion := InputEventMouseMotion.new()
+	motion.position = tile.get_global_rect().get_center()
+	motion.global_position = motion.position
+	Input.parse_input_event(motion)
+	await process_frame
+	var click := InputEventMouseButton.new()
+	click.position = tile.get_global_rect().get_center()
+	click.global_position = click.position
+	click.button_index = MOUSE_BUTTON_LEFT
+	click.pressed = true
+	Input.parse_input_event(click)
+	await process_frame
+	click = click.duplicate()
+	click.pressed = false
+	Input.parse_input_event(click)
+	await process_frame
+	assert(screen.selected_index == 3, "Clicking a tank square must select it")
+	screen.set_process(false)
+	screen._select(3)
+	screen._process(0.0)
+	assert(screen._previews[3].scale.is_equal_approx(Vector3.ONE * 1.5))
+	screen._process(0.25)
+	assert(screen._previews[3].scale.is_equal_approx(Vector3.ONE * 2.25))
+	screen._process(0.25)
+	assert(screen._previews[3].scale.is_equal_approx(Vector3.ONE * 3.0))
+	screen._process(0.5)
+	assert(screen._previews[3].scale.is_equal_approx(Vector3.ONE * 1.5))
+	for i in range(5):
+		assert(screen._previews[i].rotation.y > 0.0, "All five previews must turn")
+		if i != 3:
+			assert(screen._previews[i].scale.is_equal_approx(Vector3.ONE * 1.5))
+	print("PASS clickable square previews, scene-derived stats, and exact 1-second 1.5x–3x pulse")
 	key = InputEventKey.new()
 	key.pressed = true
 	key.keycode = KEY_ESCAPE

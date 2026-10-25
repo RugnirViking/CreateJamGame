@@ -22,8 +22,8 @@ Run `godot --headless --path . --script tests/player_tank_driving.gd --fixed-fps
 
 ## Tank selection
 
-The startup flow is `mainmenu.tscn` → `tank_select.tscn` → `main.tscn`. Browse with the left/right buttons, arrow keys, A/D, or a gamepad; number buttons jump to a tank. Escape returns to the menu. Deploy starts the level with that player scene, retaining the level's spawn transform and target marker.
+The startup flow is `mainmenu.tscn` → `tank_select.tscn` → `main.tscn`. Click one of the five square tank previews to select it; arrow keys, A/D, and a gamepad also navigate. All five turn slowly under an angled directional light. The selected model pulses from 1.5× to 3× and back every second. The eight stats sit in two columns of four in the bottom panel, with Deploy on the right. Escape returns to the menu. Deploy starts the level with that player scene, retaining the level's spawn transform and target marker.
 
-`scripts/tank_catalog.gd` reads stats from off-tree player scene instances, including scene overrides and script defaults. The showroom copies only the intact visual model, so preview tanks never run player physics. Forward/reverse speed is converted from m/s to km/h; aiming rates use degrees per second. Engine power displays the scene's `engine_force_value` setting.
+`scripts/tank_catalog.gd` reads stats from off-tree player scene instances, including scene overrides and script defaults. The previews copy only the intact visual model, so preview tanks never run player physics. Forward/reverse speed is converted from m/s to km/h; aiming rates use degrees per second. Engine power displays the scene's `engine_force_value` setting.
 
-Run `godot --headless --path . --script tests/tank_selection.gd --fixed-fps 60` to check the menu flow, carousel wraparound, keyboard navigation, stat sources, and deployment of all five tanks with correct enemy/boss targeting.
+Run `godot --headless --path . --script tests/tank_selection.gd --fixed-fps 60` to check the menu flow, clickable previews, pulse timing, keyboard navigation, stat sources, and deployment of all five tanks with correct enemy/boss targeting.
