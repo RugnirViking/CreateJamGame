@@ -818,7 +818,6 @@ mesh = SubResource("QuadMesh_t850l")
 surface_material_override/0 = SubResource("ShaderMaterial_chevron")
 
 [node name="AimHUD" type="CanvasLayer" parent="." unique_id=1437939724]
-visible = false
 
 [node name="VignetteShader" type="ColorRect" parent="AimHUD" unique_id=398341898]
 visible = false
