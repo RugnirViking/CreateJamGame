@@ -11,6 +11,7 @@
 [ext_resource type="AudioStream" uid="uid://dcltjsue2pqbs" path="res://sound/Victory fanfare new.wav" id="9_1k68b"]
 [ext_resource type="AudioStream" uid="uid://deesqmnqkgtoh" path="res://sound/Explosion theme 2death.wav" id="10_xxeww"]
 [ext_resource type="Texture2D" uid="uid://cp0exnnt1nkis" path="res://art/textures/particle_smoke.png" id="11_4ws7n"]
+[ext_resource type="AudioStream" uid="uid://b6ephob84the2" path="res://sound/hornofdoom.mp3" id="11_l6a71"]
 [ext_resource type="Material" uid="uid://7fj4l01nfry8" path="res://scenes/wreckSmoke.tres" id="12_5j38l"]
 [ext_resource type="Material" uid="uid://dygrgkkpymdoj" path="res://scenes/explosionFire.tres" id="13_7yet0"]
 [ext_resource type="Material" uid="uid://cqmxglr4im0yw" path="res://scenes/explosionSmoke.tres" id="14_n5ee5"]
@@ -597,6 +598,11 @@ stream = ExtResource("9_1k68b")
 [node name="deathexplosion" type="AudioStreamPlayer" parent="vehicle" unique_id=1460202815]
 stream = ExtResource("10_xxeww")
 volume_db = 12.0
+
+[node name="hornofdoom" type="AudioStreamPlayer" parent="vehicle" unique_id=1182427250]
+stream = ExtResource("11_l6a71")
+volume_db = 12.0
+max_polyphony = 3
 
 [node name="left_track_particles" type="CPUParticles3D" parent="vehicle" unique_id=44376467]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.28025937, -0.18, 0.29829466)

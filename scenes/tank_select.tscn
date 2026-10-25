@@ -51,7 +51,7 @@ Button/styles/pressed = SubResource("Style_hover")
 shader = ExtResource("3_background")
 
 [sub_resource type="StyleBoxFlat" id="Style_panel"]
-bg_color = Color(0.055, 0.077, 0.059, 0.97)
+bg_color = Color(0, 0, 0, 0.96862745)
 border_width_left = 1
 border_width_top = 1
 border_width_right = 1
@@ -77,6 +77,9 @@ top_radius = 1.65
 bottom_radius = 1.7
 height = 0.16
 radial_segments = 96
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pd4d0"]
+bg_color = Color(0.52156866, 0.5921569, 0.49019608, 1)
 
 [sub_resource type="StyleBoxFlat" id="Style_deploy_hover"]
 bg_color = Color(0.89, 0.91, 0.73, 1)
@@ -429,26 +432,19 @@ theme_override_font_sizes/font_size = 22
 text = "—"
 horizontal_alignment = 2
 
-[node name="FooterLine" type="ColorRect" parent="Interface" unique_id=96696487]
-layout_mode = 0
-offset_left = 48.0
-offset_top = 613.0
-offset_right = 1232.0
-offset_bottom = 614.0
-mouse_filter = 2
-color = Color(0.22, 0.27, 0.19, 1)
-
 [node name="Deploy" type="Button" parent="Interface" unique_id=1663066881]
 layout_mode = 0
 offset_left = 958.0
 offset_top = 633.0
 offset_right = 1232.0
 offset_bottom = 689.0
+theme_override_colors/font_color = Color(0.05882353, 0.09019608, 0.05490196, 1)
 theme_override_colors/font_focus_color = Color(0.06, 0.09, 0.055, 1)
 theme_override_colors/font_pressed_color = Color(0.06, 0.09, 0.055, 1)
 theme_override_colors/font_hover_color = Color(0.06, 0.09, 0.055, 1)
 theme_override_fonts/font = ExtResource("2_stencil")
 theme_override_font_sizes/font_size = 22
+theme_override_styles/normal = SubResource("StyleBoxFlat_pd4d0")
 theme_override_styles/pressed = SubResource("Style_deploy_hover")
 theme_override_styles/hover = SubResource("Style_deploy_hover")
 text = "DEPLOY TANK  →"

@@ -1,10 +1,8 @@
-[gd_scene format=4]
+[gd_scene format=4 uid="uid://cqk8vml14q4qh"]
 
-[ext_resource type="Script" path="res://scenes/enemytank.gd" id="1_ivi2v"]
-[ext_resource type="AudioStream" path="res://sound/Tank moving sound 2.wav" id="2_fgjyp"]
-[ext_resource type="Texture2D" path="res://art/textures/particle_smoke.png" id="3_7v2nh"]
-
-[ext_resource type="Script" path="res://scripts/tank_turret_hitbox.gd" id="99_turret_hitbox"]
+[ext_resource type="Script" uid="uid://mojgh72tsmjp" path="res://scenes/enemytank.gd" id="1_ivi2v"]
+[ext_resource type="Texture2D" uid="uid://cp0exnnt1nkis" path="res://art/textures/particle_smoke.png" id="3_7v2nh"]
+[ext_resource type="Script" uid="uid://b6oton3ttyk82" path="res://scripts/tank_turret_hitbox.gd" id="99_turret_hitbox"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_pjbp5"]
 transparency = 1
@@ -450,13 +448,6 @@ collision_mask = 3
 script = ExtResource("1_ivi2v")
 metadata/tank_model = "sdkfz"
 
-[node name="EngineSound" type="AudioStreamPlayer3D" parent="." unique_id=1687596822]
-stream = ExtResource("2_fgjyp")
-volume_db = -8.0
-unit_size = 4.0
-autoplay = true
-max_distance = 60.0
-
 [node name="left_track_particles" type="CPUParticles3D" parent="." unique_id=949335621]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.4255038, -0.18, 0.268)
 emitting = false
@@ -554,12 +545,12 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.07054309, 0)
 shape = SubResource("BoxShape3D_3g0ip")
 
 [node name="TurretCollisionShape" type="CollisionShape3D" parent="." unique_id=1141570100]
-script = ExtResource("99_turret_hitbox")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.33343083, 0.30957615, -0.00051927567)
 shape = SubResource("BoxShape3D_q1m1u")
+script = ExtResource("99_turret_hitbox")
 
 [node name="Wheel7" type="VehicleWheel3D" parent="." unique_id=1841650418]
-transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, -0.49380198, -0.051000000000000004, 0.268)
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, -0.49380198, -0.051, 0.268)
 use_as_traction = true
 wheel_roll_influence = 0.9
 wheel_radius = 0.119
@@ -570,7 +561,7 @@ suspension_stiffness = 100.0
 suspension_max_force = 1500.0
 
 [node name="Wheel8" type="VehicleWheel3D" parent="." unique_id=1841976928]
-transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, -0.49380198, -0.051000000000000004, -0.268)
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, -0.49380198, -0.051, -0.268)
 use_as_traction = true
 wheel_roll_influence = 0.9
 wheel_radius = 0.119
@@ -581,7 +572,7 @@ suspension_stiffness = 100.0
 suspension_max_force = 1500.0
 
 [node name="Wheel9" type="VehicleWheel3D" parent="." unique_id=930018183]
-transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, -0.20449622, -0.051000000000000004, 0.268)
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, -0.20449622, -0.051, 0.268)
 use_as_traction = true
 wheel_roll_influence = 0.9
 wheel_radius = 0.119
@@ -592,7 +583,7 @@ suspension_stiffness = 100.0
 suspension_max_force = 1500.0
 
 [node name="Wheel10" type="VehicleWheel3D" parent="." unique_id=913490112]
-transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, -0.20449622, -0.051000000000000004, -0.268)
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, -0.20449622, -0.051, -0.268)
 use_as_traction = true
 wheel_roll_influence = 0.9
 wheel_radius = 0.119
@@ -603,7 +594,7 @@ suspension_stiffness = 100.0
 suspension_max_force = 1500.0
 
 [node name="Wheel11" type="VehicleWheel3D" parent="." unique_id=327242932]
-transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 0.4255038, -0.051000000000000004, 0.268)
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 0.4255038, -0.051, 0.268)
 use_as_traction = true
 wheel_roll_influence = 0.9
 wheel_radius = 0.119
@@ -614,7 +605,7 @@ suspension_stiffness = 100.0
 suspension_max_force = 1500.0
 
 [node name="Wheel12" type="VehicleWheel3D" parent="." unique_id=1931051226]
-transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 0.4255038, -0.051000000000000004, -0.268)
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 0.4255038, -0.051, -0.268)
 use_as_traction = true
 wheel_roll_influence = 0.9
 wheel_radius = 0.119

@@ -1,10 +1,8 @@
-[gd_scene format=4]
+[gd_scene format=4 uid="uid://by2ss6kxk540j"]
 
-[ext_resource type="Script" path="res://scenes/enemytank.gd" id="1_yhq7o"]
-[ext_resource type="AudioStream" path="res://sound/Tank moving sound 2.wav" id="2_pyyhj"]
-[ext_resource type="Texture2D" path="res://art/textures/particle_smoke.png" id="3_xcd0t"]
-
-[ext_resource type="Script" path="res://scripts/tank_turret_hitbox.gd" id="99_turret_hitbox"]
+[ext_resource type="Script" uid="uid://mojgh72tsmjp" path="res://scenes/enemytank.gd" id="1_yhq7o"]
+[ext_resource type="Texture2D" uid="uid://cp0exnnt1nkis" path="res://art/textures/particle_smoke.png" id="3_xcd0t"]
+[ext_resource type="Script" uid="uid://b6oton3ttyk82" path="res://scripts/tank_turret_hitbox.gd" id="99_turret_hitbox"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_pjbp5"]
 transparency = 1
@@ -336,13 +334,6 @@ collision_mask = 3
 script = ExtResource("1_yhq7o")
 metadata/tank_model = "tog2"
 
-[node name="EngineSound" type="AudioStreamPlayer3D" parent="." unique_id=1687596822]
-stream = ExtResource("2_pyyhj")
-volume_db = -8.0
-unit_size = 4.0
-autoplay = true
-max_distance = 60.0
-
 [node name="left_track_particles" type="CPUParticles3D" parent="." unique_id=949335621]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.69074637, -0.18, 0.3011893)
 emitting = false
@@ -424,9 +415,9 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.040063847, 0)
 shape = SubResource("BoxShape3D_ko2fg")
 
 [node name="TurretCollisionShape" type="CollisionShape3D" parent="." unique_id=489839306]
-script = ExtResource("99_turret_hitbox")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.27655926, 0.25349164, 0)
 shape = SubResource("BoxShape3D_0ako8")
+script = ExtResource("99_turret_hitbox")
 
 [node name="Wheel7" type="VehicleWheel3D" parent="." unique_id=1534166539]
 transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, -0.7012368, -0.08, 0.3011893)
