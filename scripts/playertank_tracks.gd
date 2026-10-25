@@ -74,6 +74,13 @@ var _zeroing_started := false
 @onready var right_track_particles: CPUParticles3D = $right_track_particles
 
 func _ready() -> void:
+	# The HUD only displays information; clicks must reach gameplay input.
+	for control in you_win.get_parent().find_children("*", "Control", true, false):
+		control.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		control.focus_mode = Control.FOCUS_NONE
+	var victory_cactuses := Control.new()
+	victory_cactuses.set_script(preload("res://scripts/victory_cactuses.gd"))
+	you_win.add_child(victory_cactuses)
 	targetness = max_targetness
 	shell_fill.step = 0.0
 	shell_fill.value = shell_fill.max_value
@@ -110,6 +117,20 @@ func _check_targets_captured() -> void:
 	for marker in targets:
 		if marker.state != terrain_target_marker.State.CAPTURED:
 			return
+	_win()
+
+
+func _win() -> void:
+	if destroyed or you_win.visible:
+		return
+	# Record the scene that was won, even when it was launched directly in the editor.
+	var levels = preload("res://scripts/level_catalog.gd")
+	var path := get_tree().current_scene.scene_file_path
+	levels.mark_completed(path)
+	for index in levels.LEVELS.size():
+		if levels.LEVELS[index].path == path:
+			get_tree().set_meta("selected_level_index", index)
+			break
 	you_win.modulate.a = 0.0
 	zeroing_warning.hide()
 	you_win.show()
@@ -265,6 +286,23 @@ func _update_zeroing(speed: float, delta: float) -> void:
 
 
 func _input(event: InputEvent) -> void:
+	if you_win.visible:
+		if not event.is_echo() and event.is_action_pressed("next_level"):
+			get_viewport().set_input_as_handled()
+			Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+			get_tree().change_scene_to_file("res://scenes/level_select.tscn")
+		return
+	# Hidden test shortcut: Ctrl+Shift+F10 uses the normal victory presentation.
+	if event is InputEventKey and event.pressed and not event.echo and event.ctrl_pressed and event.shift_pressed and (event.physical_keycode == KEY_F10 or event.keycode == KEY_F10):
+		_win()
+		get_viewport().set_input_as_handled()
+		return
+	# Fire before GUI handling so overlays cannot swallow Space or clicks.
+	if not destroyed and not event.is_echo() and event.is_action_pressed("shoot"):
+		_zeroing_started = true
+		_spawn_shell()
+		get_viewport().set_input_as_handled()
+		return
 	if _zeroing_started or destroyed or you_win.visible:
 		return
 	for action in [&"accelerate", &"reverse", &"turn_left", &"turn_right", &"shoot", &"flip_tank", &"zoom_in", &"zoom_out"]:
@@ -274,9 +312,7 @@ func _input(event: InputEvent) -> void:
 
 
 func _unhandled_input(event: InputEvent) -> void:
-	if you_win.visible and event.is_action_pressed("next_level"):
-		# Reserve the action until another level is available.
-		get_viewport().set_input_as_handled()
+	if you_win.visible:
 		return
 	if destroyed:
 		if event.is_action_pressed("return_action"):
@@ -288,10 +324,6 @@ func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("flip_tank") and global_transform.basis.y.y < 0.2 and previous_speed < 5:
 		flip_tank_flag = true
 		sleeping = false
-	if event.is_action_pressed("shoot"):
-		_spawn_shell()
-			
-		
 
 func _spawn_shell() -> void:
 	if shell_scene == null or _reload_remaining > 0.0:

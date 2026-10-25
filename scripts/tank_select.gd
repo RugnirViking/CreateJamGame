@@ -58,6 +58,7 @@ func _ready() -> void:
 	$Interface/Deploy.pressed.connect(_deploy)
 	_select(selected_index)
 	$Interface/Deploy.grab_focus()
+	$Interface/Deploy.text = "CONTINUE"
 
 
 func _apply_preview_background() -> void:
@@ -166,8 +167,4 @@ func _deploy() -> void:
 	_deploying = true
 	get_tree().set_meta("selected_player_scene", TankCatalog.TANKS[selected_index].path)
 	$Interface/Deploy.disabled = true
-	$Interface/Deploy.text = "DEPLOYING…"
-	# Paint feedback before the level's terrain and scatter load.
-	await get_tree().process_frame
-	MenuMusic.stop()
-	get_tree().change_scene_to_file("res://scenes/main.tscn")
+	get_tree().change_scene_to_file("res://scenes/level_select.tscn")

@@ -105,6 +105,15 @@ func _run() -> void:
 	screen.get_node("Interface/Deploy").pressed.emit()
 	for frame in range(3):
 		await process_frame
+	assert(current_scene.scene_file_path == "res://scenes/level_select.tscn")
+	current_scene.get_node("Interface/Deploy").pressed.emit()
+	for frame in range(3):
+		await process_frame
+	assert(current_scene.scene_file_path == "res://scenes/levels/northwest.tscn")
+	# The original full map remains available, including its enemies and boss.
+	assert(change_scene_to_file("res://scenes/main.tscn") == OK)
+	for frame in range(3):
+		await process_frame
 	_assert_deployed(3)
 	for index in [0, 1, 2, 4]:
 		set_meta("selected_player_scene", TankCatalog.TANKS[index].path)

@@ -4,6 +4,8 @@ extends MeshInstance3D
 @export var imageCompressed: Texture2D
 @export var height_min: float = 0.0
 @export var height_max: float = 20.0
+## -1 uses the full map; 0–3 use NW, NE, SW, SE quarters.
+@export_range(-1, 3) var quadrant: int = -1
 
 # Click this in the Inspector after changing the settings.
 @export_tool_button("Rebuild terrain")
@@ -36,6 +38,8 @@ func rebuild() -> void:
 	if image.is_compressed():
 		if image.decompress() != OK:
 			return
+	if quadrant >= 0:
+		image = preload("res://scripts/level_catalog.gd").crop_quarter(image, quadrant)
 
 	# HeightMapShape3D requires RF, RH, or R8.
 	image.convert(Image.FORMAT_RF)

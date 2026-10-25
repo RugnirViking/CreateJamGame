@@ -1,0 +1,77 @@
+[gd_scene format=3]
+
+[ext_resource type="Shader" uid="uid://boyu2xlbxyggm" path="res://scenes/desertfloor.gdshader" id="1_a8y0u"]
+[ext_resource type="Script" uid="uid://bquxdtwomal5y" path="res://scripts/heightmap.gd" id="1_h2yge"]
+[ext_resource type="Texture2D" uid="uid://cm1xhajnlk8ww" path="res://art/textures/heightmap.jpg" id="2_1bvp3"]
+[ext_resource type="Texture2D" uid="uid://bnm3j7sl7nidr" path="res://art/Ground033_1K-JPG/Ground033_1K-JPG_NormalDX.jpg" id="2_jbj1t"]
+[ext_resource type="Texture2D" uid="uid://gbqhbixa4eam" path="res://art/Ground033_1K-JPG/Ground033_1K-JPG_Color.jpg" id="3_muem4"]
+[ext_resource type="Texture2D" uid="uid://lohd1crno7n0" path="res://art/textures/AllSkyFree_Sky_EpicGloriousPink_Equirect.png" id="5_lquwl"]
+[ext_resource type="AudioStream" uid="uid://csyda2p4rbfjt" path="res://sound/Desert level theme.wav" id="18_dp3eg"]
+[ext_resource type="PackedScene" uid="uid://ciofgswr4kqxj" path="res://scenes/tanks/player/player_cattank.tscn" id="18_gqmmt"]
+[ext_resource type="Script" path="res://scripts/quarter_level.gd" id="20_level"]
+[ext_resource type="PackedScene" path="res://scenes/scatter/solid_scatter.tscn" id="21_solid"]
+[ext_resource type="PackedScene" path="res://scenes/scatter/crushable_scatter.tscn" id="22_crushable"]
+[ext_resource type="PackedScene" path="res://scenes/scatter/cactus_visual.tscn" id="23_cactus"]
+[ext_resource type="PackedScene" path="res://scenes/scatter/cactus2_visual.tscn" id="24_cactus2"]
+[ext_resource type="PackedScene" path="res://scenes/scatter/desertgrass_visual.tscn" id="25_grass"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_jscy8"]
+render_priority = 0
+shader = ExtResource("1_a8y0u")
+shader_parameter/player_speed = 0.0
+shader_parameter/feather = 0.0
+shader_parameter/color_ground = Color(0.5686275, 0.5647059, 0.47058824, 1)
+shader_parameter/sand_texture = ExtResource("3_muem4")
+shader_parameter/normal_map = ExtResource("2_jbj1t")
+shader_parameter/uv_scale = 20.0
+shader_parameter/roughness_val = 0.8
+
+[sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_1bvp3"]
+panorama = ExtResource("5_lquwl")
+
+[sub_resource type="Sky" id="Sky_6fjuc"]
+sky_material = SubResource("PanoramaSkyMaterial_1bvp3")
+
+[sub_resource type="Environment" id="Environment_t850l"]
+background_mode = 2
+sky = SubResource("Sky_6fjuc")
+ambient_light_energy = 0.0
+
+[node name="QuarterLevel" type="StaticBody3D"]
+script = ExtResource("20_level")
+
+[node name="heightmap" type="MeshInstance3D" parent="."]
+material_override = SubResource("ShaderMaterial_jscy8")
+script = ExtResource("1_h2yge")
+imageCompressed = ExtResource("2_1bvp3")
+quadrant = 0
+
+[node name="heightmapCollision" type="CollisionShape3D" parent="."]
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.93259054, -0.3296269, 0.14704104, 0, 0.40738788, 0.9132552, -0.3609362, -0.8516932, 0.37992606, 0, 2.0636456, 0)
+shadow_enabled = true
+directional_shadow_mode = 1
+directional_shadow_max_distance = 70.0
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_t850l")
+
+[node name="BGMusic" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("18_dp3eg")
+autoplay = true
+
+[node name="playertank" parent="." instance=ExtResource("18_gqmmt")]
+
+[node name="SolidScatter" parent="." instance=ExtResource("21_solid")]
+area_size = Vector2(80, 80)
+center_clearance = 6.0
+ground_body_path = NodePath("..")
+
+[node name="CrushableScatter" parent="." instance=ExtResource("22_crushable")]
+source_scenes = Array[PackedScene]([ExtResource("23_cactus"), ExtResource("24_cactus2"), ExtResource("25_grass")])
+instance_count = 5000
+area_size = Vector2(200, 200)
+scatter_seed = 21757
+center_clearance = 6.0
+ground_body_path = NodePath("..")

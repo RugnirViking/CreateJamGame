@@ -1147,7 +1147,7 @@ theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 5
 theme_override_fonts/font = ExtResource("22_xft8j")
 theme_override_font_sizes/font_size = 24
-text = "PRESS ENTER TO MOVE TO NEXT LEVEL"
+text = "PRESS ENTER TO SELECT MISSION"
 horizontal_alignment = 1
 
 [node name="CameraDust" type="MultiMeshInstance3D" parent="." unique_id=2087921857]

@@ -1,0 +1,351 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/level_select.gd" id="1_script"]
+[ext_resource type="FontFile" path="res://ussr-stencil/USSR STENCIL/USSR STENCIL WEBFONT.ttf" id="2_stencil"]
+
+[sub_resource type="StyleBoxFlat" id="Style_hover"]
+bg_color = Color(0, 0, 0, 0)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.78039217, 0.8117647, 0.61960787, 1)
+
+[sub_resource type="StyleBoxFlat" id="Style_selected"]
+bg_color = Color(0, 0, 0, 0)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.78039217, 0.8117647, 0.61960787, 1)
+
+[sub_resource type="StyleBoxFlat" id="Style_tile"]
+bg_color = Color(0, 0, 0, 0)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.78039217, 0.8117647, 0.61960787, 1)
+
+[sub_resource type="StyleBoxFlat" id="Style_panel"]
+bg_color = Color(0, 0, 0, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.78039217, 0.8117647, 0.61960787, 1)
+
+[sub_resource type="Theme" id="Theme_UI"]
+default_font = ExtResource("2_stencil")
+default_font_size = 16
+Button/colors/font_color = Color(0.78039217, 0.8117647, 0.61960787, 1)
+Button/colors/font_disabled_color = Color(0.78039217, 0.8117647, 0.61960787, 1)
+Button/colors/font_focus_color = Color(0.78039217, 0.8117647, 0.61960787, 1)
+Button/colors/font_hover_color = Color(0.78039217, 0.8117647, 0.61960787, 1)
+Button/colors/font_pressed_color = Color(0.78039217, 0.8117647, 0.61960787, 1)
+Button/styles/focus = SubResource("Style_hover")
+Button/styles/hover = SubResource("Style_hover")
+Button/styles/hover_pressed = SubResource("Style_selected")
+Button/styles/normal = SubResource("Style_tile")
+Button/styles/pressed = SubResource("Style_selected")
+Label/colors/font_color = Color(0.78039217, 0.8117647, 0.61960787, 1)
+TooltipLabel/colors/font_color = Color(0.78039217, 0.8117647, 0.61960787, 1)
+TooltipPanel/styles/panel = SubResource("Style_panel")
+
+[sub_resource type="Environment" id="Environment_preview"]
+background_mode = 1
+ambient_light_source = 3
+ambient_light_color = Color(1, 1, 1, 1)
+ambient_light_energy = 0.3
+
+[sub_resource type="StyleBoxFlat" id="Style_deploy"]
+bg_color = Color(0.78039217, 0.8117647, 0.61960787, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.78039217, 0.8117647, 0.61960787, 1)
+
+[node name="LevelSelect" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = SubResource("Theme_UI")
+script = ExtResource("1_script")
+
+[node name="Background" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0, 0, 0, 1)
+
+[node name="Interface" type="Control" parent="."]
+anchors_preset = 0
+offset_right = 1280.0
+offset_bottom = 720.0
+
+[node name="Title" type="Label" parent="Interface"]
+layout_mode = 0
+offset_left = 48.0
+offset_top = 62.0
+offset_right = 1232.0
+offset_bottom = 122.0
+theme_override_font_sizes/font_size = 42
+text = "CHOOSE LEVEL"
+horizontal_alignment = 1
+
+[node name="Tank0" type="Control" parent="Interface"]
+anchors_preset = 0
+offset_left = 168.0
+offset_top = 180.0
+offset_right = 392.0
+offset_bottom = 452.0
+mouse_filter = 2
+
+[node name="Preview" type="SubViewportContainer" parent="Interface/Tank0"]
+layout_mode = 0
+offset_right = 224.0
+offset_bottom = 224.0
+mouse_filter = 2
+stretch = true
+
+[node name="Viewport" type="SubViewport" parent="Interface/Tank0/Preview"]
+own_world_3d = true
+handle_input_locally = false
+size = Vector2i(224, 224)
+render_target_update_mode = 4
+
+[node name="World" type="Node3D" parent="Interface/Tank0/Preview/Viewport"]
+
+[node name="Environment" type="WorldEnvironment" parent="Interface/Tank0/Preview/Viewport/World"]
+environment = SubResource("Environment_preview")
+
+[node name="Camera" type="Camera3D" parent="Interface/Tank0/Preview/Viewport/World"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.7, 2.2, 5)
+projection = 1
+current = true
+size = 6.0
+
+[node name="Sun" type="DirectionalLight3D" parent="Interface/Tank0/Preview/Viewport/World"]
+transform = Transform3D(0.81915206, 0.43938506, -0.36868784, 0, 0.64278764, 0.76604444, 0.57357645, -0.62750685, 0.5265408, 0, 0, 0)
+light_energy = 1.1
+
+[node name="Select" type="Button" parent="Interface/Tank0"]
+layout_mode = 0
+offset_right = 224.0
+offset_bottom = 224.0
+toggle_mode = true
+
+[node name="Tank1" type="Control" parent="Interface"]
+anchors_preset = 0
+offset_left = 408.0
+offset_top = 180.0
+offset_right = 632.0
+offset_bottom = 452.0
+mouse_filter = 2
+
+[node name="Preview" type="SubViewportContainer" parent="Interface/Tank1"]
+layout_mode = 0
+offset_right = 224.0
+offset_bottom = 224.0
+mouse_filter = 2
+stretch = true
+
+[node name="Viewport" type="SubViewport" parent="Interface/Tank1/Preview"]
+own_world_3d = true
+handle_input_locally = false
+size = Vector2i(224, 224)
+render_target_update_mode = 4
+
+[node name="World" type="Node3D" parent="Interface/Tank1/Preview/Viewport"]
+
+[node name="Environment" type="WorldEnvironment" parent="Interface/Tank1/Preview/Viewport/World"]
+environment = SubResource("Environment_preview")
+
+[node name="Camera" type="Camera3D" parent="Interface/Tank1/Preview/Viewport/World"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.7, 2.2, 5)
+projection = 1
+current = true
+size = 6.0
+
+[node name="Sun" type="DirectionalLight3D" parent="Interface/Tank1/Preview/Viewport/World"]
+transform = Transform3D(0.81915206, 0.43938506, -0.36868784, 0, 0.64278764, 0.76604444, 0.57357645, -0.62750685, 0.5265408, 0, 0, 0)
+light_energy = 1.1
+
+[node name="Select" type="Button" parent="Interface/Tank1"]
+layout_mode = 0
+offset_right = 224.0
+offset_bottom = 224.0
+toggle_mode = true
+
+[node name="Tank2" type="Control" parent="Interface"]
+anchors_preset = 0
+offset_left = 648.0
+offset_top = 180.0
+offset_right = 872.0
+offset_bottom = 452.0
+mouse_filter = 2
+
+[node name="Preview" type="SubViewportContainer" parent="Interface/Tank2"]
+layout_mode = 0
+offset_right = 224.0
+offset_bottom = 224.0
+mouse_filter = 2
+stretch = true
+
+[node name="Viewport" type="SubViewport" parent="Interface/Tank2/Preview"]
+own_world_3d = true
+handle_input_locally = false
+size = Vector2i(224, 224)
+render_target_update_mode = 4
+
+[node name="World" type="Node3D" parent="Interface/Tank2/Preview/Viewport"]
+
+[node name="Environment" type="WorldEnvironment" parent="Interface/Tank2/Preview/Viewport/World"]
+environment = SubResource("Environment_preview")
+
+[node name="Camera" type="Camera3D" parent="Interface/Tank2/Preview/Viewport/World"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.7, 2.2, 5)
+projection = 1
+current = true
+size = 6.0
+
+[node name="Sun" type="DirectionalLight3D" parent="Interface/Tank2/Preview/Viewport/World"]
+transform = Transform3D(0.81915206, 0.43938506, -0.36868784, 0, 0.64278764, 0.76604444, 0.57357645, -0.62750685, 0.5265408, 0, 0, 0)
+light_energy = 1.1
+
+[node name="Select" type="Button" parent="Interface/Tank2"]
+layout_mode = 0
+offset_right = 224.0
+offset_bottom = 224.0
+toggle_mode = true
+
+[node name="Tank3" type="Control" parent="Interface"]
+anchors_preset = 0
+offset_left = 888.0
+offset_top = 180.0
+offset_right = 1112.0
+offset_bottom = 452.0
+mouse_filter = 2
+
+[node name="Preview" type="SubViewportContainer" parent="Interface/Tank3"]
+layout_mode = 0
+offset_right = 224.0
+offset_bottom = 224.0
+mouse_filter = 2
+stretch = true
+
+[node name="Viewport" type="SubViewport" parent="Interface/Tank3/Preview"]
+own_world_3d = true
+handle_input_locally = false
+size = Vector2i(224, 224)
+render_target_update_mode = 4
+
+[node name="World" type="Node3D" parent="Interface/Tank3/Preview/Viewport"]
+
+[node name="Environment" type="WorldEnvironment" parent="Interface/Tank3/Preview/Viewport/World"]
+environment = SubResource("Environment_preview")
+
+[node name="Camera" type="Camera3D" parent="Interface/Tank3/Preview/Viewport/World"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.7, 2.2, 5)
+projection = 1
+current = true
+size = 6.0
+
+[node name="Sun" type="DirectionalLight3D" parent="Interface/Tank3/Preview/Viewport/World"]
+transform = Transform3D(0.81915206, 0.43938506, -0.36868784, 0, 0.64278764, 0.76604444, 0.57357645, -0.62750685, 0.5265408, 0, 0, 0)
+light_energy = 1.1
+
+[node name="Select" type="Button" parent="Interface/Tank3"]
+layout_mode = 0
+offset_right = 224.0
+offset_bottom = 224.0
+toggle_mode = true
+
+[node name="TankName" type="Label" parent="Interface"]
+layout_mode = 0
+offset_left = 48.0
+offset_top = 466.0
+offset_right = 968.0
+offset_bottom = 498.0
+theme_override_font_sizes/font_size = 24
+text = "GREEN"
+
+[node name="Stats" type="Panel" parent="Interface"]
+layout_mode = 0
+offset_left = 48.0
+offset_top = 510.0
+offset_right = 968.0
+offset_bottom = 680.0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("Style_panel")
+
+[node name="Description" type="Label" parent="Interface/Stats"]
+layout_mode = 0
+offset_left = 24.0
+offset_top = 18.0
+offset_right = 690.0
+offset_bottom = 150.0
+theme_override_font_sizes/font_size = 22
+autowrap_mode = 3
+
+[node name="Deploy" type="Button" parent="Interface"]
+layout_mode = 0
+offset_left = 1008.0
+offset_top = 564.0
+offset_right = 1232.0
+offset_bottom = 628.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_focus_color = Color(0, 0, 0, 1)
+theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
+theme_override_colors/font_disabled_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 24
+theme_override_styles/normal = SubResource("Style_deploy")
+theme_override_styles/pressed = SubResource("Style_deploy")
+theme_override_styles/hover = SubResource("Style_deploy")
+theme_override_styles/disabled = SubResource("Style_deploy")
+text = "DEPLOY"
+
+[node name="SelectedTank" type="Control" parent="Interface"]
+offset_left = 798.0
+offset_top = 513.0
+offset_right = 962.0
+offset_bottom = 677.0
+mouse_filter = 2
+
+[node name="Preview" type="SubViewportContainer" parent="Interface/SelectedTank"]
+layout_mode = 0
+offset_right = 164.0
+offset_bottom = 164.0
+mouse_filter = 2
+stretch = true
+
+[node name="Viewport" type="SubViewport" parent="Interface/SelectedTank/Preview"]
+own_world_3d = true
+handle_input_locally = false
+size = Vector2i(164, 164)
+render_target_update_mode = 4
+
+[node name="World" type="Node3D" parent="Interface/SelectedTank/Preview/Viewport"]
+
+[node name="Environment" type="WorldEnvironment" parent="Interface/SelectedTank/Preview/Viewport/World"]
+environment = SubResource("Environment_preview")
+
+[node name="Camera" type="Camera3D" parent="Interface/SelectedTank/Preview/Viewport/World"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.7, 2.2, 5)
+projection = 1
+current = true
+size = 6.0
+
+[node name="Sun" type="DirectionalLight3D" parent="Interface/SelectedTank/Preview/Viewport/World"]
+transform = Transform3D(0.81915206, 0.43938506, -0.36868784, 0, 0.64278764, 0.76604444, 0.57357645, -0.62750685, 0.5265408, 0, 0, 0)
+light_energy = 1.1
+
