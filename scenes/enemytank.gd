@@ -11,10 +11,19 @@ extends VehicleBody3D
 @export_range(0.1, 10.0, 0.1) var fire_interval := 1.5
 @export_range(0.0, 180.0, 0.1) var fire_angle_degrees := 10.0
 
+@export_group("Scene References")
+@export_node_path("Node3D") var model_path := NodePath("Model")
+@export_node_path("Node3D") var wreck_path := NodePath("Wreck")
+@export_node_path("Node3D") var turret_path := NodePath("Model/TurretRotation")
+@export_node_path("Node3D") var gun_elevation_path := NodePath("Model/TurretRotation/GunElevation")
+
+@onready var active_model: Node3D = get_node(model_path)
+@onready var active_wreck: Node3D = get_node(wreck_path)
+@onready var turret: Node3D = get_node(turret_path)
+@onready var gun_elevation: Node3D = get_node(gun_elevation_path)
+@onready var muzzle: Marker3D = gun_elevation.get_node("Muzzle")
+
 @onready var playertank: playertank_tracks = get_tree().current_scene.get_node_or_null("playertank/vehicle") as playertank_tracks
-@onready var turret: Node3D = $tank2/TurretRotation
-@onready var gun_elevation: Node3D = $tank2/TurretRotation/Cube_004/GunElevation
-@onready var muzzle: Marker3D = $tank2/TurretRotation/Cube_004/GunElevation/Muzzle
 
 var shell_hits: int = 0
 var destroyed: bool = false
@@ -23,7 +32,7 @@ var _fire_cooldown := 0.0
 
 
 func _ready() -> void:
-	_darken_wreck($tankTOG2Destroyed)
+	_darken_wreck(active_wreck)
 	_health_bar = Sprite3D.new()
 	_health_bar.name = "HealthBar"
 	_health_bar.position = Vector3(0.25, 0.85, 0.0)
@@ -115,8 +124,8 @@ func receive_shell_hit() -> void:
 	if shell_hits < hits_to_destroy:
 		return
 	destroyed = true
-	$tank2.hide()
-	$tankTOG2Destroyed.show()
+	active_model.hide()
+	active_wreck.show()
 	$EngineSound.stop()
 	$left_track_particles.emitting = false
 	$right_track_particles.emitting = false

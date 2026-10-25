@@ -18,9 +18,9 @@ const MAX_ZOOM := 3.0
 @export_range(1.0, 40.0, 0.5) var sniper_hull_rotation_response := 5.0
 
 @onready var tank: playertank_tracks = $"../vehicle"
-@onready var turret: Node3D = $"../vehicle/tank1/TurretRotation"
-@onready var gun_elevation: Node3D = $"../vehicle/tank1/TurretRotation/Cube_001/GunElevation"
-@onready var muzzle: Marker3D = $"../vehicle/tank1/TurretRotation/Cube_001/GunElevation/Muzzle"
+@onready var turret: Node3D = tank.turret
+@onready var gun_elevation: Node3D = tank.gun_elevation
+@onready var muzzle: Marker3D = tank.muzzle
 @onready var crosshair: TextureRect = $"../AimHUD/Crosshair"
 @onready var camera: Camera3D = $"3dpersoncam"
 @onready var sniper_camera: Camera3D = $"../vehicle/snipercam"
@@ -49,11 +49,6 @@ var _sniper_mount_offset := Vector3.ZERO
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	if tank.is_cat:
-		turret = $"../vehicle/cattank/TurretRotation"
-		# The cat has no barrel mesh: pitch only the firing direction at its mount.
-		gun_elevation = $"../vehicle/cattank/TurretRotation/GunElevation"
-		muzzle = tank.muzzle
 	global_position = tank.global_position;
 	tank_rotation = tank.rotation
 	sniper_camera.top_level = true
@@ -97,6 +92,10 @@ func _process(delta: float) -> void:
 	if tank.throttle<0:
 		targetYRot = tank_rotation.y+PI;
 	
+	# Temporarily double the rotation limit when more than a quarter-turn behind.
+	var angle_gap := absf(wrapf(targetYRot - yRot, -PI, PI))
+	rot_speed = rot_max_speed * (2.0 if angle_gap > PI / 2.0 else 1.0)
+
 	rotation.y = rotate_toward(yRot, targetYRot, rot_speed * delta * (1+speed_rot_speed_mult*tank.linear_velocity.length()))
 	if sniper_mode:
 		_sync_sniper_camera(delta)

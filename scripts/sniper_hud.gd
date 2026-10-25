@@ -3,6 +3,7 @@ extends Control
 @export var line_color := Color(0.75, 0.94, 0.79, 0.95)
 @onready var minimap: ColorRect = $"../ColorRect"
 @onready var tank: Node3D = $"../../vehicle"
+@onready var target_indicator: Node3D = $"../.."
 @onready var camera_controller: Node3D = $"../../followcam"
 var turret_yaw := 0.0
 var gun_pitch := 0.0
@@ -26,19 +27,14 @@ func update_aim(yaw: float, pitch: float) -> void:
 
 func _update_target_direction() -> void:
 	_target_direction = Vector2.ZERO
-	var nearest_distance := INF
-	for node in get_tree().get_nodes_in_group(&"terrain_target_markers"):
-		var marker := node as terrain_target_marker
-		if marker == null or marker.state == terrain_target_marker.State.CAPTURED or not marker.is_visible_in_tree():
-			continue
-		var offset := marker.global_position - tank.global_position
-		var distance := Vector2(offset.x, offset.z).length_squared()
-		if distance >= nearest_distance:
-			continue
-		nearest_distance = distance
-		# Match the hull diagram: -X is forward and +Z is the left track.
-		var local_offset := tank.global_basis.orthonormalized().inverse() * offset
-		_target_direction = Vector2(-local_offset.z, local_offset.x).normalized()
+	# Share the large chevron's target so both follow the objective sequence.
+	var target: Node3D = target_indicator.chevron_target
+	if not is_instance_valid(target):
+		return
+	var offset := target.global_position - tank.global_position
+	# Match the hull diagram: -X is forward and +Z is the left track.
+	var local_offset := tank.global_basis.orthonormalized().inverse() * offset
+	_target_direction = Vector2(-local_offset.z, local_offset.x).normalized()
 
 
 func _draw() -> void:

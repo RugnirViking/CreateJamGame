@@ -11,8 +11,8 @@ extends Control
 @onready var menu_buttons: VBoxContainer = $MenuButtons
 @onready var controls_dialog: AcceptDialog = $ControlsDialog
 @onready var menu_camera: Camera3D = $Camera3D
-@onready var turret: Node3D = $enemytank/tank2/TurretRotation
-@onready var gun_elevation: Node3D = $enemytank/tank2/TurretRotation/Cube_004/GunElevation
+@onready var turret: Node3D = $enemytank/Model/TurretRotation
+@onready var gun_elevation: Node3D = $enemytank/Model/TurretRotation/GunElevation
 
 
 func _process(delta: float) -> void:
@@ -99,7 +99,7 @@ func _show_menu() -> void:
 
 
 func _on_play_pressed() -> void:
-	get_tree().change_scene_to_file("res://scenes/main.tscn")
+	get_tree().change_scene_to_file("res://scenes/tank_select.tscn")
 
 
 func _reveal_characters(character_count: int) -> void:

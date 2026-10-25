@@ -188,6 +188,10 @@ colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
 collision_layer = 2
 collision_mask = 3
 script = ExtResource("1_11jwl")
+model_path = NodePath("tank2")
+wreck_path = NodePath("tankTOG2Destroyed")
+turret_path = NodePath("tank2/TurretRotation")
+gun_elevation_path = NodePath("tank2/TurretRotation/Cube_004/GunElevation")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1136541964]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5102539, 0.119524956, 0.005004883)

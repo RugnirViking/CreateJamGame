@@ -18,7 +18,14 @@ extends VehicleBody3D
 @export_range(1, 100) var hits_to_destroy: int = 10
 @export var low_health_color := Color(0.95, 0.18, 0.08)
 
-@export var is_cat: bool
+var is_cat: bool:
+	get:
+		return get_meta("is_cat_tank", false)
+
+@onready var active_model: Node3D = $Model
+@onready var active_wreck: Node3D = $Wreck
+@onready var turret: Node3D = $Model/TurretRotation
+@onready var gun_elevation: Node3D = $Model/TurretRotation/GunElevation
 
 var shell_hits: int = 0;
 var targetness: float = max_targetness;
@@ -38,10 +45,6 @@ var _reload_remaining := 0.0
 var _zeroing_warning_phase := 0.0
 var _zeroing_started := false
 
-@onready var tank1: Node3D = $tank1
-@onready var tank1_destroyed: Node3D = $tankTank1Destroyed
-@onready var cattank: Node3D = $cattank
-@onready var cattank_destroyed: Node3D = $cattankDestroyed
 @onready var engine_sound: AudioStreamPlayer = $EngineSound
 @onready var impact_sound: AudioStreamPlayer = $ImpactSound
 @onready var gunshot_sound: AudioStreamPlayer = $GunshotSound
@@ -50,7 +53,7 @@ var _zeroing_started := false
 @onready var win_fanfare: AudioStreamPlayer = $winfanfare
 @onready var death_explosion_sound: AudioStreamPlayer = $deathexplosion
 @onready var background_music: AudioStreamPlayer = $"../../BGMusic"
-@onready var muzzle: Marker3D = $tank1/TurretRotation/Cube_001/GunElevation/Muzzle
+@onready var muzzle: Marker3D = $Model/TurretRotation/GunElevation/Muzzle
 @onready var flip_text: Label3D = $"../followcam/fliptext"
 @onready var sniper_flip_text: Label = $"../AimHUD/SniperHUD/FlipPrompt"
 @onready var shell_fill: TextureProgressBar = $"../AimHUD/SniperHUD/Shell"
@@ -89,14 +92,7 @@ func _ready() -> void:
 			child.use_as_steering = false
 			child.steering = 0.0
 	flip_text_offset=flip_text.position
-	
-	if is_cat:
-		tank1.visible=false;
-		cattank.visible=true;
-		muzzle = $cattank/TurretRotation/GunElevation/Muzzle
-	else:
-		tank1.visible=true;
-		cattank.visible=false;
+
 
 func _connect_capture_targets() -> void:
 	for marker in get_tree().get_nodes_in_group(&"terrain_target_markers"):
@@ -334,12 +330,8 @@ func _trigger_game_over(show_wreck: bool, reason: String) -> void:
 	game_over.show()
 	create_tween().set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT).tween_property(game_over, "modulate:a", 1.0, 1.5)
 	if show_wreck:
-		tank1.hide()
-		cattank.hide()
-		if is_cat:
-			cattank_destroyed.visible=true;
-		else:
-			tank1_destroyed.visible=true;
+		active_model.hide()
+		active_wreck.show()
 	
 	$EngineSound.stop()
 	$left_track_particles.emitting = false

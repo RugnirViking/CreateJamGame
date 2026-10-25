@@ -1,0 +1,454 @@
+[gd_scene format=3 uid="uid://iyqugdchlvqo"]
+
+[ext_resource type="Script" uid="uid://1r7j6pyqxwfa" path="res://scripts/tank_select.gd" id="1_script"]
+[ext_resource type="FontFile" uid="uid://6mb71bm5wpol" path="res://ussr-stencil/USSR STENCIL/USSR STENCIL WEBFONT.ttf" id="2_stencil"]
+[ext_resource type="Shader" uid="uid://b0yuub0f0udmq" path="res://scripts/shaders/tank_select_background.gdshader" id="3_background"]
+[ext_resource type="AudioStream" uid="uid://cob0aig7he5i" path="res://sound/Zero In Title Theme.mp3" id="5_music"]
+
+[sub_resource type="StyleBoxFlat" id="Style_focus"]
+bg_color = Color(0, 0, 0, 0)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.29, 0.35, 0.24, 1)
+expand_margin_left = 3.0
+expand_margin_top = 3.0
+expand_margin_right = 3.0
+expand_margin_bottom = 3.0
+
+[sub_resource type="StyleBoxFlat" id="Style_hover"]
+bg_color = Color(0.19, 0.24, 0.14, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.29, 0.35, 0.24, 1)
+
+[sub_resource type="StyleBoxFlat" id="Style_button"]
+bg_color = Color(0.08, 0.11, 0.08, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.29, 0.35, 0.24, 1)
+
+[sub_resource type="SystemFont" id="Font_UI"]
+font_names = PackedStringArray("Bahnschrift", "Segoe UI")
+font_weight = 500
+
+[sub_resource type="Theme" id="Theme_UI"]
+default_font = SubResource("Font_UI")
+default_font_size = 16
+Button/colors/font_color = Color(0.91, 0.93, 0.84, 1)
+Button/colors/font_hover_color = Color(1, 1, 0.9, 1)
+Button/styles/focus = SubResource("Style_focus")
+Button/styles/hover = SubResource("Style_hover")
+Button/styles/normal = SubResource("Style_button")
+Button/styles/pressed = SubResource("Style_hover")
+
+[sub_resource type="ShaderMaterial" id="Material_background"]
+shader = ExtResource("3_background")
+
+[sub_resource type="StyleBoxFlat" id="Style_panel"]
+bg_color = Color(0.055, 0.077, 0.059, 0.97)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.29, 0.35, 0.24, 1)
+
+[sub_resource type="Environment" id="Environment_showroom"]
+background_mode = 1
+background_color = Color(0.025, 0.036, 0.029, 1)
+ambient_light_source = 3
+ambient_light_color = Color(0.65, 0.72, 0.55, 1)
+ambient_light_energy = 0.28
+tonemap_mode = 2
+
+[sub_resource type="StandardMaterial3D" id="Material_plinth"]
+albedo_color = Color(0.09, 0.11, 0.085, 1)
+metallic = 0.7
+roughness = 0.5
+
+[sub_resource type="CylinderMesh" id="Mesh_plinth"]
+material = SubResource("Material_plinth")
+top_radius = 1.65
+bottom_radius = 1.7
+height = 0.16
+radial_segments = 96
+
+[sub_resource type="StyleBoxFlat" id="Style_deploy_hover"]
+bg_color = Color(0.89, 0.91, 0.73, 1)
+
+[node name="TankSelect" type="Control" unique_id=191225483]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = SubResource("Theme_UI")
+script = ExtResource("1_script")
+
+[node name="Background" type="ColorRect" parent="." unique_id=822944532]
+material = SubResource("Material_background")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Music" type="AudioStreamPlayer" parent="." unique_id=84431044]
+stream = ExtResource("5_music")
+volume_db = -10.0
+autoplay = true
+
+[node name="Interface" type="Control" parent="." unique_id=1156009316]
+anchors_preset = 0
+offset_right = 1280.0
+offset_bottom = 720.0
+
+[node name="Title" type="Label" parent="Interface" unique_id=1158383901]
+layout_mode = 0
+offset_left = 48.0
+offset_top = 62.0
+offset_right = 1048.0
+offset_bottom = 122.0
+theme_override_colors/font_color = Color(0.9, 0.92, 0.85, 1)
+theme_override_fonts/font = ExtResource("2_stencil")
+theme_override_font_sizes/font_size = 42
+text = "CHOOSE YOUR TANK"
+
+[node name="PreviewFrame" type="Panel" parent="Interface" unique_id=946250280]
+layout_mode = 0
+offset_left = 48.0
+offset_top = 146.0
+offset_right = 800.0
+offset_bottom = 590.0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("Style_panel")
+
+[node name="Preview" type="SubViewportContainer" parent="Interface" unique_id=948027167]
+layout_mode = 0
+offset_left = 49.0
+offset_top = 147.0
+offset_right = 799.0
+offset_bottom = 481.0
+mouse_filter = 2
+stretch = true
+
+[node name="Viewport" type="SubViewport" parent="Interface/Preview" unique_id=1954660198]
+own_world_3d = true
+handle_input_locally = false
+size = Vector2i(750, 334)
+render_target_update_mode = 4
+
+[node name="World" type="Node3D" parent="Interface/Preview/Viewport" unique_id=761312253]
+
+[node name="Environment" type="WorldEnvironment" parent="Interface/Preview/Viewport/World" unique_id=783459863]
+environment = SubResource("Environment_showroom")
+
+[node name="Camera" type="Camera3D" parent="Interface/Preview/Viewport/World" unique_id=1151251139]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.7, 2.2, 5)
+projection = 1
+current = true
+size = 3.8
+
+[node name="Spotlight" type="SpotLight3D" parent="Interface/Preview/Viewport/World" unique_id=2142314102]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4, 1)
+light_color = Color(0.91, 0.95, 0.78, 1)
+light_energy = 7.0
+shadow_enabled = true
+spot_range = 9.0
+spot_attenuation = 0.6
+spot_angle = 34.0
+
+[node name="Plinth" type="MeshInstance3D" parent="Interface/Preview/Viewport/World" unique_id=1770921762]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.08, 0)
+mesh = SubResource("Mesh_plinth")
+
+[node name="Previous" type="Button" parent="Interface" unique_id=361685311]
+layout_mode = 0
+offset_left = 70.0
+offset_top = 504.0
+offset_right = 124.0
+offset_bottom = 558.0
+tooltip_text = "Previous tank (Left / A)"
+theme_override_font_sizes/font_size = 36
+text = "‹"
+
+[node name="Next" type="Button" parent="Interface" unique_id=354374751]
+layout_mode = 0
+offset_left = 724.0
+offset_top = 504.0
+offset_right = 778.0
+offset_bottom = 558.0
+tooltip_text = "Next tank (Right / D)"
+theme_override_font_sizes/font_size = 36
+text = "›"
+
+[node name="TankName" type="Label" parent="Interface" unique_id=1555445454]
+layout_mode = 0
+offset_left = 140.0
+offset_top = 488.0
+offset_right = 708.0
+offset_bottom = 533.0
+theme_override_colors/font_color = Color(0.9, 0.92, 0.85, 1)
+theme_override_fonts/font = ExtResource("2_stencil")
+theme_override_font_sizes/font_size = 32
+text = "TANK 1"
+horizontal_alignment = 1
+
+[node name="TankType" type="Label" parent="Interface" unique_id=804975139]
+layout_mode = 0
+offset_left = 140.0
+offset_top = 532.0
+offset_right = 708.0
+offset_bottom = 554.0
+theme_override_colors/font_color = Color(0.52, 0.59, 0.49, 1)
+theme_override_fonts/font = ExtResource("2_stencil")
+theme_override_font_sizes/font_size = 12
+text = "TRACKED TANK"
+horizontal_alignment = 1
+
+[node name="Stats" type="VBoxContainer" parent="Interface" unique_id=147741330]
+layout_mode = 0
+offset_left = 824.0
+offset_top = 146.0
+offset_right = 1232.0
+offset_bottom = 590.0
+
+[node name="Forward" type="Control" parent="Interface/Stats" unique_id=932483517]
+layout_mode = 2
+size_flags_vertical = 3
+mouse_filter = 2
+
+[node name="Label" type="Label" parent="Interface/Stats/Forward" unique_id=1384455081]
+layout_mode = 0
+offset_top = 4.0
+offset_right = 190.0
+offset_bottom = 34.0
+theme_override_colors/font_color = Color(0.52, 0.59, 0.49, 1)
+theme_override_fonts/font = ExtResource("2_stencil")
+theme_override_font_sizes/font_size = 12
+text = "FORWARD SPEED"
+
+[node name="Value" type="Label" parent="Interface/Stats/Forward" unique_id=418846067]
+layout_mode = 0
+offset_left = 176.0
+offset_right = 360.0
+offset_bottom = 34.0
+theme_override_colors/font_color = Color(0.9, 0.92, 0.85, 1)
+theme_override_fonts/font = ExtResource("2_stencil")
+theme_override_font_sizes/font_size = 22
+text = "—"
+horizontal_alignment = 2
+
+[node name="Reverse" type="Control" parent="Interface/Stats" unique_id=1304813265]
+layout_mode = 2
+size_flags_vertical = 3
+mouse_filter = 2
+
+[node name="Label" type="Label" parent="Interface/Stats/Reverse" unique_id=965370823]
+layout_mode = 0
+offset_top = 4.0
+offset_right = 190.0
+offset_bottom = 34.0
+theme_override_colors/font_color = Color(0.52, 0.59, 0.49, 1)
+theme_override_fonts/font = ExtResource("2_stencil")
+theme_override_font_sizes/font_size = 12
+text = "REVERSE SPEED"
+
+[node name="Value" type="Label" parent="Interface/Stats/Reverse" unique_id=523158592]
+layout_mode = 0
+offset_left = 176.0
+offset_right = 360.0
+offset_bottom = 34.0
+theme_override_colors/font_color = Color(0.9, 0.92, 0.85, 1)
+theme_override_fonts/font = ExtResource("2_stencil")
+theme_override_font_sizes/font_size = 22
+text = "—"
+horizontal_alignment = 2
+
+[node name="Power" type="Control" parent="Interface/Stats" unique_id=17884270]
+layout_mode = 2
+size_flags_vertical = 3
+mouse_filter = 2
+
+[node name="Label" type="Label" parent="Interface/Stats/Power" unique_id=777291447]
+layout_mode = 0
+offset_top = 4.0
+offset_right = 190.0
+offset_bottom = 34.0
+theme_override_colors/font_color = Color(0.52, 0.59, 0.49, 1)
+theme_override_fonts/font = ExtResource("2_stencil")
+theme_override_font_sizes/font_size = 12
+text = "ENGINE POWER"
+
+[node name="Value" type="Label" parent="Interface/Stats/Power" unique_id=1842752114]
+layout_mode = 0
+offset_left = 176.0
+offset_right = 360.0
+offset_bottom = 34.0
+theme_override_colors/font_color = Color(0.9, 0.92, 0.85, 1)
+theme_override_fonts/font = ExtResource("2_stencil")
+theme_override_font_sizes/font_size = 22
+text = "—"
+horizontal_alignment = 2
+
+[node name="Traverse" type="Control" parent="Interface/Stats" unique_id=1209470913]
+layout_mode = 2
+size_flags_vertical = 3
+mouse_filter = 2
+
+[node name="Label" type="Label" parent="Interface/Stats/Traverse" unique_id=1616115123]
+layout_mode = 0
+offset_top = 4.0
+offset_right = 190.0
+offset_bottom = 34.0
+theme_override_colors/font_color = Color(0.52, 0.59, 0.49, 1)
+theme_override_fonts/font = ExtResource("2_stencil")
+theme_override_font_sizes/font_size = 12
+text = "TURRET TURN SPEED"
+
+[node name="Value" type="Label" parent="Interface/Stats/Traverse" unique_id=1759237200]
+layout_mode = 0
+offset_left = 176.0
+offset_right = 360.0
+offset_bottom = 34.0
+theme_override_colors/font_color = Color(0.9, 0.92, 0.85, 1)
+theme_override_fonts/font = ExtResource("2_stencil")
+theme_override_font_sizes/font_size = 22
+text = "—"
+horizontal_alignment = 2
+
+[node name="Elevation" type="Control" parent="Interface/Stats" unique_id=973467871]
+layout_mode = 2
+size_flags_vertical = 3
+mouse_filter = 2
+
+[node name="Label" type="Label" parent="Interface/Stats/Elevation" unique_id=141040266]
+layout_mode = 0
+offset_top = 4.0
+offset_right = 190.0
+offset_bottom = 34.0
+theme_override_colors/font_color = Color(0.52, 0.59, 0.49, 1)
+theme_override_fonts/font = ExtResource("2_stencil")
+theme_override_font_sizes/font_size = 12
+text = "ELEVATION SPEED"
+
+[node name="Value" type="Label" parent="Interface/Stats/Elevation" unique_id=721502863]
+layout_mode = 0
+offset_left = 176.0
+offset_right = 360.0
+offset_bottom = 34.0
+theme_override_colors/font_color = Color(0.9, 0.92, 0.85, 1)
+theme_override_fonts/font = ExtResource("2_stencil")
+theme_override_font_sizes/font_size = 22
+text = "—"
+horizontal_alignment = 2
+
+[node name="Arc" type="Control" parent="Interface/Stats" unique_id=1086904696]
+layout_mode = 2
+size_flags_vertical = 3
+mouse_filter = 2
+
+[node name="Label" type="Label" parent="Interface/Stats/Arc" unique_id=1813475728]
+layout_mode = 0
+offset_top = 4.0
+offset_right = 190.0
+offset_bottom = 34.0
+theme_override_colors/font_color = Color(0.52, 0.59, 0.49, 1)
+theme_override_fonts/font = ExtResource("2_stencil")
+theme_override_font_sizes/font_size = 12
+text = "ELEVATION"
+
+[node name="Value" type="Label" parent="Interface/Stats/Arc" unique_id=342513606]
+layout_mode = 0
+offset_left = 176.0
+offset_right = 360.0
+offset_bottom = 34.0
+theme_override_colors/font_color = Color(0.9, 0.92, 0.85, 1)
+theme_override_fonts/font = ExtResource("2_stencil")
+theme_override_font_sizes/font_size = 22
+text = "—"
+horizontal_alignment = 2
+
+[node name="HP" type="Control" parent="Interface/Stats" unique_id=1484758596]
+layout_mode = 2
+size_flags_vertical = 3
+mouse_filter = 2
+
+[node name="Label" type="Label" parent="Interface/Stats/HP" unique_id=2051746902]
+layout_mode = 0
+offset_top = 4.0
+offset_right = 190.0
+offset_bottom = 34.0
+theme_override_colors/font_color = Color(0.52, 0.59, 0.49, 1)
+theme_override_fonts/font = ExtResource("2_stencil")
+theme_override_font_sizes/font_size = 12
+text = "MAX HP"
+
+[node name="Value" type="Label" parent="Interface/Stats/HP" unique_id=1903279064]
+layout_mode = 0
+offset_left = 176.0
+offset_right = 360.0
+offset_bottom = 34.0
+theme_override_colors/font_color = Color(0.9, 0.92, 0.85, 1)
+theme_override_fonts/font = ExtResource("2_stencil")
+theme_override_font_sizes/font_size = 22
+text = "—"
+horizontal_alignment = 2
+
+[node name="Reload" type="Control" parent="Interface/Stats" unique_id=1338205125]
+layout_mode = 2
+size_flags_vertical = 3
+mouse_filter = 2
+
+[node name="Label" type="Label" parent="Interface/Stats/Reload" unique_id=1295641387]
+layout_mode = 0
+offset_top = 4.0
+offset_right = 190.0
+offset_bottom = 34.0
+theme_override_colors/font_color = Color(0.52, 0.59, 0.49, 1)
+theme_override_fonts/font = ExtResource("2_stencil")
+theme_override_font_sizes/font_size = 12
+text = "RELOAD TIME"
+
+[node name="Value" type="Label" parent="Interface/Stats/Reload" unique_id=580741785]
+layout_mode = 0
+offset_left = 176.0
+offset_right = 360.0
+offset_bottom = 34.0
+theme_override_colors/font_color = Color(0.9, 0.92, 0.85, 1)
+theme_override_fonts/font = ExtResource("2_stencil")
+theme_override_font_sizes/font_size = 22
+text = "—"
+horizontal_alignment = 2
+
+[node name="FooterLine" type="ColorRect" parent="Interface" unique_id=96696487]
+layout_mode = 0
+offset_left = 48.0
+offset_top = 613.0
+offset_right = 1232.0
+offset_bottom = 614.0
+mouse_filter = 2
+color = Color(0.22, 0.27, 0.19, 1)
+
+[node name="Deploy" type="Button" parent="Interface" unique_id=1663066881]
+layout_mode = 0
+offset_left = 958.0
+offset_top = 633.0
+offset_right = 1232.0
+offset_bottom = 689.0
+theme_override_colors/font_focus_color = Color(0.06, 0.09, 0.055, 1)
+theme_override_colors/font_pressed_color = Color(0.06, 0.09, 0.055, 1)
+theme_override_colors/font_hover_color = Color(0.06, 0.09, 0.055, 1)
+theme_override_fonts/font = ExtResource("2_stencil")
+theme_override_font_sizes/font_size = 22
+theme_override_styles/pressed = SubResource("Style_deploy_hover")
+theme_override_styles/hover = SubResource("Style_deploy_hover")
+text = "DEPLOY TANK  →"

@@ -9,6 +9,9 @@
 
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_7suuv"]
 
+[sub_resource type="Environment" id="Environment_menu"]
+background_mode = 1
+
 [sub_resource type="Theme" id="Theme_controls"]
 default_font = ExtResource("1_5mbse")
 default_font_size = 24
@@ -16,11 +19,7 @@ Window/font_sizes/title_font_size = 24
 Window/fonts/title_font = ExtResource("1_5mbse")
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_t850l"]
-size = Vector3(2.4389648, 0.18664551, 1)
-
-[sub_resource type="Environment" id="Environment_menu"]
-background_mode = 1
-background_color = Color(0, 0, 0, 1)
+size = Vector3(5.55542, 0.18664551, 1)
 
 [node name="Control" type="Control" unique_id=46688502]
 layout_mode = 3
@@ -91,7 +90,13 @@ gravity_scale = 0.0
 freeze = true
 script = null
 
-[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+[node name="enemytank2" parent="." unique_id=1519404505 instance=ExtResource("6_7yvfd")]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, -2.81484, 0.017986208, 0)
+gravity_scale = 0.0
+freeze = true
+script = null
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=333605723]
 environment = SubResource("Environment_menu")
 
 [node name="Camera3D" type="Camera3D" parent="." unique_id=218446311]
@@ -159,7 +164,7 @@ R: FLIP TANK"
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.2186411, 0)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D" unique_id=145773535]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.13598633, -0.40667725, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.4222412, -0.40667725, 0)
 shape = SubResource("BoxShape3D_t850l")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=1206411298]
