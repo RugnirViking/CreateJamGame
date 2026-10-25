@@ -4,7 +4,6 @@
 [ext_resource type="FontFile" uid="uid://6mb71bm5wpol" path="res://ussr-stencil/USSR STENCIL/USSR STENCIL WEBFONT.ttf" id="1_5mbse"]
 [ext_resource type="Texture2D" uid="uid://blto2t8kspgfa" path="res://art/textures/crosshair-nobg.png" id="2_s5g8n"]
 [ext_resource type="AudioStream" uid="uid://jgbt1vjqxkmf" path="res://sound/Tank firring sound.wav" id="4_7yvfd"]
-[ext_resource type="AudioStream" uid="uid://cob0aig7he5i" path="res://sound/Zero In Title Theme.mp3" id="5_s5g8n"]
 [ext_resource type="PackedScene" uid="uid://bymwbiyo2qpg0" path="res://scenes/enemytank.tscn" id="6_7yvfd"]
 
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_7suuv"]
@@ -81,9 +80,6 @@ visible_characters_behavior = 1
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=134395082]
 stream = ExtResource("4_7yvfd")
 volume_db = -16.0
-
-[node name="titlemusic" type="AudioStreamPlayer" parent="." unique_id=1093359431]
-stream = ExtResource("5_s5g8n")
 
 [node name="enemytank" parent="." unique_id=1403049494 instance=ExtResource("6_7yvfd")]
 gravity_scale = 0.0

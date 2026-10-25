@@ -459,6 +459,7 @@ size = Vector3(0.28671795, 0.32940814, 0.3380398)
 [node name="enemytank" type="VehicleBody3D" unique_id=1403049494 groups=["scatter_crushers"]]
 collision_layer = 2
 collision_mask = 3
+mass = 30.0
 script = ExtResource("1_d3k5c")
 metadata/tank_model = "cattank"
 

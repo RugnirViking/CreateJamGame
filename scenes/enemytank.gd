@@ -10,6 +10,7 @@ extends VehicleBody3D
 @export var shell_scene: PackedScene = preload("res://scenes/shell.tscn")
 @export_range(0.1, 10.0, 0.1) var fire_interval := 1.5
 @export_range(0.0, 180.0, 0.1) var fire_angle_degrees := 10.0
+@export var max_range: float = 30.0;
 
 @export_group("Scene References")
 @export_node_path("Node3D") var model_path := NodePath("Model")
@@ -75,7 +76,8 @@ func _physics_process(delta: float) -> void:
 	if _fire_cooldown <= 0.0 and to_player.length_squared() > 0.000001:
 		var barrel_forward := -muzzle.global_basis.x.normalized()
 		if barrel_forward.dot(to_player.normalized()) >= cos(deg_to_rad(fire_angle_degrees)):
-			_spawn_shell()
+			if muzzle.global_position.distance_to(target)<max_range:
+				_spawn_shell()
 
 
 func _spawn_shell() -> void:
@@ -126,7 +128,6 @@ func receive_shell_hit() -> void:
 	destroyed = true
 	active_model.hide()
 	active_wreck.show()
-	$EngineSound.stop()
 	$left_track_particles.emitting = false
 	$right_track_particles.emitting = false
 	engine_force = 0.0

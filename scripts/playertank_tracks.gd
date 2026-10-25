@@ -52,6 +52,7 @@ var _zeroing_started := false
 @onready var gameovervoice_sound: AudioStreamPlayer = $ohnotryagain
 @onready var win_fanfare: AudioStreamPlayer = $winfanfare
 @onready var death_explosion_sound: AudioStreamPlayer = $deathexplosion
+@onready var doom_horn_sound: AudioStreamPlayer = $hornofdoom
 @onready var background_music: AudioStreamPlayer = $"../../BGMusic"
 @onready var muzzle: Marker3D = $Model/TurretRotation/GunElevation/Muzzle
 @onready var flip_text: Label3D = $"../followcam/fliptext"
@@ -250,12 +251,14 @@ func _update_zeroing(speed: float, delta: float) -> void:
 		_trigger_game_over(true, "ZEROED IN")
 		return
 	# Warn from the first shrink, including above half size, through imminent death.
+	
 	zeroing_warning.visible = targetness < previous_targetness
 	if not zeroing_warning.visible:
 		_zeroing_warning_phase = 0.0
 		return
 	var urgency := 1.0 - targetness / max_targetness
 	_zeroing_warning_phase = fposmod(_zeroing_warning_phase + delta * lerpf(1.0, 5.0, urgency), 1.0)
+	
 	zeroing_warning.modulate = Color(1.0, 0.8, 0.25).lerp(Color(1.0, 0.12, 0.06), urgency)
 	zeroing_warning.modulate.a = 1.0 if _zeroing_warning_phase < 0.6 else 0.15
 	zeroing_warning.text = "MOVE NOW - IMPACT IMMINENT" if urgency >= 0.75 else "KEEP MOVING - ENEMY ZEROING IN"
