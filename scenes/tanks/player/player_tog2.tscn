@@ -431,12 +431,14 @@ script = ExtResource("1_qf1t1")
 collision_layer = 2
 collision_mask = 3
 script = ExtResource("2_lem47")
-engine_force_value = 150.0
-max_forward_speed = 4.8
-max_reverse_speed = 4.8
+engine_force_value = 100.0
+max_forward_speed = 4.0
+max_reverse_speed = 3.0
+max_turn_speed = 1.0
 turning_grip = 1.0
 righting_strength = 100.0
 shell_scene = ExtResource("3_4k5rf")
+hits_to_destroy = 20
 metadata/is_cat_tank = false
 metadata/tank_model = "tog2"
 
