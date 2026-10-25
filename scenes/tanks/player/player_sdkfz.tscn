@@ -1,31 +1,30 @@
-[gd_scene format=4]
+[gd_scene format=4 uid="uid://c6fikdju6yvdr"]
 
-[ext_resource type="Script" path="res://scripts/chevron_target.gd" id="1_yi0l4"]
-[ext_resource type="Script" path="res://scripts/playertank_tracks.gd" id="2_fl4cb"]
-[ext_resource type="PackedScene" path="res://scenes/shell.tscn" id="3_qlyhs"]
-[ext_resource type="AudioStream" path="res://sound/Real tank moving.wav" id="4_stwsl"]
-[ext_resource type="AudioStream" path="res://sound/Tank crashes into stuff.wav" id="5_c81e2"]
-[ext_resource type="AudioStream" path="res://sound/Tank firring sound.wav" id="6_2t08w"]
-[ext_resource type="AudioStream" path="res://sound/miav 3.wav" id="7_37dqm"]
-[ext_resource type="AudioStream" path="res://sound/upsitryagain.wav" id="8_ethpf"]
-[ext_resource type="AudioStream" path="res://sound/Victory fanfare new.wav" id="9_stj0w"]
-[ext_resource type="AudioStream" path="res://sound/Explosion theme 2death.wav" id="10_7wjmt"]
-[ext_resource type="Texture2D" path="res://art/textures/particle_smoke.png" id="11_hsdpw"]
-[ext_resource type="Material" path="res://scenes/wreckSmoke.tres" id="12_1k4d8"]
-[ext_resource type="Material" path="res://scenes/explosionFire.tres" id="13_nbu5v"]
-[ext_resource type="Material" path="res://scenes/explosionSmoke.tres" id="14_f1mej"]
-[ext_resource type="Script" path="res://scripts/followcam.gd" id="15_taeaq"]
-[ext_resource type="Shader" path="res://scenes/chevron_indicator.gdshader" id="16_c2bkk"]
-[ext_resource type="Texture2D" path="res://art/textures/chevron.png" id="17_qk53p"]
-[ext_resource type="Shader" path="res://scenes/vignette.gdshader" id="18_8yqlv"]
-[ext_resource type="Texture2D" path="res://art/textures/crosshair-nobg.png" id="19_t22mm"]
-[ext_resource type="Script" path="res://scripts/sniper_hud.gd" id="20_de8lb"]
-[ext_resource type="Texture2D" path="res://art/textures/shell.png" id="21_0g8u2"]
-[ext_resource type="FontFile" path="res://ussr-stencil/USSR STENCIL/USSR STENCIL WEBFONT.ttf" id="22_bxtwr"]
-[ext_resource type="Script" path="res://scripts/camera_dust.gd" id="23_ynf3i"]
-[ext_resource type="Script" path="res://scripts/ground_tracks.gd" id="24_iph6c"]
-
-[ext_resource type="Script" path="res://scripts/tank_turret_hitbox.gd" id="99_turret_hitbox"]
+[ext_resource type="Script" uid="uid://rcupwc8rcwgj" path="res://scripts/chevron_target.gd" id="1_yi0l4"]
+[ext_resource type="Script" uid="uid://onak2a4unfnh" path="res://scripts/playertank_tracks.gd" id="2_fl4cb"]
+[ext_resource type="PackedScene" uid="uid://cb6bp7vmo4456" path="res://scenes/shell.tscn" id="3_qlyhs"]
+[ext_resource type="AudioStream" uid="uid://cdot0o0dag4ax" path="res://sound/Real tank moving.wav" id="4_stwsl"]
+[ext_resource type="AudioStream" uid="uid://celyqmrs1imah" path="res://sound/Tank crashes into stuff.wav" id="5_c81e2"]
+[ext_resource type="AudioStream" uid="uid://jgbt1vjqxkmf" path="res://sound/Tank firring sound.wav" id="6_2t08w"]
+[ext_resource type="AudioStream" uid="uid://dgkwyh2x5ja5j" path="res://sound/miav 3.wav" id="7_37dqm"]
+[ext_resource type="AudioStream" uid="uid://igpte5rgpumx" path="res://sound/upsitryagain.wav" id="8_ethpf"]
+[ext_resource type="AudioStream" uid="uid://dcltjsue2pqbs" path="res://sound/Victory fanfare new.wav" id="9_stj0w"]
+[ext_resource type="AudioStream" uid="uid://deesqmnqkgtoh" path="res://sound/Explosion theme 2death.wav" id="10_7wjmt"]
+[ext_resource type="Texture2D" uid="uid://cp0exnnt1nkis" path="res://art/textures/particle_smoke.png" id="11_hsdpw"]
+[ext_resource type="Material" uid="uid://7fj4l01nfry8" path="res://scenes/wreckSmoke.tres" id="12_1k4d8"]
+[ext_resource type="Material" uid="uid://dygrgkkpymdoj" path="res://scenes/explosionFire.tres" id="13_nbu5v"]
+[ext_resource type="Material" uid="uid://cqmxglr4im0yw" path="res://scenes/explosionSmoke.tres" id="14_f1mej"]
+[ext_resource type="Script" uid="uid://cp2pmclftdnqa" path="res://scripts/followcam.gd" id="15_taeaq"]
+[ext_resource type="Shader" uid="uid://cwsj38tvm4swb" path="res://scenes/chevron_indicator.gdshader" id="16_c2bkk"]
+[ext_resource type="Texture2D" uid="uid://n3en5wrpf8lg" path="res://art/textures/chevron.png" id="17_qk53p"]
+[ext_resource type="Shader" uid="uid://bqxx214nn8g8c" path="res://scenes/vignette.gdshader" id="18_8yqlv"]
+[ext_resource type="Texture2D" uid="uid://blto2t8kspgfa" path="res://art/textures/crosshair-nobg.png" id="19_t22mm"]
+[ext_resource type="Script" uid="uid://cmu3ilgo4ki4o" path="res://scripts/sniper_hud.gd" id="20_de8lb"]
+[ext_resource type="Texture2D" uid="uid://bsifhp734jx1o" path="res://art/textures/shell.png" id="21_0g8u2"]
+[ext_resource type="FontFile" uid="uid://6mb71bm5wpol" path="res://ussr-stencil/USSR STENCIL/USSR STENCIL WEBFONT.ttf" id="22_bxtwr"]
+[ext_resource type="Script" uid="uid://qwvmhgo6wbtn" path="res://scripts/camera_dust.gd" id="23_ynf3i"]
+[ext_resource type="Script" uid="uid://jhtj12868vnl" path="res://scripts/ground_tracks.gd" id="24_iph6c"]
+[ext_resource type="Script" uid="uid://b6oton3ttyk82" path="res://scripts/tank_turret_hitbox.gd" id="99_turret_hitbox"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_pjbp5"]
 transparency = 1
@@ -545,12 +544,14 @@ script = ExtResource("1_yi0l4")
 collision_layer = 2
 collision_mask = 3
 script = ExtResource("2_fl4cb")
-engine_force_value = 150.0
-max_forward_speed = 4.8
-max_reverse_speed = 4.8
+engine_force_value = 200.0
+max_forward_speed = 6.0
+max_reverse_speed = 5.0
+max_turn_speed = 4.0
 turning_grip = 1.0
 righting_strength = 100.0
 shell_scene = ExtResource("3_qlyhs")
+hits_to_destroy = 7
 metadata/is_cat_tank = false
 metadata/tank_model = "sdkfz"
 
@@ -719,12 +720,12 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.07054309, 0)
 shape = SubResource("BoxShape3D_yrfyn")
 
 [node name="TurretCollisionShape" type="CollisionShape3D" parent="vehicle" unique_id=363066432]
-script = ExtResource("99_turret_hitbox")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.33343083, 0.30957615, -0.00051927567)
 shape = SubResource("BoxShape3D_uq110")
+script = ExtResource("99_turret_hitbox")
 
 [node name="Wheel17" type="VehicleWheel3D" parent="vehicle" unique_id=944637724]
-transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, -0.49380198, -0.051000000000000004, 0.268)
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, -0.49380198, -0.051, 0.268)
 use_as_traction = true
 wheel_roll_influence = 0.9
 wheel_radius = 0.119
@@ -735,7 +736,7 @@ suspension_stiffness = 100.0
 suspension_max_force = 1500.0
 
 [node name="Wheel18" type="VehicleWheel3D" parent="vehicle" unique_id=1846901270]
-transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, -0.49380198, -0.051000000000000004, -0.268)
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, -0.49380198, -0.051, -0.268)
 use_as_traction = true
 wheel_roll_influence = 0.9
 wheel_radius = 0.119
@@ -746,7 +747,7 @@ suspension_stiffness = 100.0
 suspension_max_force = 1500.0
 
 [node name="Wheel19" type="VehicleWheel3D" parent="vehicle" unique_id=1566866893]
-transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, -0.20449622, -0.051000000000000004, 0.268)
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, -0.20449622, -0.051, 0.268)
 use_as_traction = true
 wheel_roll_influence = 0.9
 wheel_radius = 0.119
@@ -757,7 +758,7 @@ suspension_stiffness = 100.0
 suspension_max_force = 1500.0
 
 [node name="Wheel20" type="VehicleWheel3D" parent="vehicle" unique_id=908824689]
-transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, -0.20449622, -0.051000000000000004, -0.268)
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, -0.20449622, -0.051, -0.268)
 use_as_traction = true
 wheel_roll_influence = 0.9
 wheel_radius = 0.119
@@ -768,7 +769,7 @@ suspension_stiffness = 100.0
 suspension_max_force = 1500.0
 
 [node name="Wheel21" type="VehicleWheel3D" parent="vehicle" unique_id=710885981]
-transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 0.4255038, -0.051000000000000004, 0.268)
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 0.4255038, -0.051, 0.268)
 use_as_traction = true
 wheel_roll_influence = 0.9
 wheel_radius = 0.119
@@ -779,7 +780,7 @@ suspension_stiffness = 100.0
 suspension_max_force = 1500.0
 
 [node name="Wheel22" type="VehicleWheel3D" parent="vehicle" unique_id=216585747]
-transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 0.4255038, -0.051000000000000004, -0.268)
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 0.4255038, -0.051, -0.268)
 use_as_traction = true
 wheel_roll_influence = 0.9
 wheel_radius = 0.119
@@ -791,8 +792,8 @@ suspension_max_force = 1500.0
 
 [node name="followcam" type="Node3D" parent="." unique_id=559551088]
 script = ExtResource("15_taeaq")
-turret_traverse_speed = 30.0
-gun_elevation_speed = 15.0
+turret_traverse_speed = 90.0
+gun_elevation_speed = 20.0
 
 [node name="3dpersoncam" type="Camera3D" parent="followcam" unique_id=1647198482]
 transform = Transform3D(-4.180272e-08, -0.29227328, 0.9563349, -1.2775669e-08, 0.9563349, 0.29227328, -1, 0, -4.371139e-08, 1.1696591, 0.679645, 0)
@@ -872,10 +873,10 @@ offset_left = -180.0
 offset_right = 180.0
 offset_bottom = 36.0
 grow_horizontal = 2
-theme_override_font_sizes/font_size = 22
 theme_override_colors/font_color = Color(1, 0.85, 0.6, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 0.9)
 theme_override_constants/outline_size = 6
+theme_override_font_sizes/font_size = 22
 text = "PRESS R TO FLIP"
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -925,10 +926,10 @@ anchor_right = 1.0
 offset_top = 72.0
 offset_bottom = 108.0
 grow_horizontal = 2
-theme_override_fonts/font = ExtResource("22_bxtwr")
-theme_override_font_sizes/font_size = 24
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 5
+theme_override_fonts/font = ExtResource("22_bxtwr")
+theme_override_font_sizes/font_size = 24
 text = "KEEP MOVING - ENEMY ZEROING IN"
 horizontal_alignment = 1
 
@@ -957,10 +958,10 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_fonts/font = ExtResource("22_bxtwr")
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 4
+theme_override_fonts/font = ExtResource("22_bxtwr")
 text = "HP 10 / 10"
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -981,28 +982,28 @@ theme_override_constants/separation = 20
 
 [node name="Title" type="Label" parent="AimHUD/GameOver/Text" unique_id=797680303]
 layout_mode = 2
-theme_override_fonts/font = ExtResource("22_bxtwr")
-theme_override_font_sizes/font_size = 64
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 8
+theme_override_fonts/font = ExtResource("22_bxtwr")
+theme_override_font_sizes/font_size = 64
 text = "GAME OVER"
 horizontal_alignment = 1
 
 [node name="DeathReason" type="Label" parent="AimHUD/GameOver/Text" unique_id=1923058269]
 layout_mode = 2
-theme_override_fonts/font = ExtResource("22_bxtwr")
-theme_override_font_sizes/font_size = 18
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 4
+theme_override_fonts/font = ExtResource("22_bxtwr")
+theme_override_font_sizes/font_size = 18
 text = "0HP"
 horizontal_alignment = 1
 
 [node name="MenuPrompt" type="Label" parent="AimHUD/GameOver/Text" unique_id=1534036596]
 layout_mode = 2
-theme_override_fonts/font = ExtResource("22_bxtwr")
-theme_override_font_sizes/font_size = 24
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 5
+theme_override_fonts/font = ExtResource("22_bxtwr")
+theme_override_font_sizes/font_size = 24
 text = "PRESS ESC TO RETURN TO MENU"
 horizontal_alignment = 1
 
@@ -1022,19 +1023,19 @@ theme_override_constants/separation = 20
 
 [node name="Title" type="Label" parent="AimHUD/YouWin/Text" unique_id=1052648483]
 layout_mode = 2
-theme_override_fonts/font = ExtResource("22_bxtwr")
-theme_override_font_sizes/font_size = 64
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 8
+theme_override_fonts/font = ExtResource("22_bxtwr")
+theme_override_font_sizes/font_size = 64
 text = "CONGRATS"
 horizontal_alignment = 1
 
 [node name="MenuPrompt" type="Label" parent="AimHUD/YouWin/Text" unique_id=1536304574]
 layout_mode = 2
-theme_override_fonts/font = ExtResource("22_bxtwr")
-theme_override_font_sizes/font_size = 24
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 5
+theme_override_fonts/font = ExtResource("22_bxtwr")
+theme_override_font_sizes/font_size = 24
 text = "PRESS ENTER TO MOVE TO NEXT LEVEL"
 horizontal_alignment = 1
 
