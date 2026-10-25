@@ -326,10 +326,11 @@ size = Vector3(1.059, 0.29428798, 0.6663454)
 [sub_resource type="BoxShape3D" id="BoxShape3D_tm4oh"]
 size = Vector3(0.35442543, 0.15573417, 0.38269088)
 
-[node name="enemytank" type="VehicleBody3D" unique_id=1403049494 groups=["scatter_crushers"]]
+[node name="enemytank2" type="VehicleBody3D" unique_id=1403049494 groups=["scatter_crushers"]]
 collision_layer = 2
 collision_mask = 3
 script = ExtResource("1_484mn")
+hits_to_destroy = 4
 metadata/tank_model = "tank1"
 
 [node name="left_track_particles" type="CPUParticles3D" parent="." unique_id=949335621]

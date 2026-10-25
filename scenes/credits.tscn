@@ -1,0 +1,76 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/credits.gd" id="1_script"]
+[ext_resource type="FontFile" path="res://ussr-stencil/USSR STENCIL/USSR STENCIL WEBFONT.ttf" id="2_font"]
+
+[sub_resource type="Theme" id="Theme_credits"]
+default_font = ExtResource("2_font")
+default_font_size = 26
+Label/colors/font_color = Color(0.78039217, 0.8117647, 0.61960787, 1)
+Button/colors/font_color = Color(0.78039217, 0.8117647, 0.61960787, 1)
+
+[node name="Credits" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = SubResource("Theme_credits")
+script = ExtResource("1_script")
+
+[node name="Background" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0, 0, 0, 1)
+
+[node name="Title" type="Label" parent="."]
+layout_mode = 1
+anchor_right = 1.0
+offset_top = 24.0
+offset_bottom = 80.0
+theme_override_font_sizes/font_size = 40
+text = "CREDITS"
+horizontal_alignment = 1
+
+[node name="ScrollArea" type="Control" parent="."]
+clip_contents = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 100.0
+offset_bottom = -104.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Roll" type="Label" parent="ScrollArea"]
+layout_mode = 0
+anchor_right = 1.0
+grow_horizontal = 2
+mouse_filter = 2
+theme_override_font_sizes/font_size = 28
+text = "ZEROED IN"
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="Back" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -160.0
+offset_top = -80.0
+offset_right = 160.0
+offset_bottom = -24.0
+grow_horizontal = 2
+grow_vertical = 0
+text = "BACK TO MISSIONS"

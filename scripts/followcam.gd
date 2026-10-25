@@ -2,6 +2,8 @@ extends Node3D
 
 const MIN_ZOOM := 0.4
 const MAX_ZOOM := 3.0
+# Ten percent above the fastest configured player tanks (6 m/s).
+const SPEED_FOV_LIMIT := 6.6
 
 @export_range(0.0, 360.0, 1.0) var turret_traverse_speed := 60.0 # Degrees per second.
 @export_range(0.0, 180.0, 1.0) var gun_elevation_speed := 30.0 # Degrees per second.
@@ -83,7 +85,8 @@ func _unhandled_input(event: InputEvent) -> void:
 func _process(delta: float) -> void:
 	global_position = tank.global_position;
 	camera.position = camera_offset * zoom_amount * (1+speed_zoom_mult*tank.linear_velocity.length());
-	camera.fov = 75 + (1+speed_fov_mult*tank.linear_velocity.length())*30
+	var fov_speed := minf(tank.linear_velocity.length(), SPEED_FOV_LIMIT)
+	camera.fov = 75 + (1+speed_fov_mult*fov_speed)*30
 
 	tank_rotation = tank.rotation;
 	

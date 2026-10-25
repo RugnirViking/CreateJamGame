@@ -5,6 +5,7 @@
 [ext_resource type="Texture2D" uid="uid://blto2t8kspgfa" path="res://art/textures/crosshair-nobg.png" id="2_s5g8n"]
 [ext_resource type="AudioStream" uid="uid://jgbt1vjqxkmf" path="res://sound/Tank firring sound.wav" id="4_7yvfd"]
 [ext_resource type="PackedScene" uid="uid://bymwbiyo2qpg0" path="res://scenes/enemytank.tscn" id="6_7yvfd"]
+[ext_resource type="PackedScene" path="res://scenes/tanks/enemy/enemy_tank1.tscn" id="7_left_tank"]
 
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_7suuv"]
 
@@ -86,7 +87,7 @@ gravity_scale = 0.0
 freeze = true
 script = null
 
-[node name="enemytank2" parent="." unique_id=1519404505 instance=ExtResource("6_7yvfd")]
+[node name="enemytank2" parent="." unique_id=1519404505 instance=ExtResource("7_left_tank")]
 transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, -2.81484, 0.017986208, 0)
 gravity_scale = 0.0
 freeze = true

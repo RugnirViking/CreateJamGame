@@ -538,7 +538,7 @@ border_color = Color(0.04, 0.04, 0.04, 1)
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_health_fill"]
 bg_color = Color(0.2, 0.85, 0.25, 1)
 
-[node name="playertank" type="Node3D" unique_id=212230902]
+[node name="playertank3" type="Node3D" unique_id=212230902]
 script = ExtResource("1_yi0l4")
 
 [node name="vehicle" type="VehicleBody3D" parent="." unique_id=1596378704 groups=["player", "scatter_crushers"]]
@@ -818,6 +818,7 @@ mesh = SubResource("QuadMesh_t850l")
 surface_material_override/0 = SubResource("ShaderMaterial_chevron")
 
 [node name="AimHUD" type="CanvasLayer" parent="." unique_id=1437939724]
+visible = false
 
 [node name="VignetteShader" type="ColorRect" parent="AimHUD" unique_id=398341898]
 visible = false
@@ -1013,8 +1014,9 @@ theme_override_font_sizes/font_size = 24
 text = "PRESS ESC TO RETURN TO MENU"
 horizontal_alignment = 1
 
-[node name="YouWin" type="CenterContainer" parent="AimHUD" unique_id=155603827]
+[node name="YouWin" type="Control" parent="AimHUD" unique_id=155603827]
 visible = false
+layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -1023,7 +1025,13 @@ grow_vertical = 2
 mouse_filter = 2
 
 [node name="Text" type="VBoxContainer" parent="AimHUD/YouWin" unique_id=1801088600]
-layout_mode = 2
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.08
+anchor_right = 0.5
+anchor_bottom = 0.08
+grow_horizontal = 2
 mouse_filter = 2
 theme_override_constants/separation = 20
 

@@ -15,7 +15,11 @@ func _process(_delta: float) -> void:
 		return
 	if current != _material:
 		_material = current.duplicate() as ShaderMaterial
-		terrain.set_surface_override_material(0, _material)
+		# A whole-mesh override takes precedence over surface materials.
+		if terrain.material_override != null:
+			terrain.material_override = _material
+		else:
+			terrain.set_surface_override_material(0, _material)
 	var positions := PackedVector4Array()
 	var colors := PackedColorArray()
 	var effects := PackedVector4Array()

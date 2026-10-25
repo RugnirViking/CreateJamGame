@@ -4,6 +4,25 @@
 [ext_resource type="Shader" uid="uid://boyu2xlbxyggm" path="res://scenes/desertfloor.gdshader" id="2_qt2ur"]
 [ext_resource type="Texture2D" uid="uid://bnm3j7sl7nidr" path="res://art/Ground033_1K-JPG/Ground033_1K-JPG_NormalDX.jpg" id="3_u2hpv"]
 [ext_resource type="Texture2D" uid="uid://gbqhbixa4eam" path="res://art/Ground033_1K-JPG/Ground033_1K-JPG_Color.jpg" id="4_mljh8"]
+[ext_resource type="PackedScene" uid="uid://btui11elkle08" path="res://scenes/buildings/desertbuilding2.tscn" id="5_b0v7g"]
+[ext_resource type="PackedScene" uid="uid://w8aydmrvd0g0" path="res://scenes/buildings/desertbuilding1.tscn" id="6_n6m3l"]
+[ext_resource type="Script" uid="uid://bhhg8md6ayqvp" path="res://scripts/terrain_target_marker.gd" id="7_8e66s"]
+[ext_resource type="PackedScene" uid="uid://cqk8vml14q4qh" path="res://scenes/tanks/enemy/enemy_sdkfz.tscn" id="8_n6m3l"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_b0v7g"]
+render_priority = 0
+shader = ExtResource("2_qt2ur")
+shader_parameter/player_speed = 0.0
+shader_parameter/feather = 0.0
+shader_parameter/color_ground = Color(0.5686275, 0.5647059, 0.47058824, 1)
+shader_parameter/marker_count = 1
+shader_parameter/marker_positions = PackedVector4Array(30.544842, 21.984941, 3, 0.15, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+shader_parameter/marker_colors = PackedColorArray(1, 0.8, 0.1, 0.18, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1)
+shader_parameter/marker_effects = PackedVector4Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+shader_parameter/sand_texture = ExtResource("4_mljh8")
+shader_parameter/normal_map = ExtResource("3_u2hpv")
+shader_parameter/uv_scale = 20.0
+shader_parameter/roughness_val = 0.8
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_b0v7g"]
 _surfaces = [{
@@ -24,9 +43,9 @@ shader = ExtResource("2_qt2ur")
 shader_parameter/player_speed = 0.0
 shader_parameter/feather = 0.0
 shader_parameter/color_ground = Color(0.5686275, 0.5647059, 0.47058824, 1)
-shader_parameter/marker_count = 0
-shader_parameter/marker_positions = PackedVector4Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
-shader_parameter/marker_colors = PackedColorArray(0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1)
+shader_parameter/marker_count = 1
+shader_parameter/marker_positions = PackedVector4Array(-22.781631, 5.911268, 3, 0.15, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+shader_parameter/marker_colors = PackedColorArray(1, 0.8, 0.1, 0.18, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1)
 shader_parameter/marker_effects = PackedVector4Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
 shader_parameter/sand_texture = ExtResource("4_mljh8")
 shader_parameter/normal_map = ExtResource("3_u2hpv")
@@ -41,6 +60,7 @@ map_data = PackedFloat32Array(3.5294118, 3.5294118, 3.5294118, 3.5294118, 3.5294
 [node name="Northwest" unique_id=1200300480 instance=ExtResource("1_base")]
 
 [node name="heightmap" parent="." index="0"]
+material_override = SubResource("ShaderMaterial_b0v7g")
 mesh = SubResource("ArrayMesh_b0v7g")
 surface_material_override/0 = SubResource("ShaderMaterial_n6m3l")
 
@@ -48,4 +68,50 @@ surface_material_override/0 = SubResource("ShaderMaterial_n6m3l")
 shape = SubResource("HeightMapShape3D_8e66s")
 
 [node name="playertank" parent="." index="5"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.5700336, 0)
+transform = Transform3D(0.2788467, 0, -0.9603356, 0, 1, 0, 0.9603356, 0, 0.2788467, 58.487488, 11.895617, 61.79223)
+
+[node name="Desertbuilding1" parent="." index="8" unique_id=2091816584 instance=ExtResource("5_b0v7g")]
+transform = Transform3D(0.9988432, -0.04808522, 0, 0.04808522, 0.9988432, 0, 0, 0, 1, 45.61776, 7.580783, 31.883778)
+
+[node name="Desertbuilding2" parent="." index="9" unique_id=1260748242 instance=ExtResource("6_n6m3l")]
+transform = Transform3D(0.9988432, -0.04808522, 0, 0.04808522, 0.9988432, 0, 0, 0, 1, 52.84324, 8.126321, 30.700714)
+
+[node name="Town1" type="Node3D" parent="." index="10" unique_id=446554626]
+transform = Transform3D(1, 0, 0, 0, 0.97721183, 0.21226607, 0, -0.21226607, 0.97721183, 32.9281, -1.6417332, 20.055677)
+
+[node name="Desertbuilding1" parent="Town1" index="0" unique_id=681358668 instance=ExtResource("6_n6m3l")]
+transform = Transform3D(1, 0, 0, 0, 0.97759914, -0.21047606, 0, 0.21047606, 0.97759914, -0.14000702, 7.8096123, -4.181674)
+
+[node name="Desertbuilding2" parent="Town1" index="1" unique_id=788608949 instance=ExtResource("6_n6m3l")]
+transform = Transform3D(0.045816265, -0.02374699, -0.9986676, -0.14911139, 0.98835486, -0.030342637, 0.9877587, 0.15030283, 0.04174179, 3.5324516, 7.3347917, -0.8732567)
+
+[node name="Desertbuilding4" parent="Town1" index="2" unique_id=435228658 instance=ExtResource("6_n6m3l")]
+transform = Transform3D(0.044531107, -0.04378935, -0.9980478, -0.13858712, 0.9891085, -0.04958069, 0.9893487, 0.1405245, 0.037977453, 3.5324516, 6.0823617, 10.092165)
+
+[node name="Desertbuilding5" parent="Town1" index="3" unique_id=42962539 instance=ExtResource("6_n6m3l")]
+transform = Transform3D(0.22756992, 0.0027112854, -0.97375786, -0.17266259, 0.9842632, -0.03761132, 0.9583321, 0.17669073, 0.22445677, -5.0095406, 6.1618276, 10.393089)
+
+[node name="Desertbuilding7" parent="Town1" index="4" unique_id=934804095 instance=ExtResource("6_n6m3l")]
+transform = Transform3D(0.9437528, -0.027598929, 0.3294981, 0.09485166, 0.97722626, -0.18982245, -0.3167554, 0.21039894, 0.92487764, -8.921812, 5.945264, 5.7139797)
+
+[node name="Desertbuilding3" parent="Town1" index="5" unique_id=1508699847 instance=ExtResource("5_b0v7g")]
+transform = Transform3D(0.012317508, -0.022985261, -0.9996599, -0.13801628, 0.99012786, -0.024466697, 0.99035376, 0.13827069, 0.009023573, 2.375164, 6.5950413, 3.5276737)
+
+[node name="Desertbuilding6" parent="Town1" index="6" unique_id=442768667 instance=ExtResource("5_b0v7g")]
+transform = Transform3D(0.8668945, -0.043159798, -0.49662036, -0.07675973, 0.9728059, -0.21853456, 0.49254707, 0.2275667, 0.840007, -8.521612, 6.4311466, -0.52840424)
+
+[node name="FirstTarget" type="Node3D" parent="." index="11" unique_id=861807939 node_paths=PackedStringArray("terrain", "nextmarker", "player")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 30.544842, 9.131806, 21.984941)
+script = ExtResource("7_8e66s")
+terrain = NodePath("../heightmap")
+state = 1
+nextmarker = NodePath("")
+player = NodePath("../playertank")
+
+[node name="enemytank" parent="." index="12" unique_id=1403049494 instance=ExtResource("8_n6m3l")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 36.939926, 6.4383063, 26.640886)
+hits_to_destroy = 3
+
+[node name="enemytank2" parent="." index="13" unique_id=1239816220 instance=ExtResource("8_n6m3l")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 37.736706, 5.841641, 9.809315)
+hits_to_destroy = 3

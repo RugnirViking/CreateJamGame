@@ -1,0 +1,15 @@
+[gd_scene format=3 uid="uid://c3an5q15dafqg"]
+
+[ext_resource type="PackedScene" uid="uid://cu4b5eqixw13u" path="res://art/models/stairs.glb" id="1_4sk2d"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_t850l"]
+size = Vector3(1.7903461, 1.3750267, 0.5952983)
+
+[node name="Desertbuilding1" type="StaticBody3D" unique_id=2091816584]
+
+[node name="CollisionShape3D1" type="CollisionShape3D" parent="." unique_id=781339157]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.09491634, 0.7029629, 0.23604274)
+shape = SubResource("BoxShape3D_t850l")
+
+[node name="stairs" parent="." unique_id=575117506 instance=ExtResource("1_4sk2d")]
+transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, -3.099759, 0, -1.1386323)

@@ -1,8 +1,11 @@
 class_name enemytank_tracks
 extends VehicleBody3D
 
+signal health_changed(remaining: int, maximum: int)
+signal defeated
 
 @export_range(1, 100) var hits_to_destroy: int = 5
+@export var show_world_health_bar := true
 @export_range(0.0, 360.0, 1.0) var turret_traverse_speed := 30.0 # Degrees per second; player uses 60.
 @export_range(0.0, 180.0, 1.0) var gun_elevation_speed := 15.0 # Degrees per second; player uses 30.
 @export_range(-90.0, 0.0, 1.0) var min_gun_elevation := -15.0
@@ -80,6 +83,10 @@ func _physics_process(delta: float) -> void:
 				_spawn_shell()
 
 
+func is_spin_attacking() -> bool:
+	return false
+
+
 func _spawn_shell() -> void:
 	if shell_scene == null:
 		return
@@ -115,7 +122,7 @@ func _update_health_bar() -> void:
 		var color := Color(0.2, 0.85, 0.25).lerp(Color(0.95, 0.18, 0.08), 1.0 - remaining)
 		image.fill_rect(Rect2i(2, 2, roundi(124 * remaining), 12), color)
 	_health_bar.texture = ImageTexture.create_from_image(image)
-	_health_bar.visible = remaining > 0.0
+	_health_bar.visible = show_world_health_bar and remaining > 0.0
 
 
 func receive_shell_hit() -> void:
@@ -123,6 +130,7 @@ func receive_shell_hit() -> void:
 		return
 	shell_hits += 1
 	_update_health_bar()
+	health_changed.emit(maxi(hits_to_destroy - shell_hits, 0), hits_to_destroy)
 	if shell_hits < hits_to_destroy:
 		return
 	destroyed = true
@@ -132,3 +140,4 @@ func receive_shell_hit() -> void:
 	$right_track_particles.emitting = false
 	engine_force = 0.0
 	brake = 100.0
+	defeated.emit()

@@ -18,6 +18,7 @@ config/icon="res://art/textures/icon.svg"
 [autoload]
 
 MenuMusic="*res://scripts/menu_music.gd"
+MissionShortcuts="*res://scripts/mission_shortcuts.gd"
 
 [display]
 

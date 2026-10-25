@@ -3,11 +3,26 @@ extends RefCounted
 static var progress_path := "user://mission_progress.cfg"
 
 const LEVELS := [
-	{"name": "NORTHWEST", "description": "The northwest quarter of the desert. Broad dunes rise around a low basin, with ridges along the western edge.", "path": "res://scenes/levels/northwest.tscn"},
-	{"name": "NORTHEAST", "description": "The northeast quarter of the desert. Open sand gives way to rolling high ground toward the eastern edge.", "path": "res://scenes/levels/northeast.tscn"},
-	{"name": "SOUTHWEST", "description": "The southwest quarter of the desert. Cross the southern dunes beneath the western ridgeline.", "path": "res://scenes/levels/southwest.tscn"},
-	{"name": "SOUTHEAST", "description": "The southeast quarter of the desert. A wide sweep of southern sand meets the slopes of the eastern hills.", "path": "res://scenes/levels/southeast.tscn"},
+	{"name": "NORTHWEST", "description": "Two enemy vehicles have been spotted in a nearby town. Go and occupy it, and DON'T STOP", "path": "res://scenes/levels/northwest.tscn"},
+	{"name": "NORTHEAST", "description": "The enemy have stepped up their presence here. A fast driver will be needed to get in and out, FAST", "path": "res://scenes/levels/northeast.tscn"},
+	{"name": "SOUTHWEST", "description": "WHAT DID I TELL YOU ABOUT STOPPING, GET OUT THERE", "path": "res://scenes/levels/southwest.tscn"},
+	{"name": "SOUTHEAST", "description": "!! ?? miaw !!", "path": "res://scenes/levels/southeast.tscn"},
+	{"name": "ORIGINAL MAP", "description": "Return to the original full battlefield.", "path": "res://scenes/main.tscn"},
+	{"name": "CREDITS", "description": "Mission accomplished. Meet the people behind ZEROED IN.", "path": "res://scenes/credits.tscn"},
 ]
+
+const CAMPAIGN_MISSION_COUNT := 4
+
+
+static func bonus_unlocked() -> bool:
+	for index in CAMPAIGN_MISSION_COUNT:
+		if not is_completed(LEVELS[index].path):
+			return false
+	return true
+
+
+static func is_unlocked(index: int) -> bool:
+	return index >= 0 and index < LEVELS.size() and (index < CAMPAIGN_MISSION_COUNT or bonus_unlocked())
 
 
 static func mark_completed(path: String) -> void:
@@ -29,6 +44,14 @@ static func is_completed(path: String) -> bool:
 	return bool(progress.get_value("completed", path, false))
 
 
+static func reset_completion() -> Error:
+	var progress := ConfigFile.new()
+	progress.load(progress_path)
+	if progress.has_section("completed"):
+		progress.erase_section("completed")
+	return progress.save(progress_path)
+
+
 static func crop_quarter(image: Image, index: int) -> Image:
 	# Share the center row/column so all four pieces retain every source cell.
 	var half := Vector2i((image.get_width() - 1) / 2, (image.get_height() - 1) / 2)
@@ -40,7 +63,7 @@ static func quarter_image(index: int) -> Image:
 	var image := texture.get_image()
 	if image.is_compressed():
 		image.decompress()
-	return crop_quarter(image, index)
+	return crop_quarter(image, index) if index < CAMPAIGN_MISSION_COUNT else image
 
 
 static func height_at(image: Image, point: Vector2) -> float:

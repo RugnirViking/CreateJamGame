@@ -12,6 +12,10 @@ extends Control
 @onready var menu_camera: Camera3D = $Camera3D
 @onready var turret: Node3D = $enemytank/Model/TurretRotation
 @onready var gun_elevation: Node3D = $enemytank/Model/TurretRotation/GunElevation
+@onready var left_turret: Node3D = $enemytank2/Model/TurretRotation
+@onready var left_gun_elevation: Node3D = $enemytank2/Model/TurretRotation/GunElevation
+
+var option_pending := false
 
 
 func _process(delta: float) -> void:
@@ -19,8 +23,13 @@ func _process(delta: float) -> void:
 
 
 func _aim_at_mouse(mouse_position: Vector2, delta: float) -> void:
+	_aim_tank_at_mouse(turret, gun_elevation, mouse_position, delta)
+	_aim_tank_at_mouse(left_turret, left_gun_elevation, mouse_position, delta)
+
+
+func _aim_tank_at_mouse(tank_turret: Node3D, tank_gun: Node3D, mouse_position: Vector2, delta: float) -> void:
 	# Put the cursor's target in front of the tank so it turns toward the screen.
-	var plane_origin := turret.global_position.lerp(menu_camera.global_position, 0.5)
+	var plane_origin := tank_turret.global_position.lerp(menu_camera.global_position, 0.5)
 	var aim_plane := Plane(menu_camera.global_basis.z, plane_origin)
 	var intersection: Variant = aim_plane.intersects_ray(
 		menu_camera.project_ray_origin(mouse_position),
@@ -29,15 +38,15 @@ func _aim_at_mouse(mouse_position: Vector2, delta: float) -> void:
 	if intersection == null:
 		return
 	var target: Vector3 = intersection
-	var local_target := turret.get_parent_node_3d().to_local(target) - turret.position
+	var local_target := tank_turret.get_parent_node_3d().to_local(target) - tank_turret.position
 	if Vector2(local_target.x, local_target.z).length_squared() > 0.000001:
 		# The tank model's barrel points along local -X.
 		var target_yaw := atan2(local_target.z, -local_target.x)
-		turret.rotation.y = rotate_toward(turret.rotation.y, target_yaw, deg_to_rad(180.0) * delta)
-	var gun_target := gun_elevation.get_parent_node_3d().to_local(target) - gun_elevation.position
+		tank_turret.rotation.y = rotate_toward(tank_turret.rotation.y, target_yaw, deg_to_rad(180.0) * delta)
+	var gun_target := tank_gun.get_parent_node_3d().to_local(target) - tank_gun.position
 	if gun_target.length_squared() > 0.000001:
 		var pitch := atan2(gun_target.y, Vector2(gun_target.x, gun_target.z).length())
-		gun_elevation.rotation.z = rotate_toward(gun_elevation.rotation.z, -pitch, deg_to_rad(90.0) * delta)
+		tank_gun.rotation.z = rotate_toward(tank_gun.rotation.z, -pitch, deg_to_rad(90.0) * delta)
 
 
 # Called when the node enters the scene tree for the first time.
@@ -47,9 +56,9 @@ func _ready() -> void:
 	for button: Button in menu_buttons.get_children():
 		button.modulate.a = 0.0
 		button.disabled = true
-	$MenuButtons/Play.pressed.connect(_on_play_pressed)
-	$MenuButtons/Controls.pressed.connect(controls_dialog.popup_centered)
-	$MenuButtons/Quit.pressed.connect(get_tree().quit)
+	$MenuButtons/Play.pressed.connect(_activate_option.bind(_on_play_pressed))
+	$MenuButtons/Controls.pressed.connect(_activate_option.bind(controls_dialog.popup_centered))
+	$MenuButtons/Quit.pressed.connect(_activate_option.bind(get_tree().quit))
 	if get_tree().get_meta("skip_menu_intro", false):
 		get_tree().remove_meta("skip_menu_intro")
 		titleLabel.visible_characters = -1
@@ -99,6 +108,21 @@ func _show_menu() -> void:
 
 func _on_play_pressed() -> void:
 	get_tree().change_scene_to_file("res://scenes/tank_select.tscn")
+
+
+func _activate_option(action: Callable) -> void:
+	if option_pending:
+		return
+	option_pending = true
+	for button: Button in menu_buttons.get_children():
+		button.disabled = true
+	boom_sound.stop()
+	boom_sound.play()
+	await get_tree().create_timer(0.5).timeout
+	action.call()
+	option_pending = false
+	for button: Button in menu_buttons.get_children():
+		button.disabled = false
 
 
 func _reveal_characters(character_count: int) -> void:

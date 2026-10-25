@@ -1,9 +1,11 @@
 [gd_scene format=4 uid="uid://c8nqfd5fhl83i"]
 
-[ext_resource type="Script" uid="uid://mojgh72tsmjp" path="res://scenes/enemytank.gd" id="1_11jwl"]
+[ext_resource type="Script" path="res://scripts/boss_tank.gd" id="1_11jwl"]
 [ext_resource type="Texture2D" uid="uid://cp0exnnt1nkis" path="res://art/textures/particle_smoke.png" id="3_dpjnk"]
-[ext_resource type="PackedScene" uid="uid://bagvjhis6yj15" path="res://art/models/tankTOG2Destroyed.glb" id="4_1uwhp"]
+[ext_resource type="PackedScene" uid="uid://52t4k2uux6tq" path="res://art/models/tanksTankBoss1Destroyed.glb" id="4_1uwhp"]
 [ext_resource type="PackedScene" uid="uid://bun65ny721arj" path="res://art/models/kitty_danger.glb" id="5_uh8nq"]
+[ext_resource type="Script" path="res://scripts/boss_front_turret.gd" id="6_front_turret"]
+[ext_resource type="AudioStream" path="res://sound/miav 4.wav" id="7_spin_miav"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_t850l"]
 size = Vector3(3.0908203, 0.64546776, 0.7043457)
@@ -187,98 +189,105 @@ colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
 collision_layer = 2
 collision_mask = 3
 script = ExtResource("1_11jwl")
-model_path = NodePath("tank2")
-wreck_path = NodePath("tankTOG2Destroyed")
-turret_path = NodePath("tank2/TurretRotation")
-gun_elevation_path = NodePath("tank2/TurretRotation/Cube_004/GunElevation")
+model_path = NodePath("Model")
+wreck_path = NodePath("Wreck")
+turret_path = NodePath("Model/tank2/TurretRotation")
+gun_elevation_path = NodePath("Model/tank2/TurretRotation/Cube_004/GunElevation")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1136541964]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5102539, 0.119524956, 0.005004883)
 shape = SubResource("BoxShape3D_t850l")
 
-[node name="tank2" type="Node3D" parent="." unique_id=1782635383]
+[node name="Model" type="Node3D" parent="."]
+
+[node name="tank2" type="Node3D" parent="Model" unique_id=1782635383]
 transform = Transform3D(-0.2, 0, -1.7484556e-08, 0, 0.2, 0, 1.7484556e-08, 0, -0.2, 0.0040501356, 0.0015656501, 0)
 
-[node name="Cube_003" type="MeshInstance3D" parent="tank2" unique_id=1892691858]
+[node name="Cube_003" type="MeshInstance3D" parent="Model/tank2" unique_id=1892691858]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.63116646, 1.150175, 0.010334969)
 mesh = SubResource("ArrayMesh_1ycns")
 
-[node name="Plane_001" type="MeshInstance3D" parent="tank2" unique_id=800261450]
+[node name="Plane_001" type="MeshInstance3D" parent="Model/tank2" unique_id=800261450]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.5216968, -0.86769426, 0.0104112625)
 mesh = SubResource("ArrayMesh_ocbql")
 
-[node name="TurretRotation" type="Node3D" parent="tank2" unique_id=469506289]
+[node name="TurretRotation" type="Node3D" parent="Model/tank2" unique_id=469506289]
 transform = Transform3D(-1.3, 0, -1.1364963e-07, 0, 1.3, 0, 1.1364963e-07, 0, -1.3, 0, -0.54116815, 0)
 
-[node name="Cube_004" type="MeshInstance3D" parent="tank2/TurretRotation" unique_id=458777051]
+[node name="Cube_004" type="MeshInstance3D" parent="Model/tank2/TurretRotation" unique_id=458777051]
 transform = Transform3D(1, 0, 1.7484557e-07, 0, 1, 0, -1.7484557e-07, 0, 1, -0.12887229, 2.3798137, 0.010333061)
 mesh = SubResource("ArrayMesh_uap43")
 
-[node name="GunElevation" type="Node3D" parent="tank2/TurretRotation/Cube_004" unique_id=2077408908]
+[node name="GunElevation" type="Node3D" parent="Model/tank2/TurretRotation/Cube_004" unique_id=2077408908]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.6971303, 0, 0)
 
-[node name="Cube_005" type="MeshInstance3D" parent="tank2/TurretRotation/Cube_004/GunElevation" unique_id=1486225232]
+[node name="Cube_005" type="MeshInstance3D" parent="Model/tank2/TurretRotation/Cube_004/GunElevation" unique_id=1486225232]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.6677284, -0.05841112, -0.028749466)
 mesh = SubResource("ArrayMesh_6aqrd")
 
-[node name="Muzzle" type="Marker3D" parent="tank2/TurretRotation/Cube_004/GunElevation" unique_id=1698719832]
+[node name="Muzzle" type="Marker3D" parent="Model/tank2/TurretRotation/Cube_004/GunElevation" unique_id=1698719832]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.45, -0.05841112, -0.028749466)
 
-[node name="kitty_danger" parent="tank2/TurretRotation/Cube_004" unique_id=1065617764 instance=ExtResource("5_uh8nq")]
+[node name="kitty_danger" parent="Model/tank2/TurretRotation/Cube_004" unique_id=1065617764 instance=ExtResource("5_uh8nq")]
 transform = Transform3D(0.38461542, 0, -1.3449662e-07, 0, 0.38461542, 0, 1.3449662e-07, 0, 0.38461542, 1.0679212, 0.42516947, -7.9713755)
 
-[node name="tank3" type="Node3D" parent="." unique_id=524015647]
+[node name="tank3" type="Node3D" parent="Model" unique_id=524015647]
 transform = Transform3D(0.1, 0, 1.7484556e-08, 0, 0.1, 0, -1.7484556e-08, 0, 0.1, -1.4484134, 0.12093113, -0.30173585)
 
-[node name="Cube_003" type="MeshInstance3D" parent="tank3" unique_id=478969844]
+[node name="Cube_003" type="MeshInstance3D" parent="Model/tank3" unique_id=478969844]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.63116646, 1.150175, 0.010334969)
 mesh = SubResource("ArrayMesh_1ycns")
 
-[node name="Plane_001" type="MeshInstance3D" parent="tank3" unique_id=306593591]
+[node name="Plane_001" type="MeshInstance3D" parent="Model/tank3" unique_id=306593591]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.5216968, -0.86769426, 0.0104112625)
 mesh = SubResource("ArrayMesh_ocbql")
 
-[node name="TurretRotation" type="Node3D" parent="tank3" unique_id=1432924000]
+[node name="TurretRotation" type="Node3D" parent="Model/tank3" unique_id=1432924000]
+script = ExtResource("6_front_turret")
+min_yaw_degrees = -110.0
+max_yaw_degrees = 25.0
 
-[node name="Cube_004" type="MeshInstance3D" parent="tank3/TurretRotation" unique_id=610250033]
+[node name="Cube_004" type="MeshInstance3D" parent="Model/tank3/TurretRotation" unique_id=610250033]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.12887287, 2.285942, 0.010333061)
 mesh = SubResource("ArrayMesh_uap43")
 
-[node name="GunElevation" type="Node3D" parent="tank3/TurretRotation/Cube_004" unique_id=1915217192]
+[node name="GunElevation" type="Node3D" parent="Model/tank3/TurretRotation/Cube_004" unique_id=1915217192]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.6971303, 0, 0)
 
-[node name="Cube_005" type="MeshInstance3D" parent="tank3/TurretRotation/Cube_004/GunElevation" unique_id=1375896070]
+[node name="Cube_005" type="MeshInstance3D" parent="Model/tank3/TurretRotation/Cube_004/GunElevation" unique_id=1375896070]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.6677284, -0.05841112, -0.028749466)
 mesh = SubResource("ArrayMesh_6aqrd")
 
-[node name="Muzzle" type="Marker3D" parent="tank3/TurretRotation/Cube_004/GunElevation" unique_id=452534137]
+[node name="Muzzle" type="Marker3D" parent="Model/tank3/TurretRotation/Cube_004/GunElevation" unique_id=452534137]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.45, -0.05841112, -0.028749466)
 
-[node name="tank4" type="Node3D" parent="." unique_id=922520268]
+[node name="tank4" type="Node3D" parent="Model" unique_id=922520268]
 transform = Transform3D(0.1, 0, 1.7484556e-08, 0, 0.1, 0, -1.7484556e-08, 0, 0.1, -1.4484134, 0.12093113, 0.33462486)
 
-[node name="Cube_003" type="MeshInstance3D" parent="tank4" unique_id=1261945651]
+[node name="Cube_003" type="MeshInstance3D" parent="Model/tank4" unique_id=1261945651]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.63116646, 1.150175, 0.010334969)
 mesh = SubResource("ArrayMesh_1ycns")
 
-[node name="Plane_001" type="MeshInstance3D" parent="tank4" unique_id=307914038]
+[node name="Plane_001" type="MeshInstance3D" parent="Model/tank4" unique_id=307914038]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.5216968, -0.86769426, 0.0104112625)
 mesh = SubResource("ArrayMesh_ocbql")
 
-[node name="TurretRotation" type="Node3D" parent="tank4" unique_id=1928484690]
+[node name="TurretRotation" type="Node3D" parent="Model/tank4" unique_id=1928484690]
+script = ExtResource("6_front_turret")
+initial_fire_delay = 0.75
 
-[node name="Cube_004" type="MeshInstance3D" parent="tank4/TurretRotation" unique_id=582786357]
+[node name="Cube_004" type="MeshInstance3D" parent="Model/tank4/TurretRotation" unique_id=582786357]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.12887287, 2.285942, 0.010333061)
 mesh = SubResource("ArrayMesh_uap43")
 
-[node name="GunElevation" type="Node3D" parent="tank4/TurretRotation/Cube_004" unique_id=1729838264]
+[node name="GunElevation" type="Node3D" parent="Model/tank4/TurretRotation/Cube_004" unique_id=1729838264]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.6971303, 0, 0)
 
-[node name="Cube_005" type="MeshInstance3D" parent="tank4/TurretRotation/Cube_004/GunElevation" unique_id=454760322]
+[node name="Cube_005" type="MeshInstance3D" parent="Model/tank4/TurretRotation/Cube_004/GunElevation" unique_id=454760322]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.6677284, -0.05841112, -0.028749466)
 mesh = SubResource("ArrayMesh_6aqrd")
 
-[node name="Muzzle" type="Marker3D" parent="tank4/TurretRotation/Cube_004/GunElevation" unique_id=1699210445]
+[node name="Muzzle" type="Marker3D" parent="Model/tank4/TurretRotation/Cube_004/GunElevation" unique_id=1699210445]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.45, -0.05841112, -0.028749466)
 
 [node name="VehicleWheel3D" type="VehicleWheel3D" parent="." unique_id=47629630]
@@ -375,6 +384,9 @@ angle_max = 360.0
 scale_amount_curve = SubResource("Curve_3bti5")
 color_ramp = SubResource("Gradient_t850l")
 
-[node name="tankTOG2Destroyed" parent="." unique_id=984919651 instance=ExtResource("4_1uwhp")]
-transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0.0054988656, 0.00043934584, -1.186399)
+[node name="Wreck" parent="." unique_id=984919651 instance=ExtResource("4_1uwhp")]
+transform = Transform3D(-0.1, 0, 0, 0, 0.1, 0, 0, 0, -0.1, -5.707844, 0.131564, 3.751408)
 visible = false
+
+[node name="SpinSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("7_spin_miav")

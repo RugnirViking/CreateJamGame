@@ -109,6 +109,10 @@ func _connect_capture_targets() -> void:
 
 
 func _check_targets_captured() -> void:
+	if get_tree().current_scene.get_meta("boss_mission", false):
+		return
+	if get_tree().current_scene.has_meta("required_enemy_kills"):
+		return
 	if destroyed or you_win.visible:
 		return
 	var targets := get_tree().get_nodes_in_group(&"terrain_target_markers")
@@ -286,6 +290,12 @@ func _update_zeroing(speed: float, delta: float) -> void:
 
 
 func _input(event: InputEvent) -> void:
+	# Keep celebratory shooting available on the win screen, before GUI handling.
+	if not destroyed and not event.is_echo() and event.is_action_pressed("shoot"):
+		_zeroing_started = true
+		_spawn_shell()
+		get_viewport().set_input_as_handled()
+		return
 	if you_win.visible:
 		if not event.is_echo() and event.is_action_pressed("next_level"):
 			get_viewport().set_input_as_handled()
@@ -295,12 +305,6 @@ func _input(event: InputEvent) -> void:
 	# Hidden test shortcut: Ctrl+Shift+F10 uses the normal victory presentation.
 	if event is InputEventKey and event.pressed and not event.echo and event.ctrl_pressed and event.shift_pressed and (event.physical_keycode == KEY_F10 or event.keycode == KEY_F10):
 		_win()
-		get_viewport().set_input_as_handled()
-		return
-	# Fire before GUI handling so overlays cannot swallow Space or clicks.
-	if not destroyed and not event.is_echo() and event.is_action_pressed("shoot"):
-		_zeroing_started = true
-		_spawn_shell()
 		get_viewport().set_input_as_handled()
 		return
 	if _zeroing_started or destroyed or you_win.visible:

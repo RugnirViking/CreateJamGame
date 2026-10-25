@@ -18,3 +18,15 @@ func _enter_tree() -> void:
 	# Replace before the level's enemies enter the tree and resolve their target.
 	add_child(selected)
 	move_child(selected, spawn_index)
+
+
+func _ready() -> void:
+	var player := get_node("playertank") as Node3D
+	if is_instance_valid(player.get("chevron_target")):
+		return
+	# All level children have entered the tree now, including copied-in targets.
+	for node in get_tree().get_nodes_in_group(&"terrain_target_markers"):
+		var marker := node as terrain_target_marker
+		if is_ancestor_of(marker) and marker.state == terrain_target_marker.State.ACTIVE and marker.is_visible_in_tree():
+			player.set("chevron_target", marker)
+			return
